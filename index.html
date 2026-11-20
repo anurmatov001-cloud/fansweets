@@ -115,7 +115,54 @@ button:disabled { opacity: .5; cursor: default; }
   body:not(.open) aside { margin-left: calc(-1 * var(--sw)); box-shadow: none; }
   body.open #shade { display: block; position: fixed; inset: var(--hh) 0 0 0; background: rgba(15,23,42,.3); z-index: 20; }
   .two { grid-template-columns: 1fr; }
+  /* --- Телефон: пастки меню --- */
+  #tabs { display: grid; position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; grid-auto-flow: column; grid-auto-columns: 1fr;
+    background: var(--card); border-top: 1px solid var(--line); box-shadow: 0 -4px 18px rgba(15,23,42,.08);
+    padding: 4px max(6px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); }
+  #tabs a, #tabs button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 54px; border-radius: 10px; font-size: 11.5px; font-weight: 600; color: var(--mut); position: relative; -webkit-tap-highlight-color: transparent; }
+  #tabs .ti { font-size: 21px; line-height: 1; }
+  #tabs a.on { color: var(--gd); background: var(--g2); }
+  #tabs a:focus-visible, #tabs button:focus-visible { outline: 2px solid var(--g); }
+  #tabs .cnt { position: absolute; top: 3px; right: calc(50% - 22px); margin: 0; }
+  main { padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+  aside { height: calc(100vh - var(--hh) - 62px - env(safe-area-inset-bottom, 0px)); }
+  body.open #shade { bottom: calc(62px + env(safe-area-inset-bottom, 0px)); }
+  /* --- Телефон: бармоқ учун катта тугма ва майдонлар (16px — iPhone катталаштирмайди) --- */
+  input, select, textarea { font-size: 16px; min-height: 44px; }
+  button, .btn { min-height: 44px; }
+  button.sm { min-height: 36px; }
+  header select { max-width: 52vw; min-height: 38px; font-size: 14px; }
+  .ph { align-items: stretch; } .ph .act { width: 100%; } .ph .act > * { flex: 1 1 auto; justify-content: center; }
+  .kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .kpi > a, .kpi > div { padding: 12px; } .kpi b { font-size: 17px; }
+  .seg { display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; } .seg button { flex: 0 0 auto; }
+  .row > div { flex-basis: 100% !important; } .row > .fit { flex: 1 1 auto; } .row > .fit > button { width: 100%; justify-content: center; }
+  .sum { grid-template-columns: 1fr auto; justify-content: stretch; }
+  h1 { font-size: 20px; }
+  /* --- Телефон: жадваллар карточка бўлиб кўринади --- */
+  .wrap { overflow: visible; background: transparent; border: 0; border-radius: 0; }
+  .wrap table, .wrap tbody, .wrap tfoot, .wrap tr, .wrap td { display: block; width: 100%; }
+  .wrap thead { display: none; }
+  .wrap tr { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; padding: 6px 14px; }
+  .wrap tbody tr > th { display: block; background: none; padding: 14px 2px 4px; font-size: 12px; }
+  .wrap tbody tr:has(> th) { background: none; border: 0; padding: 0; margin: 0; }
+  .wrap td { border: 0 !important; padding: 6px 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+  .wrap td::before { content: attr(data-label); color: var(--mut); font-size: 12.5px; font-weight: 600; text-align: left; flex: 0 0 auto; max-width: 48%; }
+  .wrap td[data-label=""]::before { display: none; }
+  .wrap td:first-child { display: block; text-align: left; font-size: 15px; padding-top: 8px; }
+  .wrap td:first-child::before { display: none; }
+  .wrap td[data-label=""]:not(:first-child) { justify-content: flex-end; flex-wrap: wrap; }
+  .wrap tr.low { background: var(--red2); border-color: var(--redline); } .wrap tr.low td { background: none; }
+  .wrap tr.click:hover td { background: none; } .wrap tr.click:active { border-color: var(--g); }
+  .wrap tfoot tr { background: var(--th); } .wrap tfoot td { background: none; }
+  .wrap td input.q { width: 130px; } .wrap td select { width: 100%; min-width: 0; }
+  .lines td:first-child select { min-width: 0; }
+  .wrap table.nohead td { display: block; text-align: left; padding: 3px 0; }
+  .wrap table.nohead td:first-child { font-size: 12.5px; color: var(--mut); padding-top: 8px; }
+  .brand { white-space: nowrap; font-size: 16px; gap: 6px; min-width: 0; }
+  header { gap: 8px; }
 }
+@media (min-width: 761px) { #tabs { display: none; } }
 @media (prefers-reduced-motion: reduce) { aside { transition: none; } }
 </style>
 
@@ -133,6 +180,7 @@ button:disabled { opacity: .5; cursor: default; }
     <div id="app"><div class="empty">Юкланмоқда… Маълумот базасига уланиляпти.</div></div>
   </main>
 </div>
+<nav id="tabs" aria-label="Асосий бўлимлар"></nav>
 
 <script>
 "use strict";
@@ -972,6 +1020,10 @@ function renderNav() {
   const badge = { debts: over, stock: low, "ret-stock": ret, staff: S.isOwner ? S.staffreq.filter((q) => !S.staff.some((x) => x.id === q.id)).length : 0 };
   const nav = NAV.map(([g, items]) => [g, items.filter(([k]) => pageOk(k))]).filter(([, items]) => items.length);
   if (fullAccess()) nav.push(["Ходимлар", [["staff", "Ходимлар ва рухсатлар", "🔐"]]]);
+  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["stock-in", "Кирим", "📥"], ["pay", "Тўлов", "💵"]];
+  const tabs = TABS.filter(([k]) => pageOk(k)).slice(0, 4);
+  $("#tabs").innerHTML = tabs.map(([k, l, ic]) => `<a href="#${k}" class="${cur === k ? "on" : ""}"><span class="ti">${ic}</span>${l}${badge[k] ? `<span class="cnt">${badge[k]}</span>` : ""}</a>`).join("") +
+    `<button type="button" id="tabmenu" aria-label="Ҳамма бўлимлар"><span class="ti">☰</span>Меню${badge.staff ? `<span class="cnt">${badge.staff}</span>` : ""}</button>`;
   $("#nav").innerHTML = nav.map(([g, items]) => (g ? `<div class="grp">${g}</div>` : "") + items.map(([k, l, ic]) => `<a href="#${k}" class="${cur === k ? "on" : ""}"><span class="ic">${ic}</span>${l}${badge[k] ? `<span class="cnt">${badge[k]}</span>` : ""}</a>`).join("")).join("");
   // Юқори панел: эга — «кимнинг кўзи билан кўриш», ходим — ўз лавозими
   const va = $("#viewas"), whoEl = $("#who");
@@ -999,9 +1051,21 @@ function render() {
   if (S.timedOut && S.loaded.size < COLS.length + 1) html = `<div class="msg info">Маълумот ҳали тўлиқ юкланмади — интернетни текширинг. Кўрсатилгани эскирган бўлиши мумкин.</div>` + html;
   if (S.readOnly) html = `<div class="msg info">Сиз фақат кўра оласиз. Ёзиш учун эгасидан «Contributor» рухсатини сўранг.</div>` + html;
   app.innerHTML = html;
+  cardify(app);
   for (const [id, v] of Object.entries(keep)) { const el = document.getElementById(id); if (!el) continue; if (el.type === "checkbox") el.checked = v; else if (el.tagName === "SELECT") { if ([...el.options].some((o) => o.value === v)) el.value = v; } else el.value = v; }
   if (focus) { const el = document.getElementById(focus); if (el) { el.focus(); try { if (sel != null) el.setSelectionRange(sel, sel); } catch (e) {} } }
   saleCalc(); invCalc();
+}
+// Телефонда жадвал карточка бўлади: ҳар бир катакка устун номини ёзиб қўямиз
+function cardify(root) {
+  root.querySelectorAll("table").forEach((t) => {
+    const hs = [...t.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+    if (!hs.length) t.classList.add("nohead");
+    t.querySelectorAll("tbody tr, tfoot tr").forEach((tr) => {
+      let i = 0;
+      for (const td of tr.children) { const span = +td.getAttribute("colspan") || 1; if (td.tagName === "TD" && !td.hasAttribute("data-label")) td.setAttribute("data-label", span > 1 ? "" : hs[i] || ""); i += span; }
+    });
+  });
 }
 function invCalc() {
   document.querySelectorAll("[data-inv]").forEach((inp) => { const pid = inp.dataset.inv, cell = document.querySelector(`[data-diff="${pid}"]`), v = toInt(inp.value);
@@ -1079,6 +1143,7 @@ document.addEventListener("change", (e) => {
 window.addEventListener("hashchange", () => { if (!S.keepFlash) flash(""); S.keepFlash = false; S.confirmCancel = ""; document.body.classList.remove("open"); render(); window.scrollTo(0, 0); });
 $("#menu").onclick = () => { if (matchMedia("(max-width: 760px)").matches) document.body.classList.toggle("open"); else document.body.classList.toggle("closed"); };
 $("#shade").onclick = () => document.body.classList.remove("open");
+document.addEventListener("click", (e) => { if (e.target.closest("#tabmenu")) { document.body.classList.toggle("open"); window.scrollTo(0, 0); } });
 
 // ================= CSV (Excel) =================
 const csvCell = (v) => { const s = String(v ?? ""); return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
