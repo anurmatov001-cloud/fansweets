@@ -132,6 +132,8 @@ button:disabled { opacity: .5; cursor: default; }
 .pick button:hover, .pick button:focus-visible { background: var(--g2); }
 .pick small { display: block; color: var(--mut); font-size: 12.5px; margin-top: 2px; }
 .qu { display: inline-flex; gap: 6px; align-items: center; justify-content: flex-end; } .qu select { width: auto; padding-right: 26px; }
+.attcard { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
+.attcard > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; } .attcard button { min-width: 150px; justify-content: center; font-size: 15px; }
 .splitbox { padding: 12px 14px; background: var(--g2); border-radius: 10px; }
 @media (max-width: 760px) {
   .who { display: none; }
@@ -216,7 +218,8 @@ button:disabled { opacity: .5; cursor: default; }
 const NAV = [
   ["", [["home", "Бугун", "📊"]]],
   ["Тайёр маҳсулот склади", [["stock", "Қолдиқ", "📦"], ["stock-in", "Кирим (цехдан)", "📥"], ["writeoff", "Ҳисобдан чиқариш", "📤"], ["inventory", "Инвентаризация", "🧮"], ["ret-stock", "Возврат склади", "♻️"], ["moves", "Ҳаракатлар тарихи", "🕘"]]],
-  ["Сотув", [["sale-new", "Янги сотув", "➕"], ["sales", "Сотувлар", "🧾"], ["clients", "Мижозлар", "👥"]]],
+  ["Сотув", [["orders", "Буюртмалар", "📝"], ["sale-new", "Янги сотув", "➕"], ["sales", "Сотувлар", "🧾"], ["clients", "Мижозлар", "👥"]]],
+  ["Ходимлар", [["attendance", "Давомат (келди-кетди)", "🕘"]]],
   ["Қарздорлик", [["debts", "Қарздорлар", "💰"], ["pay", "Тўлов қабул қилиш", "💵"], ["returns", "Возвратлар", "↩️"]]],
   ["Созламалар", [["products", "Маҳсулотлар ва нархлар", "🧁"], ["regions", "Регионлар", "📍"], ["ret-reasons", "Возврат сабаблари", "🏷️"], ["rules", "Қоидалар", "⚙️"], ["journal", "Журнал", "📜"]]],
 ];
@@ -226,13 +229,14 @@ const OUT_REASONS = ["Брак", "Муддати ўтган", "Дегустац�
 const DEF_RET_REASONS = ["Муддати ўтган / эскирган", "Брак (сифатсиз)", "Сотилмади / ортиқча", "Шикастланган (йўлда)", "Бошқа"];
 const WH = { main: "Асосий склад", ret: "Возврат склади" };
 const MOVE = { in: ["📥 Кирим", "b-ok"], sale: ["🧾 Сотув", "b-b2b"], storno: ["↺ Сотув бекор", "b-amb"], ret: ["↩️ Возврат", "b-amb"], out: ["📤 Ҳисобдан чиқди", "b-low"], inv: ["🧮 Инвентаризация", ""], transfer: ["🔁 Складлар орасида", "b-b2c"] };
-const DEF_RULES = { b2bTerm: 7, b2cTerm: 3, discMenejer: 10, blockOverdue: 1 };
+const DEF_RULES = { b2bTerm: 7, b2cTerm: 3, discMenejer: 10, blockOverdue: 1, workStart: "08:00" };
+const ORD_ST = { new: ["🆕 Янги", "b-b2b"], ready: ["📦 Тайёр", "b-amb"], done: ["✅ Сотилди", "b-ok"], cancelled: ["✖ Бекор", "b-low"] };
 
 const S = {
   db: null, user: null, uid: "", names: {}, readOnly: false, loaded: new Set(), timedOut: false, busy: false,
   products: [], customers: [], moves: [], sales: [], payments: [], returns: [], logs: [], regions: [], promises: [], retreasons: [], settings: null,
   roles: [], staff: [], staffreq: [], isOwner: false, viewAs: "", saleKind: "b2c", saleRows: 1, retRows: 1, saleTab: "all", saleDay: "", moveTab: "all", debtTab: "b2b", clientTab: "b2b",
-  regionFilter: "", payCust: "", q: {}, homeDay: "", depth: 0, inRows: 1, outRows: 1, rsRows: 1, confirmCancel: "", downloads: null,
+  regionFilter: "", payCust: "", q: {}, orders: [], attendance: [], ordKind: "b2b", ordRows: 1, ordTab: "open", ordCancel: "", fromOrder: "", attDay: "", attMonth: "", homeDay: "", depth: 0, inRows: 1, outRows: 1, rsRows: 1, confirmCancel: "", downloads: null,
 };
 try { S.viewAs = localStorage.getItem("fss_viewas") || ""; } catch (e) {}
 
@@ -252,6 +256,8 @@ const FUNCS = [
   ["debts", "Қарздорлар", "Қарздорлик", "v"], ["pay", "Тўлов ва тўлов санаси", "Қарздорлик", "ve"], ["returns", "Возвратлар", "Қарздорлик", "ve"], ["credit", "Кредит лимити ва муддати", "Қарздорлик", "e"],
   ["products", "Маҳсулотлар ва нархлар", "Созламалар", "ve"], ["regions", "Регионлар", "Созламалар", "ve"], ["ret-reasons", "Возврат сабаблари", "Созламалар", "ve"],
   ["rules", "Қоидалар", "Созламалар", "ve"], ["journal", "Журнал", "Созламалар", "v"],
+  ["orders", "Буюртмалар (B2B / B2C)", "Сотув", "ve"],
+  ["att", "Давомат: ўзи «Келдим / Кетдим» босади", "Ходимлар", "e"], ["att-all", "Давомат ҳисоботи (ҳамма ходимлар, қўлда тузатиш)", "Ходимлар", "ve"],
 ];
 const FUNC = Object.fromEntries(FUNCS.map((f) => [f[0], f]));
 const roleById = (id) => S.roles.find((r) => r.id === id);
@@ -516,6 +522,7 @@ const A = {
       await put("moves", newId("m"), { kind: "sale", saleId: id, ref: no, lines: lines.map((l) => mv(l, -1)) });
       if (paid > 0) await put("payments", newId("t"), { customerId: cust?.id || "", saleId: id, amount: paid, method: f.method.value, note: "Сотувда" });
       if (unpaid > 0) await put("promises", newId("v"), { saleId: id, customerId: cust.id, date: due, amount: unpaid, note: "Сотувда келишилди" });
+      if (S.fromOrder && S.orders.some((o) => o.id === S.fromOrder)) { const o = S.orders.find((x) => x.id === S.fromOrder); await S.db.doc("orders/" + o.id).update({ status: "done", saleId: id, saleNo: no, doneAt: nowIso(), doneBy: S.uid || "" }); await addLog("Буюртма сотилди", `Буюртма №${docNo(o)} → сотув №${no}`); S.fromOrder = ""; }
       S.saleRows = 1; S.keepFlash = true;
       location.hash = "sale-" + id;
       return id;
@@ -682,6 +689,8 @@ const A = {
       const n = {}; for (const k of ["b2bTerm", "b2cTerm", "discMenejer"]) { const v = toInt(f[k].value); if (!(v >= 0)) throw new UserError("Ҳамма қийматлар бутун сон бўлсин."); n[k] = v; }
       if (n.discMenejer > 100) throw new UserError("Чегирма 0–100 оралиғида бўлсин.");
       n.blockOverdue = f.blockOverdue.checked ? 1 : 0;
+      n.workStart = f.workStart.value || "08:00";
+      if (!/^\d\d:\d\d$/.test(n.workStart)) throw new UserError("Иш бошланиш вақтини ёзинг (масалан 08:00).");
       const o = rules();
       await S.db.doc("settings/main").set({ ...n, ...stamp() });
       await addLog("Қоидалар ўзгарди", Object.keys(n).map((k) => `${k}: ${o[k]} → ${n[k]}`).join(", "));
@@ -689,7 +698,7 @@ const A = {
   },
 };
 
-const COLS = ["products", "customers", "moves", "sales", "payments", "returns", "logs", "regions", "promises", "retreasons", "roles", "staff", "staffreq"];
+const COLS = ["products", "customers", "moves", "sales", "payments", "returns", "logs", "regions", "promises", "retreasons", "roles", "staff", "staffreq", "orders", "attendance"];
 // ================= Ходимлар ва лавозимлар (фақат эга ўзгартиради) =================
 Object.assign(A, {
   addRole(f) {
@@ -729,6 +738,206 @@ Object.assign(A, {
   },
 });
 
+
+// ================= Давомат: Келдим / Кетдим =================
+const hhmm = (iso) => { const d = new Date(iso); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
+const hoursText = (m) => m ? `${Math.floor(m / 60)} соат ${String(m % 60).padStart(2, "0")} дақ.` : "—";
+function attDay(uid, D) {
+  const ev = S.attendance.filter((a) => a.uid === uid && localDay(a.at) === D).sort((a, b) => a.at.localeCompare(b.at));
+  const ins = ev.filter((a) => a.kind === "in"), outs = ev.filter((a) => a.kind === "out"), last = ev[ev.length - 1];
+  const first = ins[0]?.at || null, lastOut = outs.length ? outs[outs.length - 1].at : null, onNow = last?.kind === "in";
+  let mins = 0;
+  // Бир кунда бир неча марта келиб-кетса ҳам ҳар бир «келди → кетди» оралиғи қўшилади
+  let start = null; for (const e of ev) { if (e.kind === "in" && !start) start = e.at; else if (e.kind === "out" && start) { mins += Math.round((new Date(e.at) - new Date(start)) / 6e4); start = null; } }
+  if (start && D === today()) mins += Math.round((Date.now() - new Date(start)) / 6e4);
+  return { ev, first, lastOut, onNow, mins, late: !!first && hhmm(first) > rules().workStart };
+}
+function attPeople() {
+  const ids = new Set(S.staff.filter((x) => x.active !== false).map((x) => x.id));
+  for (const a of S.attendance) if (a.uid) ids.add(a.uid);
+  return [...ids].sort((a, b) => who(a).localeCompare(who(b)));
+}
+function myAttCard() {
+  if (!S.uid) return "";
+  const d = attDay(S.uid, today());
+  const status = d.onNow ? `Ишдасиз · ${hhmm(d.first)} да келдингиз${d.late ? ` <span class="badge b-low">кечикди</span>` : ""} · ${hoursText(d.mins)}` : d.first ? `Бугун ${hhmm(d.first)} да келиб, ${hhmm(d.lastOut)} да кетдингиз · ${hoursText(d.mins)}` : "Бугун ҳали «Келдим» босилмаган";
+  return `<div class="card attcard"><div><b class="ct" style="margin:0">🕘 Давомат</b><span class="mut">${status}</span></div>
+    ${d.onNow ? `<button type="button" class="red" data-a="att" data-id="out">🏁 Кетдим</button>` : `<button type="button" data-a="att" data-id="in">✅ Келдим</button>`}</div>`;
+}
+Object.assign(A, {
+  att(kind) {
+    return write(async () => {
+      need("att"); if (!S.uid) throw new UserError("Сиз аниқланмадингиз. Claude.ai'га кириб очинг.");
+      const d = attDay(S.uid, today());
+      if (kind === "in" && d.onNow) throw new UserError("Келганингиз аллақачон белгиланган.");
+      if (kind === "out" && !d.onNow) throw new UserError("Аввал «Келдим» босилиши керак.");
+      await put("attendance", newId("a"), { uid: S.uid, kind });
+    }, kind === "in" ? `Келдингиз: ${hhmm(nowIso())}. Хайрли иш куни!` : `Кетдингиз: ${hhmm(nowIso())}. Раҳмат!`);
+  },
+  attManual(f) {
+    return write(async () => {
+      need("att-all");
+      const uid = f.uid.value, kind = f.kind.value, day = f.day.value, time = f.time.value, note = f.note.value.trim();
+      if (!uid) throw new UserError("Ходимни танланг.");
+      if (!day || !time) throw new UserError("Кун ва вақтни ёзинг.");
+      if (day > today()) throw new UserError("Келажакдаги кунга ёзиб бўлмайди.");
+      if (!note) throw new UserError("Нима учун қўлда ёзилаётганини изоҳда ёзинг.");
+      const at = new Date(day + "T" + time).toISOString();
+      await S.db.collection("attendance").doc(newId("a")).set({ uid, kind, at, manual: true, note, by: S.uid || "", role: roleLabel(), writtenAt: nowIso() });
+      await addLog("Давомат қўлда ёзилди", `${who(uid)}: ${kind === "in" ? "келди" : "кетди"} ${day} ${time} · ${note}`);
+      f.reset();
+    }, "Давомат ёзилди.");
+  },
+});
+function vAttendance() {
+  let h = ph("Давомат", `Иш бошланиши: ${esc(rules().workStart)}. Ходим телефонда «Келдим» ва «Кетдим» босади — вақт ўзи ёзилади.`, canView("att-all") ? `<button type="button" class="light" data-a="csvAtt">⬇️ Ойлик (CSV)</button>` : "");
+  if (can("att")) h += myAttCard();
+  if (!canView("att-all")) {
+    const days = [...new Set(S.attendance.filter((a) => a.uid === S.uid).map((a) => localDay(a.at)))].sort().reverse().slice(0, 31);
+    return h + `<h2>Менинг давоматим</h2>` + (days.length ? `<div class="wrap"><table><thead><tr><th>Кун</th><th>Келди</th><th>Кетди</th><th class="n">Ишлади</th></tr></thead><tbody>${days.map((D) => { const d = attDay(S.uid, D); return `<tr><td><b>${dOnly(D + "T12:00")}</b></td><td>${d.first ? hhmm(d.first) : "—"}${d.late ? ` <span class="badge b-low">кечикди</span>` : ""}</td><td>${d.onNow ? `<span class="badge b-ok">ишда</span>` : d.lastOut ? hhmm(d.lastOut) : "—"}</td><td class="n">${hoursText(d.mins)}</td></tr>`; }).join("")}</tbody></table></div>` : `<div class="empty">Ҳали ёзув йўқ.</div>`);
+  }
+  const month = S.attMonth;
+  h += `<div class="toolbar"><div class="seg">${[["day", "Кун бўйича"], ["month", "Ой бўйича"]].map(([k, l]) => `<button type="button" class="${(k === "month") === !!month ? "on" : ""}" data-a="attTab" data-id="${k}">${l}</button>`).join("")}</div>
+    ${month ? `<div class="fit"><input type="month" id="attMonth" value="${esc(month)}" max="${today().slice(0, 7)}" aria-label="Ой"></div>` : `<div class="fit"><input type="date" id="attDay" value="${esc(S.attDay || today())}" max="${today()}" aria-label="Кун"></div>`}</div>`;
+  const people = attPeople();
+  if (!people.length) h += `<div class="empty">Ҳали ходим йўқ. «Ходимлар ва рухсатлар» бўлимида ходимга лавозим беринг.</div>`;
+  else if (!month) {
+    const D = S.attDay || today();
+    const rows = people.map((u) => ({ u, d: attDay(u, D) }));
+    const came = rows.filter((x) => x.d.first).length, late = rows.filter((x) => x.d.late).length, on = rows.filter((x) => x.d.onNow).length;
+    h += `<div class="kpi"><div><span>Келди</span><b>${came} / ${people.length}</b></div><div><span>Ҳозир ишда</span><b>${on}</b></div><div><span>Кечикди</span><b class="${late ? "bad" : ""}">${late}</b></div><div><span>Келмади</span><b>${people.length - came}</b></div></div>`;
+    h += `<div class="wrap"><table><thead><tr><th>Ходим</th><th>Келди</th><th>Кетди</th><th class="n">Ишлади</th><th>Ҳолат</th></tr></thead><tbody>${rows.map(({ u, d }) => `<tr><td><b>${esc(who(u))}</b>${d.ev.some((e) => e.manual) ? ` <span class="mut">(қўлда тузатилган)</span>` : ""}</td><td>${d.first ? hhmm(d.first) : "—"}</td><td>${d.lastOut && !d.onNow ? hhmm(d.lastOut) : "—"}</td><td class="n">${hoursText(d.mins)}</td><td>${!d.first ? `<span class="badge">келмади</span>` : d.onNow ? `<span class="badge b-ok">ишда</span>` : `<span class="badge">кетди</span>`}${d.late ? ` <span class="badge b-low">кечикди</span>` : ""}</td></tr>`).join("")}</tbody></table></div>`;
+  } else {
+    const rows = attMonthRows(month);
+    h += `<div class="wrap"><table><thead><tr><th>Ходим</th><th class="n">Ишлаган кунлар</th><th class="n">Жами соат</th><th class="n">Кечикишлар</th><th class="n">Ўртача келиш</th></tr></thead><tbody>${rows.map((x) => `<tr><td><b>${esc(who(x.u))}</b></td><td class="n">${x.days}</td><td class="n">${hoursText(x.mins)}</td><td class="n ${x.late ? "neg" : ""}">${x.late}</td><td class="n">${x.avg || "—"}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+  if (can("att-all") && people.length) h += `<form class="card" data-f="attManual" style="margin-top:16px"><b class="ct">✏️ Қўлда ёзиш (ходим босишни унутган бўлса)</b><div class="row">
+    <div><label for="am-uid">Ходим</label><select id="am-uid" name="uid"><option value="">— ходим —</option>${people.map((u) => `<option value="${esc(u)}">${esc(who(u))}</option>`).join("")}</select></div>
+    <div style="flex:0 1 150px"><label for="am-kind">Нима</label><select id="am-kind" name="kind"><option value="in">Келди</option><option value="out">Кетди</option></select></div>
+    <div style="flex:0 1 170px"><label for="am-day">Кун</label><input type="date" id="am-day" name="day" max="${today()}" value="${esc(S.attDay || today())}"></div>
+    <div style="flex:0 1 130px"><label for="am-time">Вақт</label><input type="time" id="am-time" name="time"></div>
+    <div><label for="am-note">Изоҳ (сабаб)</label><input id="am-note" name="note" placeholder="Масалан: телефони ўчиб қолган"></div><div class="fit"><button>Ёзиш</button></div></div></form>`;
+  return h;
+}
+function attMonthRows(month) {
+  return attPeople().map((u) => {
+    const days = [...new Set(S.attendance.filter((a) => a.uid === u && localDay(a.at).startsWith(month)).map((a) => localDay(a.at)))].sort();
+    let mins = 0, late = 0, firstMins = 0, n = 0;
+    for (const D of days) { const d = attDay(u, D); mins += d.mins; if (d.late) late++; if (d.first) { const [hh, mm] = hhmm(d.first).split(":").map(Number); firstMins += hh * 60 + mm; n++; } }
+    const avg = n ? `${String(Math.floor(firstMins / n / 60)).padStart(2, "0")}:${String(Math.round(firstMins / n) % 60).padStart(2, "0")}` : "";
+    return { u, days: days.filter((D) => attDay(u, D).first).length, mins, late, avg };
+  });
+}
+function csvAtt() {
+  const m = S.attMonth || today().slice(0, 7), rows = [["Ходим", "Кун", "Келди", "Кетди", "Ишлади (дақиқа)", "Кечикди"]];
+  for (const u of attPeople()) for (const D of [...new Set(S.attendance.filter((a) => a.uid === u && localDay(a.at).startsWith(m)).map((a) => localDay(a.at)))].sort()) { const d = attDay(u, D); rows.push([who(u), D, d.first ? hhmm(d.first) : "", d.lastOut ? hhmm(d.lastOut) : "", d.mins, d.late ? "ҳа" : ""]); }
+  saveCsv(`davomat-${m}.csv`, rows);
+}
+
+// ================= Буюртмалар (B2B / B2C) =================
+Object.assign(A, {
+  order(f) {
+    return write(async () => {
+      need("orders");
+      const kind = S.ordKind, name = f.customer.value.trim();
+      if (!name) throw new UserError(kind === "b2b" ? "Дўкон номини ёзинг ёки рўйхатдан танланг." : "Мижоз исмини ёзинг ёки рўйхатдан танланг.");
+      const lines = readLines(f, "ord", true);
+      if (!lines.length) throw new UserError("Камида битта маҳсулот ва миқдор ёзинг.");
+      const due = f.due.value; if (!due) throw new UserError("Буюртмани қачон бериш кераклигини ёзинг (сана).");
+      if (due < today()) throw new UserError("Бериш санаси ўтиб кетган.");
+      const { c: cust, isNew } = findOrCreateCustomer(kind, name, f.phone.value.trim(), f.region?.value);
+      if (isNew) await put("customers", cust.id, cust);
+      const id = newId("o"), no = await nextNo();
+      await put("orders", id, { no, kind, customerId: cust.id, customer: cust.name, lines, total: totalOf({ lines }), due, time: f.time.value || "", address: f.address.value.trim(), via: f.via.value, note: f.note.value.trim(), status: "new" });
+      await addLog("Янги буюртма", `№${no} · ${cust.name} · ${lines.map(lineText).join(", ")} · ${due}`);
+      S.ordRows = 1; S.keepFlash = true; location.hash = "order-" + id;
+    }, "Буюртма қабул қилинди.");
+  },
+  orderStatus(o, st, reason) {
+    return write(async () => {
+      need("orders");
+      if (!o) throw new UserError("Буюртма топилмади.");
+      if (["done", "cancelled"].includes(o.status)) throw new UserError("Бу буюртма ёпилган.");
+      if (st === "cancelled" && !String(reason || "").trim()) throw new UserError("Бекор қилиш сабабини ёзинг.");
+      await S.db.doc("orders/" + o.id).update({ status: st, statusAt: nowIso(), statusBy: S.uid || "", ...(st === "cancelled" ? { cancelReason: reason.trim() } : {}) });
+      await addLog("Буюртма ҳолати", `№${docNo(o)}: ${ORD_ST[o.status || "new"][0]} → ${ORD_ST[st][0]}${reason ? " · " + reason : ""}`);
+      S.ordCancel = "";
+    }, st === "cancelled" ? "Буюртма бекор қилинди." : "Ҳолат ўзгарди: " + ORD_ST[st][0]);
+  },
+});
+// Буюртмани сотувга айлантириш: сотув формаси буюртма маълумоти билан тўлдирилади
+function orderToSale(o) {
+  if (!o) return;
+  if (!can("sale")) return flash("Сотув ёзишга рухсатингиз йўқ.", "err");
+  S.saleKind = o.kind; S.saleRows = Math.max(1, (o.lines || []).length); S.fromOrder = o.id;
+  location.hash = "sale-new";
+  setTimeout(() => {
+    const i = $("#s-cust"); if (i) i.value = o.customer;
+    (o.lines || []).forEach((l, n) => {
+      const ps = document.getElementById("sale-p-" + n); if (!ps) return;
+      ps.value = l.pid; const row = ps.closest("[data-line]"); syncUnits(row.parentElement);
+      const u = document.getElementById("sale-u-" + n); if (u) u.value = l.unit || "whole";
+      document.getElementById("sale-q-" + n).value = l.uq ?? l.qty; document.getElementById("sale-pr-" + n).value = (l.price || 0) / 100;
+    });
+    saleCalc();
+  }, 0);
+}
+function ordersTable(list, emptyText) {
+  if (!list.length) return `<div class="empty">${emptyText}</div>`;
+  return `<div class="wrap"><table><thead><tr><th>№</th><th>Мижоз</th><th>Маҳсулотлар</th><th>Бериш вақти</th><th class="n">Сумма</th><th>Ҳолат</th></tr></thead><tbody>` +
+    list.map((o) => { const st = ORD_ST[o.status || "new"], late = ["new", "ready"].includes(o.status || "new") && o.due < today(); return `<tr class="click ${o.status === "cancelled" ? "off" : ""}" data-go="order-${esc(o.id)}"><td><b>${docNo(o)}</b></td><td>${kindBadge(o.kind)} <b>${esc(o.customer)}</b>${regBadge(custById(o.customerId))}</td><td>${(o.lines || []).map((l) => esc(lineText(l))).join("<br>")}</td><td>${dOnly(o.due + "T12:00")}${o.time ? " " + esc(o.time) : ""}${late ? ` <span class="badge b-low">кечикди</span>` : o.due === today() ? ` <span class="badge b-amb">бугун</span>` : ""}</td><td class="n">${som(o.total || totalOf(o))}</td><td><span class="badge ${st[1]}">${st[0]}</span></td></tr>`; }).join("") + `</tbody></table></div>`;
+}
+function vOrders() {
+  const k = S.ordKind, tabs = [["open", "Очиқ"], ["today", "Бугун"], ["done", "Сотилган"], ["cancelled", "Бекор"], ["all", "Ҳаммаси"]];
+  let h = ph("Буюртмалар", "Мижоз ёки дўкон телефон, Telegram ёки Instagram орқали буюртма берса — шу ерга ёзинг. Берадиган куни «Сотувга айлантириш» билан сотув бўлади.");
+  if (can("orders")) {
+    h += `<div class="seg">${["b2b", "b2c"].map((x) => `<button type="button" class="${k === x ? "on" : ""}" data-a="ordKind" data-id="${x}">${KIND[x]}</button>`).join("")}</div>`;
+    h += `<form class="card" data-f="order" data-kind="${k}"><b class="ct">➕ Янги буюртма</b>
+      <div class="row" style="margin-top:0"><div class="custbox"><label for="o-cust">${k === "b2b" ? "Дўкон" : "Мижоз"}</label><input id="o-cust" name="customer" data-pick="ordpick" autocomplete="off" placeholder="Босинг — рўйхат чиқади"><div id="ordpick" class="pick" hidden></div></div>
+      <div style="flex:0 1 200px"><label for="o-via">Қаердан келди</label><select id="o-via" name="via">${["Телефон", "Telegram", "Instagram", "Ўзи келди", "Доставщик орқали"].map((v) => `<option>${v}</option>`).join("")}</select></div></div>
+      <div id="o-info" class="mut" style="margin-top:6px"></div>
+      <div class="row" id="o-newcust" hidden><div><label for="o-phone">Янги мижоз: телефон</label><input id="o-phone" name="phone" inputmode="tel" placeholder="+998"></div><div><label for="o-region">Янги мижоз: регион</label><select id="o-region" name="region">${regionOptions("")}</select></div></div>
+      <h2 style="margin-top:16px">Маҳсулотлар</h2>${linesTable("ord", S.ordRows, true, k)}
+      <div class="row"><div style="flex:0 1 190px"><label for="o-due">Қачон бериш керак</label><input type="date" id="o-due" name="due" min="${today()}" value="${addDays(nowIso(), 1)}"></div>
+      <div style="flex:0 1 140px"><label for="o-time">Соат (ихтиёрий)</label><input type="time" id="o-time" name="time"></div>
+      <div><label for="o-addr">Етказиш манзили (ихтиёрий)</label><input id="o-addr" name="address"></div></div>
+      <div class="row"><div><label for="o-note">Изоҳ</label><input id="o-note" name="note" placeholder="Масалан: тортга «Туғилган кунинг билан» деб ёзилсин"></div></div>
+      <div class="sum"><span class="big">Жами:</span><b class="big" data-osum>0 сўм</b></div>
+      <div class="row" style="justify-content:flex-end"><div class="fit"><button>📝 Буюртмани ёзиш</button></div></div></form>`;
+  }
+  const t = today(), tab = S.ordTab;
+  const list = S.orders.filter((o) => { const st = o.status || "new"; if (tab === "open") return ["new", "ready"].includes(st); if (tab === "today") return o.due === t; if (tab === "done") return st === "done"; if (tab === "cancelled") return st === "cancelled"; return true; })
+    .filter((o) => hit("orders", docNo(o), o.customer, o.note, custById(o.customerId)?.phone, ...(o.lines || []).map((l) => pname(l.pid))))
+    .sort((a, b) => tab === "open" || tab === "today" ? (a.due + (a.time || "")).localeCompare(b.due + (b.time || "")) : (b.at || "").localeCompare(a.at || ""));
+  h += `<h2>Буюртмалар рўйхати</h2><div class="toolbar"><div class="seg">${tabs.map(([x, l]) => `<button type="button" class="${tab === x ? "on" : ""}" data-a="ordTab" data-id="${x}">${l}</button>`).join("")}</div>${searchBox("orders", "№, мижоз, маҳсулот")}</div>`;
+  return h + ordersTable(list.slice(0, 300), "Буюртма йўқ.");
+}
+function vOrder(id) {
+  const o = S.orders.find((x) => x.id === id);
+  if (!o) return `<div class="empty">${S.loaded.has("orders") ? "Буюртма топилмади." : "Юкланмоқда…"}</div>`;
+  const c = custById(o.customerId), st = o.status || "new", open = ["new", "ready"].includes(st);
+  let h = ph(`Буюртма №${docNo(o)} ${kindBadge(o.kind)} <span class="badge ${ORD_ST[st][1]}">${ORD_ST[st][0]}</span>`, `${dt(o.at)} · ${esc(who(o.by))} · ${esc(o.via || "")}`, c && canView("clients") ? `<a class="btn light" href="#client-${esc(c.id)}">👤 Мижоз картаси</a>` : "");
+  if (st === "cancelled") h += `<div class="msg err">Бекор қилинди: ${esc(o.cancelReason || "")} · ${dt(o.statusAt)} · ${esc(who(o.statusBy))}</div>`;
+  if (st === "done" && o.saleId) h += `<div class="msg ok">Сотилди: <a href="#sale-${esc(o.saleId)}">сотув №${esc(o.saleNo || saleNo(o.saleId))}</a> · ${dt(o.doneAt)}</div>`;
+  h += `<div class="card paper"><div class="pm"><span>Мижоз: <b>${esc(o.customer)}</b></span>${c?.phone ? `<span>Тел: ${esc(c.phone)}</span>` : ""}<span>Бериш: <b>${dOnly(o.due + "T12:00")}${o.time ? " " + esc(o.time) : ""}</b></span>${o.address ? `<span>Манзил: ${esc(o.address)}</span>` : ""}</div>
+    <div class="wrap" style="margin-top:14px"><table><thead><tr><th>#</th><th>Маҳсулот</th><th class="n">Миқдор</th><th class="n">Нарх</th><th class="n">Сумма</th></tr></thead><tbody>${(o.lines || []).map((l, i) => `<tr><td>${i + 1}</td><td>${esc(pname(l.pid))}</td><td class="n">${esc(lineQty(l))}</td><td class="n">${som(l.price)}</td><td class="n">${som((l.uq ?? l.qty) * l.price)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="sum"><span class="big">Жами:</span><b class="big">${som(o.total || totalOf(o))}</b></div>${o.note ? `<p class="mut">Изоҳ: ${esc(o.note)}</p>` : ""}</div>`;
+  if (open && can("orders")) {
+    h += `<div class="row">${can("sale") ? `<div class="fit"><button type="button" data-a="toSale" data-id="${esc(o.id)}">🧾 Сотувга айлантириш</button></div>` : ""}${st === "new" ? `<div class="fit"><button type="button" class="light" data-a="ordStatus" data-id="${esc(o.id)}|ready">📦 Тайёр деб белгилаш</button></div>` : ""}<div class="fit"><button type="button" class="light" data-a="ordCancelAsk" data-id="${esc(o.id)}">Бекор қилиш…</button></div></div>`;
+    if (S.ordCancel === o.id) h += `<form class="card" data-f="ordCancel" data-id="${esc(o.id)}" style="margin-top:12px"><div class="row" style="margin-top:0"><div><label for="oc-reason">Бекор қилиш сабаби</label><input id="oc-reason" name="reason" placeholder="Масалан: мижоз фикридан қайтди"></div><div class="fit"><button class="red">Бекор қилиш</button></div><div class="fit"><button type="button" class="light" data-a="ordCancelAsk" data-id="">Йўқ</button></div></div></form>`;
+  }
+  return h;
+}
+function ordCalc() {
+  const f = document.querySelector('[data-f="order"]'); if (!f) return;
+  let sum = 0;
+  f.querySelectorAll('[data-line="ord"]').forEach((row) => { const q = toInt(row.querySelector("[data-q]").value), p = toInt(row.querySelector("[data-p]").value); const lt = q > 0 && p >= 0 ? q * p : 0; sum += lt; row.querySelector("[data-lt]").textContent = lt ? fmt(lt) : "—"; });
+  f.querySelector("[data-osum]").textContent = fmt(sum) + " сўм";
+  const c = S.customers.find((x) => x.kind === S.ordKind && normName(x.name) === normName(f.customer.value));
+  const nc = $("#o-newcust"); if (nc) nc.hidden = !!c || !f.customer.value.trim();
+  const info = $("#o-info"); if (info) info.innerHTML = c ? `Базада бор · ${esc(c.phone || "тел. йўқ")}${regBadge(c)}${canView("debts") ? ` · қарз: <b class="${debtOf(c) > 0 ? "neg" : ""}">${som(debtOf(c))}</b>` : ""}` : f.customer.value.trim() ? "Янги мижоз — базага ўзи қўшилади." : "";
+}
+
 // ================= Кўринишлар =================
 const ph = (title, sub, act = "") => `<div class="ph"><div><h1>${title}</h1>${sub ? `<p>${sub}</p>` : ""}</div>${act ? `<div class="act">${act}</div>` : ""}</div>`;
 const noEdit = (k) => `<div class="msg info">Сизда «${esc(FUNC[k]?.[1] || k)}» учун фақат кўриш рухсати бор.</div>`;
@@ -760,6 +969,7 @@ function vHome() {
   const wd = new Date(D + "T12:00").toLocaleDateString("ru-RU", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   let h = ph(isToday ? "Бугун" : "Кунлик ҳисобот", wd, isToday ? (can("sale") ? `<a class="btn" href="#sale-new">➕ Янги сотув</a>` : can("stock-in") ? `<a class="btn" href="#stock-in">📥 Кирим</a>` : "") : "");
   h += `<div class="daybar"><button type="button" class="light" data-a="dayShift" data-id="-1" aria-label="Олдинги кун">‹</button><input type="date" id="homeDay" value="${D}" max="${today()}" aria-label="Кунни танланг"><button type="button" class="light" data-a="dayShift" data-id="1" aria-label="Кейинги кун" ${isToday ? "disabled" : ""}>›</button>${isToday ? "" : `<button type="button" class="light sm" data-a="dayGo" data-id="">Бугунга қайтиш</button>`}</div>`;
+  if (isToday && can("att")) h += myAttCard();
   const tile = (k, href, label, val, sub, bad) => canView(k) ? `<a href="#${href}"><span>${label}</span><b class="${bad ? "bad" : ""}">${val}</b><small>${sub}</small></a>` : "";
   h += `<div class="kpi">
     ${tile("sale", "sales", "Сотув", som(sum), `${daySales.length} та · B2B ${som(b2b)} · B2C ${som(sum - b2b)}`)}
@@ -784,6 +994,7 @@ function vHome() {
     const rows = Object.entries(per).filter(([, v]) => v.in || v.sale || v.ret || v.out);
     h += `<h2>Маҳсулот бўйича ${isToday ? "бугун" : "шу кун"}</h2>` + (rows.length ? `<div class="wrap"><table><thead><tr><th>Маҳсулот</th><th class="n">Кирди</th><th class="n">Сотилди</th><th class="n">Возврат</th><th class="n">Ҳисобдан чиқди</th><th class="n">Ҳозирги қолдиқ</th></tr></thead><tbody>${rows.map(([pid, v]) => { const p = productById(pid), t = (q) => q ? esc(qtyText(p, q)) : "—"; return `<tr><td><b>${esc(pname(pid))}</b></td><td class="n">${t(v.in)}</td><td class="n">${t(v.sale)}</td><td class="n">${t(v.ret)}</td><td class="n">${t(v.out)}</td><td class="n">${esc(qtyText(p, balance(pid)))}</td></tr>`; }).join("")}</tbody></table></div>` : `<div class="empty">Шу кунда склад ҳаракати йўқ.</div>`);
   }
+  if (canView("orders")) { const od = S.orders.filter((o) => ["new", "ready"].includes(o.status || "new") && (isToday ? o.due <= D : o.due === D)); h += `<h2>${isToday ? "Бугун бериладиган буюртмалар" : "Шу кунга буюртмалар"}</h2>${ordersTable(od.sort((a, b) => (a.due + (a.time || "")).localeCompare(b.due + (b.time || ""))), "Буюртма йўқ.")}`; }
   if (canView("debts")) h += `<h2>${isToday ? "Бугун ва ўтиб кетган тўлов санаси (ваъдалар)" : "Шу кунга ваъда қилинган қарзлар"}</h2>${docsTable(due.slice(0, 30), isToday ? "Бугунга ваъда қилинган қарз йўқ 👍" : "Шу кунга ваъда йўқ.")}`;
   if (canView("sale")) h += `<h2>${isToday ? "Бугунги" : "Шу кунги"} сотувлар</h2>${salesTable(daySales.slice().reverse(), "Сотув йўқ.")}`;
   if (h.indexOf("<h2>") < 0 && !h.includes('<a href="#')) h += `<div class="empty">Сизга бош саҳифадаги маълумотлар учун рухсат берилмаган. Менюдан ишлашингиз мумкин бўлган бўлимни танланг.</div>`;
@@ -862,8 +1073,10 @@ function vSaleNew() {
   if (!can("sale")) return h + noEdit("sale");
   if (!products().length) return h + `<div class="empty">Аввал маҳсулот қўшилсин (Созламалар → Маҳсулотлар ва нархлар).</div>`;
   h += `<div class="seg">${["b2c", "b2b"].map((x) => `<button type="button" class="${k === x ? "on" : ""}" data-a="saleKind" data-id="${x}">${KIND[x]}</button>`).join("")}</div>`;
+  const fo = S.fromOrder && S.orders.find((o) => o.id === S.fromOrder);
+  if (fo) h += `<div class="msg info">📝 Буюртма №${docNo(fo)} дан тўлдирилди. Миқдорни текширинг ва сотувни ёзинг — буюртма «Сотилди» бўлади.</div>`;
   h += `<form class="card" data-f="sale" data-kind="${k}">
-    <div class="row" style="margin-top:0"><div class="custbox"><label for="s-cust">${k === "b2b" ? "Дўкон" : "Мижоз (нақд тўласа — шарт эмас)"}</label><input id="s-cust" name="customer" autocomplete="off" placeholder="${k === "b2b" ? "Босинг — дўконлар рўйхати чиқади" : "Босинг — мижозлар рўйхати чиқади"}"><div id="custpick" class="pick" hidden></div></div></div>
+    <div class="row" style="margin-top:0"><div class="custbox"><label for="s-cust">${k === "b2b" ? "Дўкон" : "Мижоз (нақд тўласа — шарт эмас)"}</label><input id="s-cust" name="customer" data-pick="custpick" autocomplete="off" placeholder="${k === "b2b" ? "Босинг — дўконлар рўйхати чиқади" : "Босинг — мижозлар рўйхати чиқади"}"><div id="custpick" class="pick" hidden></div></div></div>
     <div id="custinfo" class="mut" style="margin-top:6px"></div>
     <div class="row" id="newcust" hidden><div><label for="s-phone">Янги мижоз: телефон</label><input id="s-phone" name="phone" inputmode="tel" placeholder="+998"></div>
     <div><label for="s-region">Янги мижоз: регион</label><select id="s-region" name="region">${regionOptions("")}</select></div></div>
@@ -1077,6 +1290,7 @@ function vRules() {
       <div><label for="r1">Дўкон (B2B): ваъда ёзилмаса, тўлов муддати, кун</label><input id="r1" name="b2bTerm" inputmode="numeric" value="${R.b2bTerm}" ${dis}></div>
       <div><label for="r2">Мижоз (B2C): ваъда ёзилмаса, тўлов муддати, кун</label><input id="r2" name="b2cTerm" inputmode="numeric" value="${R.b2cTerm}" ${dis}></div>
       <div><label for="r3">Макс. чегирма, % (кимда «${esc(FUNC.boss[1])}» рухсати йўқ бўлса)</label><input id="r3" name="discMenejer" inputmode="numeric" value="${R.discMenejer}" ${dis}></div></div>
+      <div class="row" style="margin-top:12px"><div style="flex:0 1 220px"><label for="r5">Иш бошланиш вақти (кечикиш учун)</label><input type="time" id="r5" name="workStart" value="${esc(R.workStart)}" ${dis}></div></div>
       <div class="row"><label class="chk" for="r4"><input type="checkbox" id="r4" name="blockOverdue" ${R.blockOverdue ? "checked" : ""} ${dis}> Муддати ўтган қарзи бор мижозга насия бермаслик</label></div>
       ${dis ? "" : `<div class="row"><div class="fit"><button>Сақлаш</button></div></div>`}</form>`;
 }
@@ -1118,21 +1332,22 @@ function vStaff() {
   return h;
 }
 
-const VIEWS = { home: vHome, stock: vStock, "stock-in": vStockIn, writeoff: vWriteoff, inventory: vInventory, "ret-stock": vRetStock, moves: vMoves, "sale-new": vSaleNew, sales: vSales, clients: vClients, debts: vDebts, pay: vPay, returns: vReturns, products: vProducts, regions: vRegions, "ret-reasons": vRetReasons, rules: vRules, journal: vJournal, staff: vStaff };
+const VIEWS = { orders: vOrders, attendance: vAttendance, home: vHome, stock: vStock, "stock-in": vStockIn, writeoff: vWriteoff, inventory: vInventory, "ret-stock": vRetStock, moves: vMoves, "sale-new": vSaleNew, sales: vSales, clients: vClients, debts: vDebts, pay: vPay, returns: vReturns, products: vProducts, regions: vRegions, "ret-reasons": vRetReasons, rules: vRules, journal: vJournal, staff: vStaff };
 // Ҳар бир саҳифа қайси рухсатга боғлиқ
 const PAGE_PERM = { "sale-new": "sale", sales: "sale", pay: "debts", staff: null };
 const pagePerm = (r) => r.startsWith("sale-") && r !== "sale-new" ? "sale" : r.startsWith("client-") ? "clients" : (r in PAGE_PERM ? PAGE_PERM[r] : r);
-const pageOk = (r) => { if (r === "staff") return fullAccess(); if (r.startsWith("client-")) return canView("clients") || canView("debts"); const k = pagePerm(r); return canView(k); };
+const pageOk = (r) => { if (r === "staff") return fullAccess(); if (r === "attendance") return can("att") || canView("att-all"); if (r.startsWith("order-")) return canView("orders"); if (r.startsWith("client-")) return canView("clients") || canView("debts"); const k = pagePerm(r); return canView(k); };
 const route = () => (location.hash || "#home").slice(1);
 
 // ================= Чизиш =================
 function renderNav() {
   const r = route(), cur = r.startsWith("sale-") && r !== "sale-new" ? "sales" : r.startsWith("client-") ? (canView("debts") ? "debts" : "clients") : r;
   const over = canView("debts") ? debtors().filter((x) => x.over > 0).length : 0, low = canView("stock") ? lowProducts().length : 0, ret = canView("ret-stock") ? products().filter((p) => balance(p.id, "ret") > 0).length : 0;
-  const badge = { debts: over, stock: low, "ret-stock": ret, staff: S.isOwner ? S.staffreq.filter((q) => !S.staff.some((x) => x.id === q.id)).length : 0 };
+  const ordDue = canView("orders") ? S.orders.filter((o) => ["new", "ready"].includes(o.status || "new") && o.due <= today()).length : 0;
+  const badge = { orders: ordDue, debts: over, stock: low, "ret-stock": ret, staff: S.isOwner ? S.staffreq.filter((q) => !S.staff.some((x) => x.id === q.id)).length : 0 };
   const nav = NAV.map(([g, items]) => [g, items.filter(([k]) => pageOk(k))]).filter(([, items]) => items.length);
-  if (fullAccess()) nav.push(["Ходимлар", [["staff", "Ходимлар ва рухсатлар", "🔐"]]]);
-  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["stock-in", "Кирим", "📥"], ["pay", "Тўлов", "💵"]];
+  if (fullAccess()) { const g = nav.find((x) => x[0] === "Ходимлар"); if (g) g[1].push(["staff", "Ходимлар ва рухсатлар", "🔐"]); else nav.push(["Ходимлар", [["staff", "Ходимлар ва рухсатлар", "🔐"]]]); }
+  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["orders", "Буюртма", "📝"], ["stock-in", "Кирим", "📥"], ["attendance", "Давомат", "🕘"], ["pay", "Тўлов", "💵"]];
   const tabs = TABS.filter(([k]) => pageOk(k)).slice(0, 4);
   $("#tabs").innerHTML = tabs.map(([k, l, ic]) => `<a href="#${k}" class="${cur === k ? "on" : ""}"><span class="ti">${ic}</span>${l}${badge[k] ? `<span class="cnt">${badge[k]}</span>` : ""}</a>`).join("") +
     `<button type="button" id="tabmenu" aria-label="Ҳамма бўлимлар"><span class="ti">☰</span>Меню${badge.staff ? `<span class="cnt">${badge.staff}</span>` : ""}</button>`;
@@ -1158,6 +1373,7 @@ function render() {
   else if (!pageOk(r)) { const first = NAV.flatMap((g) => g[1]).find(([k]) => pageOk(k)); html = first && r === "home" ? (VIEWS[first[0]])() : `<div class="msg info">Бу бўлим учун рухсатингиз йўқ.${first ? ` <a href="#${first[0]}">${esc(first[1])}</a> бўлимига ўтинг.` : ""}</div>`; }
   else if (r.startsWith("sale-") && r !== "sale-new") html = vSale(r.slice(5));
   else if (r.startsWith("client-")) html = vClient(r.slice(7));
+  else if (r.startsWith("order-")) html = vOrder(r.slice(6));
   else html = (VIEWS[r] || vHome)();
   if (S.viewAs && S.isOwner) html = `<div class="msg info">Сиз «${esc(myRole()?.name || "")}» лавозими кўзи билан кўряпсиз. <button type="button" class="light sm" data-a="viewAs" data-id="">Эга кўринишига қайтиш</button></div>` + html;
   if (S.timedOut && S.loaded.size < COLS.length + 1) html = `<div class="msg info">Маълумот ҳали тўлиқ юкланмади — интернетни текширинг. Кўрсатилгани эскирган бўлиши мумкин.</div>` + html;
@@ -1167,8 +1383,8 @@ function render() {
   cardify(app);
   for (const [id, v] of Object.entries(keep)) { const el = document.getElementById(id); if (!el) continue; if (el.type === "checkbox") el.checked = v; else if (el.tagName === "SELECT") { if ([...el.options].some((o) => o.value === v)) el.value = v; } else el.value = v; }
   if (focus) { const el = document.getElementById(focus); if (el) { el.focus(); try { if (sel != null) el.setSelectionRange(sel, sel); } catch (e) {} } }
-  syncUnits(); syncSplit(); saleCalc(); invCalc();
-  if (document.activeElement?.id === "s-cust") showPick();
+  syncUnits(); syncSplit(); saleCalc(); ordCalc(); invCalc();
+  if (document.activeElement?.dataset?.pick) showPick(document.activeElement);
 }
 // Бўлиб сотиладиган маҳсулот танланса — «бутун / бўлак» танлови кўринади
 function syncUnits(root = document) {
@@ -1187,18 +1403,19 @@ function autoPrice(row) {
   pi.value = v ? v / 100 : "";
 }
 function syncSplit() { document.querySelectorAll("[data-splitchk]").forEach((c) => { const b = c.closest("form")?.querySelector(".splitbox"); if (b) b.hidden = !c.checked; }); }
-// Мижоз танлаш рўйхати (сотувда)
-function showPick() {
-  const i = $("#s-cust"), box = $("#custpick"); if (!i || !box) return;
+// Мижоз танлаш рўйхати (сотув ва буюртмада): input[data-pick] → унинг ёнидаги .pick
+function showPick(i) {
+  if (!i?.dataset?.pick) return; const box = document.getElementById(i.dataset.pick); if (!box) return;
+  const kind = i.closest("form")?.dataset.kind || "b2c";
   const q = normName(i.value), qd = q.replace(/\D/g, "");
-  const list = S.customers.filter((c) => c.kind === S.saleKind && (!q || normName(c.name).includes(q) || (qd.length >= 3 && (c.phone || "").replace(/\D/g, "").includes(qd)))).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 50);
-  const exact = S.customers.some((c) => c.kind === S.saleKind && normName(c.name) === q);
-  box.innerHTML = list.map((c) => `<button type="button" data-a="pickCust" data-id="${esc(c.id)}"><b>${esc(c.name)}</b><small>${esc([c.phone, regionName(c.region)].filter(Boolean).join(" · ") || "тел. йўқ")} · қарз ${som(debtOf(c))}</small></button>`).join("") +
+  const list = S.customers.filter((c) => c.kind === kind && (!q || normName(c.name).includes(q) || (qd.length >= 3 && (c.phone || "").replace(/\D/g, "").includes(qd)))).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 50);
+  const exact = S.customers.some((c) => c.kind === kind && normName(c.name) === q);
+  box.innerHTML = list.map((c) => `<button type="button" data-a="pickCust" data-id="${esc(c.id)}" data-for="${esc(i.id)}"><b>${esc(c.name)}</b><small>${esc([c.phone, regionName(c.region)].filter(Boolean).join(" · ") || "тел. йўқ")} · қарз ${som(debtOf(c))}</small></button>`).join("") +
     (q && !exact ? `<div class="mut" style="padding:10px 12px">«${esc(i.value.trim())}» базада йўқ — янги мижоз бўлиб қўшилади.</div>` : "") +
     (!list.length && !q ? `<div class="mut" style="padding:10px 12px">Бу турда мижоз ҳали йўқ. Номини ёзинг — янги қўшилади.</div>` : "");
   box.hidden = false;
 }
-const hidePick = () => { const b = $("#custpick"); if (b) b.hidden = true; };
+const hidePick = () => document.querySelectorAll(".pick").forEach((b) => { b.hidden = true; });
 // Телефонда жадвал карточка бўлади: ҳар бир катакка устун номини ёзиб қўямиз
 function cardify(root) {
   root.querySelectorAll("table").forEach((t) => {
@@ -1239,6 +1456,9 @@ document.addEventListener("submit", async (e) => {
   else if (k === "editCustomer") await A.editCustomer(custById(id), f);
   else if (k === "saveProduct") await A.saveProduct(f, id ? productById(id) : null);
   else if (k === "saveRules") await A.saveRules(f);
+  else if (k === "order") await A.order(f);
+  else if (k === "ordCancel") await A.orderStatus(S.orders.find((o) => o.id === id), "cancelled", f.reason.value);
+  else if (k === "attManual") await A.attManual(f);
   else if (k === "addRegion") await A.addRegion(f);
   else if (k === "addReason") await A.addReason(f);
   else if (k === "addRole") await A.addRole(f);
@@ -1250,9 +1470,17 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-a]");
   if (b) {
     const a = b.dataset.a, id = b.dataset.id;
-    if (a === "addrow") { if (id === "sale") S.saleRows++; else if (id === "in") S.inRows++; else if (id === "out") S.outRows++; else if (id === "rs") S.rsRows++; else if (id === "ret") S.retRows++; render(); const ns = [...document.querySelectorAll(`[data-line="${id}"] [data-pid]`)].pop(); if (ns) ns.focus(); }
+    if (a === "addrow") { if (id === "ord") S.ordRows++; else if (id === "sale") S.saleRows++; else if (id === "in") S.inRows++; else if (id === "out") S.outRows++; else if (id === "rs") S.rsRows++; else if (id === "ret") S.retRows++; render(); const ns = [...document.querySelectorAll(`[data-line="${id}"] [data-pid]`)].pop(); if (ns) ns.focus(); }
     else if (a === "back") { if (S.depth > 0) { S.backing = true; history.back(); } else { const r = route(); location.hash = r.startsWith("sale-") ? "sales" : r.startsWith("client-") ? (canView("debts") ? "debts" : "clients") : "home"; } }
-    else if (a === "pickCust") { const c = custById(id), i = $("#s-cust"); if (c && i) { i.value = c.name; hidePick(); saleCalc(); } }
+    else if (a === "pickCust") { const c = custById(id), i = document.getElementById(b.dataset.for); if (c && i) { i.value = c.name; hidePick(); saleCalc(); ordCalc(); } }
+    else if (a === "att") A.att(id);
+    else if (a === "attTab") { S.attMonth = id === "month" ? (S.attMonth || today().slice(0, 7)) : ""; render(); }
+    else if (a === "ordKind") { S.ordKind = id; S.ordRows = 1; render(); clearFormKeep(document.querySelector('[data-f="order"]')); ordCalc(); }
+    else if (a === "ordTab") { S.ordTab = id; render(); }
+    else if (a === "ordStatus") { const [oid, st] = id.split("|"); A.orderStatus(S.orders.find((o) => o.id === oid), st); }
+    else if (a === "ordCancelAsk") { S.ordCancel = id; render(); }
+    else if (a === "toSale") orderToSale(S.orders.find((o) => o.id === id));
+    else if (a === "csvAtt") csvAtt();
     else if (a === "dayShift") { const d = addDays((S.homeDay || today()) + "T12:00", +id); S.homeDay = d > today() ? today() : d; render(); }
     else if (a === "dayGo") { S.homeDay = ""; render(); }
     else if (a === "saleKind") { S.saleKind = id; S.saleRows = 1; render(); clearFormKeep(document.querySelector('[data-f="sale"]')); saleCalc(); }
@@ -1280,13 +1508,14 @@ document.addEventListener("click", (e) => {
   const tr = e.target.closest("[data-go]"); if (tr && !e.target.closest("a,button,input,select")) location.hash = tr.dataset.go;
   if (!e.target.closest(".custbox")) hidePick();
 });
-document.addEventListener("focusin", (e) => { if (e.target.id === "s-cust") showPick(); });
+document.addEventListener("focusin", (e) => { if (e.target.dataset?.pick) showPick(e.target); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") hidePick(); });
 document.addEventListener("input", (e) => {
   if (e.target.closest('[data-f="sale"]')) saleCalc();
   if (e.target.dataset.inv) invCalc();
   if (e.target.id === "saleDay") { S.saleDay = e.target.value; render(); }
-  if (e.target.id === "s-cust") showPick();
+  if (e.target.dataset?.pick) showPick(e.target);
+  if (e.target.closest('[data-f="order"]')) ordCalc();
   if (e.target.id?.startsWith("q-")) { S.q[e.target.id.slice(2)] = e.target.value; render(); }
 });
 document.addEventListener("change", (e) => {
@@ -1294,13 +1523,15 @@ document.addEventListener("change", (e) => {
   const sel = e.target.closest('[data-line] select');
   if (sel) { const row = sel.closest("[data-line]"); syncUnits(row.parentElement); autoPrice(row); saleCalc(); }
   if (e.target.matches?.("[data-splitchk]")) syncSplit();
+  if (e.target.id === "attDay") { S.attDay = e.target.value && e.target.value < today() ? e.target.value : ""; render(); }
+  if (e.target.id === "attMonth") { S.attMonth = e.target.value || today().slice(0, 7); render(); }
   if (e.target.id === "homeDay") { S.homeDay = e.target.value && e.target.value < today() ? e.target.value : ""; render(); }
   if (e.target.id === "r-cust") document.querySelectorAll('[data-line="ret"]').forEach(autoPrice);
   if (e.target.id === "regionFilter") { S.regionFilter = e.target.value; render(); }
   if (e.target.id === "p-cust") { S.payCust = e.target.value; render(); }
   if (e.target.id === "viewas") { S.viewAs = e.target.value; try { localStorage.setItem("fss_viewas", S.viewAs); } catch (x) {} flash(""); render(); }
 });
-window.addEventListener("hashchange", () => { if (S.backing) { S.depth = Math.max(0, S.depth - 1); S.backing = false; } else S.depth++; if (!S.keepFlash) flash(""); S.keepFlash = false; S.confirmCancel = ""; document.body.classList.remove("open"); render(); window.scrollTo(0, 0); });
+window.addEventListener("hashchange", () => { if (route() !== "sale-new") S.fromOrder = ""; if (S.backing) { S.depth = Math.max(0, S.depth - 1); S.backing = false; } else S.depth++; if (!S.keepFlash) flash(""); S.keepFlash = false; S.confirmCancel = ""; document.body.classList.remove("open"); render(); window.scrollTo(0, 0); });
 // ----- Кундузги / кечги режим: танлов шу қурилмада эсда қолади -----
 const isDark = () => { const t = document.documentElement.getAttribute("data-theme"); return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; };
 function paintThemeBtn() {
@@ -1375,6 +1606,7 @@ async function resolveNames() {
   if (!S.user?.profiles || nameBusy) return;
   const ids = new Set(); for (const n of COLS) for (const d of S[n]) { if (d.by) ids.add(d.by); if (d.cancelledBy) ids.add(d.cancelledBy); }
   for (const x of [...S.staff, ...S.staffreq]) ids.add(x.id);
+  for (const a of S.attendance) if (a.uid) ids.add(a.uid);
   const miss = [...ids].filter((i) => i && !(i in S.names)); if (!miss.length) return;
   nameBusy = true;
   try { for (let i = 0; i < miss.length; i += 64) { const ps = await S.user.profiles(miss.slice(i, i + 64)); for (const id of miss.slice(i, i + 64)) S.names[id] = ps?.[id]?.name || ""; } soon(); }
