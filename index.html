@@ -46,6 +46,11 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; heig
 #menu:hover, #theme:hover { background: rgba(255,255,255,.18); }
 #theme { background: rgba(255,255,255,.1); color: var(--hdrink); padding: 7px 12px; font-size: 13px; font-weight: 600; gap: 6px; border: 1px solid color-mix(in srgb, var(--gold2) 35%, transparent); flex: 0 0 auto; }
 #theme .ti { font-size: 16px; line-height: 1; }
+#logout { background: var(--gold2); color: #2b1145; padding: 7px 12px; font-size: 13px; flex: 0 0 auto; }
+.pinbox { max-width: 420px; margin: 0 auto; } .pinlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.pinlist button { all: unset; box-sizing: border-box; cursor: pointer; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; color: var(--ink); }
+.pinlist button:hover, .pinlist button:focus-visible { border-color: var(--g); background: var(--g2); } .pinlist b { display: block; font-size: 15px; } .pinlist span { color: var(--mut); font-size: 12.5px; }
+.pinin { font-size: 28px !important; letter-spacing: .5em; text-align: center; }
 .who { color: color-mix(in srgb, var(--hdrink) 75%, transparent); font-size: 13px; }
 header select { width: auto; padding: 7px 10px; background: rgba(255,255,255,.08); color: var(--hdrink); border-color: color-mix(in srgb, var(--gold2) 40%, transparent); }
 header select option { color: #1d1029; background: #ffffff; }
@@ -222,6 +227,7 @@ button:disabled { opacity: .5; cursor: default; }
   <a class="brand" href="#home" aria-label="Fansweets Premium — бош саҳифа"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUEBAQEAwUEBAQGBQUGCA0ICAcHCBALDAkNExAUExIQEhIUFx0ZFBYcFhISGiMaHB4fISEhFBkkJyQgJh0gISD/2wBDAQUGBggHCA8ICA8gFRIVICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICD/wAARCACQAJADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD7KooooAKSmyyxwxNLLIscaDLMxwAPUmuB8a+OLLw/oM2r6tqS6JpKcCZ+J7g9gi9RnsANx/2a5cRiqeHjee/RLd+hpTpubsjsbnVrW3uPsqlri5/54xDLD/e7L+JFc14i8caF4dtnl8Q+I7PSWA3C2icS3D+wXBJP0X8a+RfF3xv8T6lPJo/hwXPh+ycnENsAdQnB/idj8tuD75f2ri7XTNSh8261PV00QXAzIkUjyXc4P9+Q5lbP/AFrPD4fG4v3pLki+nX7+/kr+h6EMLG+jue2eMf2h9Khdo9I8Jyynot54gvBAT7rEd0mPoBXmE3x88fvu/s3VLayVjwLDSmlx/wOcr/KuVmtdHsLc3On6TO8ZbYbu4XaGY844ySeD1fNbFl8PPEuq6Xaan5uladHqCl7KLUL9LaS7Ud40bkj0Jxmu15Fl9D95inr3ff5v9Edai4rl5rIkg+MvxZvtRt7S18U+Irm6uJFiiiiitELuxwAFCt1JrPvfjH8SYrua3vfFGupPE7RyRzxWsm1gcEFdo6GovD2ma9ZeGLr4k+HtaSE6JOolii3+aMso5xwUIbk56Zqn4u8M+KD4W0r4k6/em8TxFM4TcGLpjcVznjBCnaB2FZzwWAdX2ajHlvbZX5t7W5e2pi4uOqbLC/FzxHIf9NvLe5GeftVg0RP/AomP8q73wf8b7bTnxLp97a5PzXGj3Ymx7mP5Wx9VNeZ6n8PPEOl+OLXwcgs9Q1q5hWdbWGQjaGQuFbeFAbaCcZqtqnhG+0W4SPxX4S1TRckAXKodn4buD+DiuSpleXys6Ls3quV2fqrNfkzZV61rN3XnqfcHgb4uWvieLGj61Za8UGXt3P2e6T6rgfqo+tenaX4h03VZDBFI0N2BlraYbZAPUDow91JFfmzf6WNNktdQ0HXI9dZED/K7wXduf8AZYEPkeoLiu68IfGjV42istcluNZt4jkOwC39tj+IbcCYD1XDjuK5IxxmHXNTftYdnpJfPr80jCpQpTlaS5X5bH6B0V5H4I+KdtqGnW017fx6jpk4/c6nCc7faUD07tgEfxDvXrSOkkayRsHRhkMpyCPUV6OGxVPEx5qb23XVeqPOrUJ0XaX/AAGOooorqMApksscMTyyuEjQFmZjgAetOryj4ifEfStAtry8vJs6bpfLqnJuZwcKg9cNwB3bn+GuPF4qOGp871b0S7vsb0aMqsuVHY61qSx6ebxrZ7qYKXtNPBAeZh0Yg+nB/wBnr16fF/xKvfEeu+KZNR1fUd13GSqzqf3VkveO1U/xesx5P8OOtTWnxT8Tat41ubq6lkk1S5zFJDBlvs4/gtIgO443kcluOxy34mpouk2AstQvZ7jxpLieXT7EK8GnxAZKzNnhyOcLnbjnjmuPBUKv1yNTFLder8/l3f8AT9ylSo0qV5O7ZzFv4W8QWHhKTxHYaJdxaOrfPeqpy2erk/eIz1fpnvXT/CPTPCHi/V9X8P8AiW3cXElo11bXUMriUbOXCqOGbGGHBJwRXQ/DDxu+n/CNb9/Ea6VF4a1ZzfLNA1yl1ZTJnyfLHVi5+U8AH8QeU1XWfAdlrej/ABO8E350W4F7uk0J4z5j4OJNirkICrHqdnPBBBFe5XzKrU9rheVxadoyjfRrVJvpf7rPUXO3tojtNX+H00XwT8RadZa1beJdGt3TXtA1G2kBztBWeErn5WKZPHGc9DxVnwMk/jvwh4c0bxx8LY9c09bTyNM12HeriIPs2kqPlI25yWUEDOOefFrXxfrOka5rN74PmuNE07UZZGFlMUuEUNzypG3PJwccDjJrKtrvV7PTnsYNZ1C3tXGHhhu5I42HuqkD9KzeX4yvTkpSSbd09U02rPbr6aPUlUm9dz0nwPHpekfE7xz8MbS8W50LWYJ9PjkZwfmQEjDdCwDOM9yorvNI8Q6F4yvPEHgfVjH/AGD4Ou9PubILjAitF2y/UMyMD7NXzJ9iWVDFbwmVQORGpbA/CqEtoI02sjIPQgrTr5LKpJz9q72XT7St73q0rClG2jVz3L4Ra6viH43eLvirrcMjwWVrc34RFyQX+WONfcRqQB7V534i1OPxDf2HhjwT4g8T6jZarcI76drTDMV20hVFAUlT94nIx16cVgaRrniHw9IZdB1u901iQzC2mKqx7Er0P4ius0b4q65afEHR/GHiezh8R3GkoyW6PtttpJOZCUXDPz1YenoKU8FWpVnVjFSSSSV9dFpuu/W6OdxskelfE/wV4J8IXNhpGu+DNYt9Ot7KGFvFulY2vchcESR42scgcnDZJ64zXikfgnxRqPhJfF9lbfb7JGJk+zTLLc2oB4eRFO5Qeob2zwMVs+OdX8O66st74X17xJNc63qBu7zQ79d6xzcnzAyHEhy5VQBnrntXfz3EfwI+EtvaWLJF8SPFG2eeQqGbTLVTwuDxuzxz1Yt/cFc1KVWhSjGLvOT2lf576r1V1tZCu/tHm/gfx7q3hvWlurSWNppmHmwyNtg1D2fskvpKOp4b1r7n+GHi+w1/w1Hqmhyu+mbzHdWUw2zabMPvKV7AHqvT+JeMivjaTwhqvxFsZ/iLqU/hzwnp93KlnEJAYYry4VcO2BwpZtxP48YGaseD/HPi/wCFHj2WzvoZFvbTEV9Z7sjUbYDIwejSIvzI/wDEvHbnjxNGnOr7fDO1WO6XXyfR+vT8qkm6fLLbofoirBlDKQQRkEd6dXm3gbxvpupS2tta3KzabqUYn0+UHgZG4x/TGSvphl7CvSa6sJiYYqkqkfmuz6o82tRlRlyyMTxJqE1ppwtrJtt7dkxRMOqDGWf/AICP1I9a+EfjL4uW48Uy6fpsoNpo8ptrbnIkvAPnlPqIlIA/22B9a+t/iV4ytfDHg/xJ4kLb7q1j/s+wQclp3IUYHvIRn2Svzs1edZNXkhjnM8VpmBJTz5rZJkk/4E5Y/THpXLhqSxmN9q3eMNF69X+h20m6dPk2vuafh7XtU8M6jb6lol2bW7tz8smA2c9QQeoPf6mvoNvEa+OPAep+Ivh9p9pY+ObiBbTVCYw85iwdyRE8ZcdHIyQNp5Ax886pH4ci0jRn0e9vLi/kgY6jHcRBUil3kAIQTkbcf5OBX0rWdV0Wa4n0e/ks57i3e2eSI4Yxt94A9jxweo7c17WNwEcXGNWl7s499mr7NdUdUZpLlexq6V4k1Pw5ouv6DDaQk6qiW1wLqPcYQhbOEPG7nHPTHTOMV9MtjO6ZQEnjkjn8aiXQLmPwnb+IftFr9klumtFhWdTMGVQxYpnIXnrXY+CPDU2vajFfXEC2ukQsEleLIEjKoyq5J5PBY9t3bIFexh6UXKTpr3pb+qVvyNaEXKSTPVvCHwK1LxP4dg1SC4hghlYDdJzjHU4HXH617Z4W+A3gfw/Ek93paaxdLy1xqY8xc/7MI+Ufjk1b+D+rT6mNatmiFva6aYLa2gUYCIUL5x6nI/Kux8a69H4e8PG9kbAaQIPyJ/pXncuIVV0JSu2zDFVas6/1eGnoefeObWS309re3mis4IuVtYAsMSqB3C4BPueBXFeFfBXiTx9p/wBrMFrp+gy/6q7ntg0t0v8AeiQ4AQ9nbr1AI5pumyy/FH4jWnh2VmbSY1a71FQceZAhAER9ncqD/s7q+krq7sdJ08z3EkdtbQqB6ADsAP6V61fE1MJFYan8RtXxNTCxWHp7nz7rH7M3hO4s22LqFtd44ureWM8+pj2BT9Bj614z4o+Aes+GtKutUu7y2msYGAEyHaZM9BtPIPtz9TX1VrvxDsZbR4tOunic9HRgCf6186eMvHd0s11ZP4huF85Sjx3E/nRSqeodHyMfkfTFYwwuLrxvzcr8zTC0q07yqpfM+cby2ME7BCcqeCDgit7w3f6br/xJ0OT4jahcXmks8dpdTyzEOsIUqmXHOFJGT1xmqt1+5uZC0EM6urqofLAZGMjB6jOQfbvUGqeFNe0rw/p2v3+mTQaZqZcWtwy/LLtODj+nrzipxNFL3Z6S2T669jCvScZNHvNn4a1fSvhF468CeNtPgj8O2kkmo6RqKSBkVvmZTGckleF68/Ow5zXzvq3iDWte1GHU9V1GWe7hiiihk4UwpGMIq46bf/r1Xlv9RksV02XUrqSyjPy2xnZolPsucfpV3Tv+Ed/sTV/7VN9/amyP+zvI2+Vu3/P5uecbemK8jC4SdBznWak5Pottk+++7OeXK7JKx7R8FfE7XV0nhp5/s4uma5sSnH2e4QhpYl9AeJUH+8K+4fDuqvq+iRXE6hLpMxXCDosi9cex4YexFflv4b1S60rXre5sZfKuYpUubduyzRncv4EblP8AvV+lXhHWdO1S00nXdLkDWWv2iSrjoJAu4fjt3D/gArxZ0ng8e2vgqb/4u/z/ADFXl7Sik91t6dj5D+M/i+4m0bSNP87esTT6nJz950AjiP8A39lz+FfPrWklpbWru8bLMm9dkgYgAlfmAOVOQeDzjB6Gu4+KF0z63JBnmKC1gPtuMkzf+yVF8KvCWg+M/Gp03xJqdxYabBbtcyfZVBllwQNqk529ck4OAOncb5TyYTAKtUem7+ev6m2I9+vKMV5I+lfgP8P/AIVa98KdLuNX0Cw1HV79ZGuJb9NzFhIy7UJPygAAYGD3rH+KP7L1rB5upfDq5MEgyx0e8kyj/wDXGVuh/wBlzj/aFetWnhzwDP4LsfD/AIV1eDSY9OQrakOVdSSSSxb7xLEkk9Sa5a81r4u+DQ8Wo6AvjTQR/wAt7Bw8gHrtzkH6Gvno5tiFWlUoyvd3V3pbs1ey+9ehaw60d7Pqn+h8fW2g60/iu38KPps1vrU9ylotrOhR1kZgoBB7ZOc+nNffK/CzR9A8PaHpNsQLLSbMxsxH+ul3bnc+7sSfw9q8d8HeJvD3i79obw5O8M6tZea6QalbmO4tZDGyoNxAyu5gB74719YXMMd/Zy2rsVDqQGHUV9rhMwrVqcK048j7fgYV5yw9WPK9Dxfwn4hsfDnxdfT5ZFis/EEMduCeAl1Fnywf99GKj3UDvW/8fbS6n+EV7e2gJbT5o7lwOuzlGP4Bs/hXhHxd8MeJPDeoPNfWsr6e7bor2EEx9cj5h9xgfXBBHGetdv8ADn49aPrOjHwj8THRGmiNt/aMg/c3SMNpWbH3GIPLfdPX5TX0dfDyUoY3D+8la9vI76+HlGcMZQ95K17eRW/ZYdL3UvGF9J806JaQqfRSZWP64rJ+LXxB1nxb8Tv+EI8KQzXotJjaxQW/JnnH32PYBeRk8AKSavfDvS7n4NfFrWdLmlF34e1/T5J9H1FWDR3JhDSqhYcbwm8Ed8Ajg1z3gjxNo/wm0IapJpkviX4k+I4xcmygUubGCT50WQqCVL5DlQNxyoOAATHtV9YniIq7duX5rf5WMvar6xPERV27W+fX5HrHg/4EWkVnFd+PdQk1i9YbmsbeVo7SL2OMNKfdiB/s16J/wgfgOC0NpD4T0KJCMbfsMOT+a5NfOc/i79oXxE5uP+EU1u3hflYobP7OgH/AyCfxrlPEknxUjtHl1vwrr8EYHMr27so/4EuQKj6pKvK9Wur+v/DE/VXWlerXV/69Du/iV8DvDt28yaHZQ6LqEgzA8I2Qs/YOnQA/3gAR79K+VxaeKdc1WHwhHa3t7f2c0kEenplzC+7EgA6KMjk8Diuos/ip4w8PXyiDVJ7m0VsvZXjtJGfXAPKH3XFd5pXxE8N2nxQvPEVnZX1wmvwQ3j6dp8JeeS4K7ZI2IHTzFY+4bPevMzOpWwNJzivaNbFum1L2blp3Ox+GH7LelhYtT+Idx/aFwPm/su1kIgi/66SDlz7Lge5pv7RXgf4VaD8Mpbvw9odjp2tWk8KxSWCbAwZ8Mr44YYyeeQR1612VvefGHx0Eit9Gi8DaCf476QCVl/3ByT/vGtfV/C/w4j8F3nhXxXq0OqJebTPIrkzb1OVZWX7pB6frmvgnmuIVaFWtLS+tnpbsle34t+hj9XTu07y6Jfqfnv5rRMk0fDxkOp9wcivsL4C+L2HwzOnl939hakXhGekT4nUfk0i184fETR7HwX4u1Twt4f1aW/0eUQzq1xEqygYJVXwOCMnpjIIJFdz8B9VFtNrdszcSWNvcbT3McrRn/wAdYV7GdzVbBrE0ulpL71/wQw0b1VTl10ZwvxKLf8JfqqNkBb1E/BbZAP5mr3wf8Lar4v8AijZf2bfDTRppW/uLiL5WSJHUFVA6lshfTk59DP8AGKya08dauCuAZrWYe4e3K/zjrj9M1zU/COvRav4Y1mWC5jjH7+NNoO5QXjZWyGXPBB4OM12YSM62XRjSdm4q3VbIyraVpN7Xf5n3FrPhkXM802navpGlq7EhLpiwH4KQa5C+8FeLdM0+fVLj4yiwsFBYtDpoEa/SSVlH6mt3R9Y8R+IPCWi3Ol+HrLT9bu7KJ7mc24KrIy5JRTnHrjnGcVR1LwD4d0i3m8VfE7W28S3lsN+NTnIs7Y9sr936KoJNfn2H5acpQbTadvhT+6+n9bHtVHJxTbt5f1/meU+DHGu/ETVrVfE+oa48mnStbXzRiLMsbowZGHVhjIIJ6V7/AOEPjdHBGmmePIJLe7iG3+1LaEyQTj+9Ii5aJvXgr7jpXzj4c+KOiyftC6DfRxmPR5pzYTXLoIQsco8sFIxxGqsVPOTgc165468B3s19dtFp8+6KRsy2iGQKc9dq/Mv5Ee9freSwpVMJHD4lcrWq26/cvlY5k8NiW6VR7bP/AIc+hLbxl4N1izP2fxHo97BIuGX7XEwI9CpP6EV5l4v0P9nCLzbzXn0GzmOSRYXZSQ/SOFufyr5evvC+v3V/9mi0vUNUmzgCOzmkY/mma7/wT+zl4r166jufE0f/AAjWmZyyPta6kHoqDIT6t09DXrSwVHDe/wC3t6bmMsHSw3vKtb03NOOfwfq+k67B8OdJ1m38O6NayX17qGoX0vkoyIWRYoSSBIzDAY4IBJx67Gg3Wr2F1p2h6B43/wCEY1LXLSLUNMkuLOGS11NZFB2vJs3rMDlTksCRxjIFa3xyuvD/AMOvg1bfDrwrax2b6s4DRocuYVYNJI56szMFXJ68+lYvibwmdb/ZE8I60E/4mOhQJcK4+95LOVYflsb/AIDUxl7RRk1pJ2Ter9XfzFGXtFFtaSdlfX5u/ma6/Fz4qeBdeTSfiLoltchjhJ0j8sTL6pIvyt9MAjuBXtXhvx5oHim2T7BdLDdsm42sjASAe3r+Fea/CrxVYfFT4e3HhTxnCmoajp6qsjS/emj6JMD1Dg8Ejvg968G+K/h7V/hp4lSKG8maylPnWN2jFWAB6Ejoy/4etafVsPWlKhVj7OpHts/ka/V8PVcqNWPJUj1Wz+R698a/hv4a8VhriC0g0/WDkrdwoFDn/poB1+vX69K+W9LS48N+Mre2uteu/Dc0cQjnuYYg4icOyneTwBxXuXw1+I2ofEG0fTdXk+0azp4G6TGDcxk4DkD+IHg+uQe9eYeKfGuh6X+0brk8kXmadbyx2byqglQvGipIXjP31Lhsgc9xmvn8x51hZ0Lcz/y9bmEJRp8sZM9jtPB3im+s7fU4/jJHqFjIAVa407bHIPTzIWI/UV1mieFYbe5SfUNS03UCD1tXwPw3EnP1rB03wP4e1G1g8TfDTVz4fubsbzHYzeZY3Z7gK3y59VYZFM8Ta3rnhnwP4g1GXw5ZPr9paF7eZbfEasCNzlOmQu5sdMivyyulWqRhFpNu2yX32/ryPTpuUYOSd/I+UPiP4U1TwZ8QtR0fV77+0Z3IuUvCTuuEkyVds8huuR6j0xW58LZpLfUp5Ez82mzD8PtEf+JriNWvta168m8R61fSX9zdS7HuJZAXZgo429QAMY4A7CvSfhLp7XMt5LtysWmqD9ZLokfpHX3eZc1PL7VWm0tbHjYNXxEbHb/tH+HXtfEVpqUa5i1HSjtI6GS3lDn/AMhyN+VfPhtJZY5PLid1RC7lVJ2rwMn0HI596++fi14NbWvh6PKgM934ZvRMEAy0lsRslX8YXz9Vr488U+B9T8K3D2l3G4xwrYI8xP4W+hGDWeRYmNOisNUfvK6+5mrp+25qiPUPD/7U+o6J4PttIufBdre6lbQrALxbsxJKFGAzoFJzgDOGwfavJPFvjnxb8Sdaim8QX6tGHxb2cWIre3zx8q5xn1ZiT6mofCvhez8RX19bXviCx0UW1nLdK94TiVkUkIMA8n+XTJ4rnxhHwMccZB6+9e7hsvwlKq5UopS/K/b/AIBjyu/vM3viF4A1DwHrEGl6hdWlzJNbR3KvazLIAGUHHB4wSR79Rwa+rvg58TU+InhO1t5L0L400iFYbuBmw99Eows6f3jjAYDnIz0Ir45u5pLshp5WlcKq7mOSAAAB+AAH4VWs7+88Pa7BqukXnlXNs++KUDbn8PQjtXTKjKKTm7vq7Gc48slJH6U2fi6RB5V00iuvBBJqh4m+LXh7wtpklxdzC4uQP3drGw3ue2T/AAD3P4A18s2Pxg1PxTpPl2ut21lq4UK9tfjzBIfWNycH6Nz9etcDqtn401bVylxHc6jdFsCOFN2D7Kgwv5Cu2lgacrVJO8fL+tDshhqUrT3XkdR4l17V/Hfi+TVL+X7TqN/KsMEMf3VydscSDsBn+ZPJNfY+qWmnaP8ABq78OmRXis9Ga2OOhKxcn8xmvmr4a/D+/wDD17D4j18qdUjB+zWwIYW2RgsT0L4446fXp0PxW8c3Gi+CLi1Nzm71AeRFEDyV/jb6AcfU1viq8cRUpwpq0YnTiJe2lDlXLGJwnwq8XjQfi7o/lybYbp3spRngq4IH5MFP4V6n8bHi8WeAtQt1UNPZKbyF/wC6yDJH4rkfl6V87fCzQdT134h6bPHC7RWkn2l2xxhen6kD8a94+Jnibw34C8Gaja6pfx3PiK/tmt7bTImBlTeNplkH8ChScbsEnGBUY+uqldVXoyMTWjUn7aejPBfBPiGb4bQ3fi8/8f8APbTWmnwn+ORlAWQj+6jYb6qB3rnfBvgLxP46k1ObRbOS+ks4Hu7lyeSBz1PVic4Hc1jy3F74m1u2WeSGDeyW8CO+yG3UnAGT0UZ5J9ya0rPUNT8OXV/bWGoeS7JJZzPbSZSVD8rAMPvKcde9cNa9WTdHRpaX/NnB7tSfN0RpeEPHXir4d6rJNoN3iF3/ANIsZwXgnI/vL2P+0MEeteneLv2m9Q8S+B7zw9beD7ewvL2BraW8a7MojRhhti7QckEgZJx714zo+kal4k8QWeiaTB9ovr2URQpkDcxPqegqvqOlz6N4guNI1qOS2mtZzDcqgDshBwcc4PtzXFicvwdWqpzinJa/13CTa+F6GVswnyjnGAK+nPg94dkg8Ka9qKxFme5i0+EkfeMEQU49jLI1eEeFtLlvdVFylu08dipumjAzvZSBGn1aQov4mvvbwB4Hbw1oHhLwtON9xaR/bb9x/FNnzJD+MrgfQV8/xBP2qhhIbykl8t3+RrQkqMvaPomej6vNFptwt48QMN1iCU9t3OzP15X8RXwj8arjUv8AhJb20vpXmfT2CK78+bauT5Mn1Ukxt7hfWvv/AFGwt9U024sLpSYZ0KNtOCPQg9iDgg+or5N+MHg291OKVjAs2v6RuRo/urfQMOV+jryP7rD1Fc2J/wBjx0MTL+HLR+T7/MnAvnpzhH4vzR8mE7mCorFycADnP/16aGaOTlcMp6MOhHqDU9zFLpd/FNazSiMkS2s/3XG09/7rqwwR2I9CKtW2mahrFvfa3c3cENvHKPPvb2baHlfJCg4LO5wTgA8Ak4r7VVoqPM3oZcx0Pgrw1Ya1ba54j8Q3E0Hh7w/AtzeC2wJrh3bbHBHnhSzfxEYUduldf4Wlm1Lwr4p8ZvGnhbwzoEQjhsdHVY5ry6c4iia5cNI3UFmJ78AdvOdG8ReJfCtxf6do1yg+3hYJ4PJjuY7jnKEKwIY5IKketeoeNdeTwF8O/Dnw5FjYarqrOdX1gXqtKq3D8qGAYBiMnhsjCg45rx8ZUqyqqnvzNcvkkrydvwv5oGuZX7EWqac/iP8AZiTxL4m08XPiUar5ek3sVuBc3FqoHm+YUGXjXEhDNnGBzXK+Gvit8VvC6WemWt3calbToDbWeo2rXHmKenlkjeRxxtbFdf4A8aazFpfjL4keJtQe/bTtLGk6daNiODzJiAsaxLhQijHAHQ1reF/EmreKfg/qupXYvda8R2hi0ZV0wIl3Dp/332k5K+YxKs4BIUAAYFcirzw/OpRVlK2+ib6fLS/qR7NvWO5Qf9ofxWtpdJcfDmyFzacXMuLgCA5x86n7vPYmuD13xjr+u6vPeaj4Nmmv4ohK4nSQiGLqDsCjanv0r1aHWdVg8Fa7qpkto/E/jnUrbRbS0tpDLFp0UQCdSSHdFUZfJ+ZRzkHHTz+LZ7/xr4/fQpJbxPDPh9dIs7cS5a+uGGxp5ST84T5hliQMk9WOdoZxWpX5EvX7lvbu7GsZVorRs8Ws/H2ux/DHU5tN1ubwzfSXMVvbWuk6Yy/b1Od5a7OWBUZwqsPpzx5m+l6rJd3TXNnePcRfvbkyROXTPO58jI9cmvp7RNFtI7r4NeGXntpPD+mRvrFxcLMDHf3rEuI4+fnI2+nT8KzbqLWbz4bePL/fEviXxjr0drqG6ZcaXa7twjlYHjgqCoyfmVcZ4qVmcXNuTu2+r7u3bsm/wM3Sm3zSVz5/i0bVWaNE0q9ZpYjPGFtnJeMdXHHKj1HFFxp2pWunW2o3FjcRWV0SILh4yI5SOu1uhx7V9UDxba+GvFt2kFzJLoXw78OC1fMhB1C8kXCo5zyoycL2Jz6V5z47udW1T4DeBbR7mKWO6ln1e8u5pQkMUjErHbxjooRC3yAYAWtqObynKMeVJNrr3Tf5WfzLaceh4mt08UkElsPIngO5ZY2O5m3ZDdeCOMYx09aryTO8zyyuWdiWZmOSSeSTWtNbar4autN1i0vIiJCZrO9s5N6llODgkAhlPUEA8jsRU/hjRbvV9UgljgW4lklKW0MvCTSgbiz+kUY+dz6ADvx6U68FF1L6Gd29D3b9nXSJovEcdxcoEtrPZdXhZR80zKfs9vz/AHVLSt6EqOtfZuhlL0TayF+W5wsJPeJScH/gRJb6EV83/Cnw5/aNzb+HNLllfT7fdNfXpG15yx/eyn0eRvlUdlH+zX1PHGkMSRRIqIgCqqjAAHQCvlMCp4rEzxcvh2j593+hpjf3ajTb962vl5D64zx54SbxBp63unKo1W0UiME4E6dTET79VPY+xNdnSV7NajCvTdOorpnm06kqU1OD1R8AfEDwKl6bzU9NtJixYve2SR/vVdeDPGv/AD0XGHj/AIgPUZrymz1G303Sp/DuvWD3+mXMq3sE9nMEdXClRJGxBDKV4KsOMdiK/RTxt4BTVrk65o0YTUxgyxA7RcgdCD2cdj36HsR85+NPgsuvx3GpeG7ZEvWdmutLc+Sssv8AE8ZI/czeoI2t3A6nwqeJeAksLjHeH2Zfkm+jX9aHuPkxC9tS0fVfr6Hj/grZcaxMfAegImpWkLXMuteI72PytOjGAZdoCopyQATuOTwKoSeCdWvNbNxqWqWutJqcrRLrOnXgu4hdEEokuOV3EbfmA65GcYrptJ+GviaCw1y2hs5JrNrfy9Rt5lME0IVg6716qwYZBG5Tz1zXFN4g1bRNc+0W8MFvEsSW8lpCoRJUQAAtj+MlQ24fxc16sJudSTwzTaXXV/ffTXpt95m6Lik57Fq+8EyeHdIt9Y8UQyQxXMavZ2ayhJbrP8XQlUXHLY5OAOpIyvtGmJC80WhaX8q8ia+ld2HptEi5+mK0fEeoN4l0yDWLW/luG062itbm1lB3QoCVWRe208BvRjnkMKwfDtxb/wDCR2XnyaesbMVZ79iII8qRvbHPy53AeoFelQbnSc6z95brVfK1/wATOpKCfu7HR232cSwINM8KoJVQgyxuVXcjOASX4+7g56Ejsc1VubiA2c9wdG8OlY4EmaOOKRSwZsbRtkGSO47Yrpl1fwKuoa013aaXsafD+SVcS24sXQGIhQBI1xsdtgGGIx8qmsuS80caV4cT/il0uxukkkBLiH/RgqxuAM5LrvLMSBLJx8oOef20X9l9Pyv3Mmzm3utMASSbQtOPAYfZNQkVlzzgAu2D7Y61saf4BvPEkUN14Ugku7OXYHVnDNZSliuybb055D4G5T65FYfi+60mfxbezaO1uLNxEVWEAKreUu8cYBIbdlgAGOSAAQK6Twzr0/gjSJp3vZhdatDGVsIcqfJEm8NIe24oNvorFu4BqtKcKSqUfieyd3/Vi6Ti5WnsVz8P5rm7d49R03RtK81ora81y9W1+2lW2mRFwWKkg8gYHTcSDVDVdD0/wzrUuieK9K1GG8twGDWF9FLHIrDcroWUgqwIIIPNWZb7XvEN1f3OoW6Xz3kSxFTEP3CBlKiHg7MBQoPPBI71uW3gjxJ4t8Tw21xpckl1HDFDFpkDFfs8CLtQzyN/qUA5Jb52zwvIxg604/x5JJLWz2+d/W90Eqel0jndv/CUHTNL0rSrmz0azkaK3hV/PubyeQgsqnADSNheg2oBk9s+4eFvAd3aNBpNnax3Gt36i3dYDmOCMHd9njb+4p+aST+I5JyAM9j4R+G8PhlooLaNdW8R3MZhWSCPZHDH3igU/wCriH8UjfM3VjztP0F4M8FWvhe2a5mKXGrXC4mnUfKi9fLjzyF9+rHk9gPCVWWZS9lQuqKer/m8l+rN7xwkfaVNZvZdvNk/gjwhZeDPDcWm25Etw/7y5nxgyyY/RR0A7D3Jrp6KK+khCMIqMVZI8SUnOTlJ6sKKKKokKx9S0G1vp/tkWLe9AA81RkOB0Dj+IfqOxrYorKtRp1oOnUV0yozlB3izhfE2nWF7o72GrxTWUzAKl3bSGNsjptkA/wDHW/I18h+P/gprEd7NeaYYtYRiTvtttrdf8Cib91IfdChPpX3nJHHLG0cqK6MMMrDII9xXIaz8PtL1FGaynk06Q9kG+P8A74PT8CK8GeAxeFqe1wM01/K/8z0sPiaXLyVrrzX+R+aVzpWtaBqg8q4l0++TICy7rOcA8EYfAP4FgaJdY8WwLm5ub0L6ywBl/MqRX2r4p+FPjP7O8VpBaaxbH/lkGU5+scox+RNeX/8ACs7ezuP+J34Gm0w55kt457T8cxME/St/7VqQV8Xh3fyVzrWGhP8Ag1E/nY8I0Hxfp9hr2mX2saBp2oJa3CySkxhS4HRiowGKn5gp+U4wRzVbUvFNrcaje3GjaFp+mi4neSMpH5jRqTwFDZC85JA4GcAACvqDS/hV8PL0759b1W2bup1hT/6MUmsjWvh74N02dl0681bUGJ+7/bDc+2IlWslneBc7qMr9tfy2EsHVvZf18z50iv8AxnOnmwz3yR/89PLWJB/wIgKPzrR0DwjrnibVGki+16zcyNmU2MZu2J9XmJES/UufpX0d4U+GtncyLcQfDhJ5M/LNd2slwR/wK4YivYdP8AeJLhYkupbbTbdOkZPmbB7ImFH50SzSvN2weHd+70QewhTd61RL8Tj/AIP/AAzXw7ZS3Guw2VorxkGJZvtEyj1abAVPog/GvSrPw7Z/Zxp/hTToLHT2be9z5eEdu7D+KVvcnHv2re03wfpllse6aTUpl5DXJBRT7IMKPrgn3ro6zpZTUrrmxzV27tK/3NnHVxlpfum7LuZWjaBp+iRP9mQvcS4M1xJzJKR0yewHZRgD0rWoor6KEI04qEFZI8+UnJ80ndhRRRVkn//Z" alt=""><span class="bt"><b>FANSWEETS</b><small>Premium</small></span></a>
   <button id="theme" type="button" aria-label="Кундузги / кечги режим"><span class="ti">🌙</span><span class="tl">Кечги</span></button>
   <span class="who" id="who"></span>
+  <button id="logout" type="button" hidden>🚪 Чиқиш</button>
   <select id="viewas" aria-label="Кимнинг кўзи билан кўриш" hidden></select>
 </header>
 <div class="layout">
@@ -240,7 +246,7 @@ button:disabled { opacity: .5; cursor: default; }
 const NAV = [
   ["", [["home", "Бугун", "📊"]]],
   ["Тайёр маҳсулот склади", [["stock", "Қолдиқ", "📦"], ["stock-in", "Кирим (цехдан)", "📥"], ["writeoff", "Ҳисобдан чиқариш", "📤"], ["inventory", "Инвентаризация", "🧮"], ["ret-stock", "Возврат склади", "♻️"], ["moves", "Ҳаракатлар тарихи", "🕘"]]],
-  ["Сотув", [["orders", "Буюртмалар", "📝"], ["sale-new", "Янги сотув", "➕"], ["sales", "Сотувлар", "🧾"], ["clients", "Мижозлар", "👥"], ["cbot", "Мижоз боти (B2B / B2C)", "🤖"]]],
+  ["Сотув", [["sale-new", "Янги сотув", "➕"], ["sales", "Сотувлар", "🧾"], ["clients", "Мижозлар", "👥"], ["cbot", "Мижоз боти (B2B / B2C)", "🤖"]]],
   ["Ходимлар", [["sbot", "Ходим боти", "📱"], ["attendance", "Давомат (келди-кетди)", "🕘"], ["payroll", "Ойлик ҳисоби", "💰"]]],
   ["Қарздорлик", [["debts", "Қарздорлар", "💰"], ["pay", "Тўлов қабул қилиш", "💵"], ["returns", "Возвратлар", "↩️"]]],
   ["Созламалар", [["products", "Маҳсулотлар ва нархлар", "🧁"], ["regions", "Регионлар", "📍"], ["ret-reasons", "Возврат сабаблари", "🏷️"], ["rules", "Қоидалар", "⚙️"], ["journal", "Журнал", "📜"]]],
@@ -258,7 +264,7 @@ const S = {
   db: null, user: null, uid: "", names: {}, readOnly: false, loaded: new Set(), timedOut: false, busy: false,
   products: [], customers: [], moves: [], sales: [], payments: [], returns: [], logs: [], regions: [], promises: [], retreasons: [], settings: null,
   roles: [], staff: [], staffreq: [], isOwner: false, viewAs: "", saleKind: "b2c", saleRows: 1, retRows: 1, saleTab: "all", saleDay: "", moveTab: "all", debtTab: "b2b", clientTab: "b2b",
-  regionFilter: "", payCust: "", q: {}, orders: [], attendance: [], botreplies: [], staffpay: [], payItems: {}, botInfo: {}, cbTab: "b2b", cbCust: "", cbOrder: false, cbAddr: "", sbotUid: "", payMonth: "", ordKind: "b2b", ordRows: 1, ordTab: "open", ordCancel: "", fromOrder: "", attDay: "", attMonth: "", homeDay: "", depth: 0, inRows: 1, outRows: 1, rsRows: 1, confirmCancel: "", downloads: null,
+  regionFilter: "", payCust: "", q: {}, orders: [], attendance: [], botreplies: [], workers: [], kiosk: null, worker: "", loginPick: "", staffpay: [], payItems: {}, botInfo: {}, cbTab: "b2b", cbCust: "", cbOrder: false, cbAddr: "", sbotUid: "", payMonth: "", ordKind: "b2b", ordRows: 1, ordTab: "open", ordCancel: "", fromOrder: "", attDay: "", attMonth: "", homeDay: "", depth: 0, inRows: 1, outRows: 1, rsRows: 1, confirmCancel: "", downloads: null,
 };
 try { S.viewAs = localStorage.getItem("fss_viewas") || ""; } catch (e) {}
 
@@ -278,14 +284,14 @@ const FUNCS = [
   ["debts", "Қарздорлар", "Қарздорлик", "v"], ["pay", "Тўлов ва тўлов санаси", "Қарздорлик", "ve"], ["returns", "Возвратлар", "Қарздорлик", "ve"], ["credit", "Кредит лимити ва муддати", "Қарздорлик", "e"],
   ["products", "Маҳсулотлар ва нархлар", "Созламалар", "ve"], ["regions", "Регионлар", "Созламалар", "ve"], ["ret-reasons", "Возврат сабаблари", "Созламалар", "ve"],
   ["rules", "Қоидалар", "Созламалар", "ve"], ["journal", "Журнал", "Созламалар", "v"],
-  ["orders", "Буюртмалар (B2B / B2C)", "Сотув", "ve"], ["cbot", "Мижоз боти: ёзишмалар, ботдан буюртма", "Сотув", "ve"],
+  ["cbot", "Мижоз боти: ёзишмалар", "Сотув", "ve"],
   ["att", "Давомат: ўзи «Келдим / Кетдим» босади", "Ходимлар", "e"], ["att-all", "Давомат ҳисоботи (ҳамма ходимлар, қўлда тузатиш)", "Ходимлар", "ve"],
 ];
 const FUNC = Object.fromEntries(FUNCS.map((f) => [f[0], f]));
 const roleById = (id) => S.roles.find((r) => r.id === id);
-const myStaff = () => S.staff.find((x) => x.id === S.uid && x.active !== false);
+const myStaff = () => S.worker ? (workerById(S.worker)?.active !== false ? workerById(S.worker) : undefined) : S.staff.find((x) => x.id === S.uid && x.active !== false);
 // Ҳозир амалда бўлган лавозим: эга «кўриниш» танласа — ўша, бўлмаса ходимнинг лавозими
-function myRole() { if (S.isOwner) return S.viewAs ? roleById(S.viewAs) || null : null; const st = myStaff(); return st ? roleById(st.roleId) || null : null; }
+function myRole() { if (S.worker) { const w = workerById(S.worker); return w && w.active !== false ? roleById(w.roleId) || null : null; } if (S.isOwner) return S.viewAs ? roleById(S.viewAs) || null : null; const st = myStaff(); return st ? roleById(st.roleId) || null : null; }
 const fullAccess = () => S.isOwner && !S.viewAs;
 const LV = { none: 0, view: 1, edit: 2 };
 function lvl(k) { if (fullAccess()) return 2; const r = myRole(); if (!r) return 0; const v = LV[r.perms?.[k]] || 0; return FUNC[k]?.[3] === "v" ? Math.min(v, 1) : v; }
@@ -302,7 +308,8 @@ const localDay = (iso) => { const d = iso ? new Date(iso) : new Date(); return n
 const today = () => localDay();
 const toInt = (raw) => { const s = String(raw ?? "").replace(/[\s ]/g, ""); return /^-?\d+$/.test(s) ? parseInt(s, 10) : NaN; };
 const normName = (s) => String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
-const who = (id) => S.names[id] || "Ходим";
+const workerById = (id) => S.workers.find((w) => w.id === id);
+const who = (id) => workerById(id)?.name || S.names[id] || "Ходим";
 const rules = () => ({ ...DEF_RULES, ...(S.settings || {}) });
 class UserError extends Error {}
 
@@ -648,7 +655,7 @@ const A = {
       if (digits && S.customers.some((c) => (c.phone || "").replace(/\D/g, "").endsWith(digits.slice(-9)))) throw new UserError("Бу телефон рақам базада бор.");
       await put("customers", newId("c"), { kind, name, phone, tg: tgUser(f.tg.value), region: f.region.value, address: f.address.value.trim(), note: f.note.value.trim() });
       f.reset();
-    }, "Мижоз базага қўшилди.");
+    }, "Мижоз базага қўшилди. Мижоз картасидаги «📨 Таклиф хабари»ни нусхалаб, унга Telegram ёки SMS орқали юборинг.");
   },
   editCustomer(c, f) {
     return write(async () => {
@@ -715,6 +722,7 @@ const A = {
       if (!/^\d\d:\d\d$/.test(n.workStart)) throw new UserError("Иш бошланиш вақтини ёзинг (масалан 08:00).");
       n.lateFine = f.lateFine.value.trim() ? toInt(f.lateFine.value) : 0;
       if (!(n.lateFine >= 0)) throw new UserError("Кечикиш жаримаси бутун сон бўлсин (сўм).");
+      n.tgBot = tgUser(f.tgBot.value);
       n.address = f.address.value.trim(); n.hours = f.hours.value.trim(); n.phone = f.cphone.value.trim(); n.video = f.video.value.trim();
       if (n.video && !/^https:\/\//.test(n.video)) throw new UserError("Видео ҳаволаси https:// билан бошлансин.");
       const o = rules();
@@ -724,7 +732,7 @@ const A = {
   },
 };
 
-const COLS = ["products", "customers", "moves", "sales", "payments", "returns", "logs", "regions", "promises", "retreasons", "roles", "staff", "staffreq", "orders", "attendance", "botreplies"];
+const COLS = ["products", "customers", "moves", "sales", "payments", "returns", "logs", "regions", "promises", "retreasons", "roles", "staff", "staffreq", "orders", "attendance", "botreplies", "workers"];
 // ================= Ходимлар ва лавозимлар (фақат эга ўзгартиради) =================
 Object.assign(A, {
   addRole(f) {
@@ -779,7 +787,7 @@ function attDay(uid, D) {
   return { ev, first, lastOut, onNow, mins, late: !!first && lateMin(uid, first) > 0, lateM: first ? lateMin(uid, first) : 0 };
 }
 function attPeople() {
-  const ids = new Set(S.staff.filter((x) => x.active !== false).map((x) => x.id));
+  const ids = new Set([...S.staff.filter((x) => x.active !== false).map((x) => x.id), ...S.workers.filter((w) => w.active !== false).map((w) => w.id)]);
   for (const a of S.attendance) if (a.uid) ids.add(a.uid);
   return [...ids].sort((a, b) => who(a).localeCompare(who(b)));
 }
@@ -844,6 +852,10 @@ function vAttendance() {
     <div style="flex:0 1 130px"><label for="am-time">Вақт</label><input type="time" id="am-time" name="time"></div>
     <div><label for="am-note">Изоҳ (сабаб)</label><input id="am-note" name="note" placeholder="Масалан: телефони ўчиб қолган"></div><div class="fit"><button>Ёзиш</button></div></div></form>`;
   return h;
+}
+function attDayTable(D) {
+  const rows = attPeople().map((u) => ({ u, d: attDay(u, D) })), came = rows.filter((x) => x.d.first).length, late = rows.filter((x) => x.d.late).length;
+  return `<p class="mut" style="margin:-4px 0 8px">Келди ${came} / ${rows.length} · кечикди ${late} · келмади ${rows.length - came}</p><div class="wrap"><table><thead><tr><th>Ходим</th><th>Келди</th><th>Кетди</th><th class="n">Ишлади</th><th>Ҳолат</th></tr></thead><tbody>${rows.map(({ u, d }) => `<tr><td><b>${esc(who(u))}</b>${d.ev.some((e) => e.manual) ? ` <span class="mut">(қўлда)</span>` : ""}</td><td>${d.first ? hhmm(d.first) : "—"}</td><td>${d.lastOut && !d.onNow ? hhmm(d.lastOut) : "—"}</td><td class="n">${hoursText(d.mins)}</td><td>${!d.first ? `<span class="badge">келмади</span>` : d.onNow ? `<span class="badge b-ok">ишда</span>` : `<span class="badge">кетди</span>`}${d.late ? ` <span class="badge b-low">${d.lateM} дақ. кечикди</span>` : ""}</td></tr>`).join("")}</tbody></table></div>`;
 }
 function attMonthRows(month) {
   return attPeople().map((u) => {
@@ -1050,11 +1062,11 @@ function vCBot() {
   let kb;
   if (S.cbAddr) kb = `<form class="tg-form" data-f="botAddr" data-id="${esc(S.cbAddr)}"><b>📍 Етказиш манзили</b><input id="cb-addr" name="addr" placeholder="Кўча, уй, мўлжал"><div class="tg-kb" style="padding:0"><button type="button" class="light" data-a="cb" data-id="close">Бекор</button><button>Юбориш</button></div></form>`;
   else if (S.cbOrder) kb = `<form class="tg-form" data-f="botOrder" data-id="${esc(c.id)}"><b>🛒 Янги буюртма</b>${P.map((p) => `<label class="tg-q" for="cbq_${esc(p.id)}"><span>${esc(p.name)} <span class="mut">${som(priceOf(p, c.kind))}</span></span><input id="cbq_${esc(p.id)}" name="q_${esc(p.id)}" inputmode="numeric" placeholder="0"></label>`).join("")}<label for="cb-due">Қачонга</label><input type="date" id="cb-due" name="due" min="${today()}" value="${addDays(nowIso(), 1)}"><div class="tg-kb" style="padding:0"><button type="button" class="light" data-a="cb" data-id="close">Бекор</button><button>Юбориш</button></div></form>`;
-  else kb = `<div class="tg-kb">${canOrd ? `<button type="button" data-a="cb" data-id="order">🛒 Буюртма бериш</button>` : ""}<button type="button" data-a="cb" data-id="orders">📦 Буюртмаларим</button><button type="button" class="light" data-a="cb" data-id="debt">💰 Қарзим</button><button type="button" class="light" data-a="cb" data-id="addr">📍 Манзилингиз</button></div>`;
+  else kb = `<div class="tg-kb"><button type="button" data-a="cb" data-id="debt">💰 Қарзим</button><button type="button" class="light" data-a="cb" data-id="addr">📍 Манзилингиз</button></div>`;
   h += `<div>${chatHtml(custMsgs(c), "Fansweets Premium", `${esc(c.name)} · ${c.kind === "b2b" ? "дўкон" : "мижоз"}`, kb)}</div>`;
   const ov = overdueOf(c);
   h += `<div class="botside"><div class="card"><b class="ct">${esc(c.name)}</b>${c.phone ? `<div>📞 <b style="user-select:all">${esc(c.phone)}</b></div>` : ""}${c.tg ? `<div style="margin-top:6px"><a class="btn light sm" href="https://t.me/${esc(c.tg)}" target="_blank" rel="noopener">✈️ Telegram'да очиш (@${esc(c.tg)})</a></div>` : `<p class="mut" style="margin:6px 0 0">Telegram username ёзилмаган — мижоз картасида қўшинг.</p>`}
-    <div style="margin-top:10px"><button type="button" class="light sm" data-a="copyLast">📋 Охирги хабарни нусхалаш</button></div>
+    <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="light sm" data-a="copyLast">📋 Охирги хабарни нусхалаш</button><button type="button" class="light sm" data-a="copyInvite" data-id="${esc(c.id)}">📨 Таклиф хабари</button></div>
     ${canView("debts") ? `<p style="margin:10px 0 0">Қарз: <b class="${debtOf(c) > 0 ? "neg" : ""}">${som(debtOf(c))}</b>${ov.over ? `<br><span class="neg">Муддати ўтган: ${som(ov.over)}</span>` : ""}${ov.next ? `<br>Кейинги тўлов санаси: <b>${dOnly(ov.next + "T12:00")}</b>` : ""}</p>` : ""}
     <p style="margin:8px 0 0"><a href="#client-${esc(c.id)}">Мижоз картаси →</a></p></div></div>`;
   scrollChat();
@@ -1178,6 +1190,8 @@ function staffMsgs(uid) {
 }
 function salaryText(uid) {
   const m = today().slice(0, 7), p = payroll(uid, m);
+  if (!p.salary && !p.items.length) return `💰 <b>${monthName(m)}</b>
+Окладингиз ҳали ёзилмаган ёки бу қурилмада кўринмайди. Директордан сўранг.`;
   return `💰 <b>${monthName(m)} — ойлигингиз</b>\nОклад: ${som(p.salary)}\n🎁 Бонус: +${som(p.bonus)}\n⚠️ Жарима: −${som(p.fine)}${p.lateFine ? ` (кечикиш ${som(p.lateFine)})` : ""}\n💵 Олдин берилган: −${som(p.paid)}\n<b>Қолди: ${som(p.toPay)}</b>`;
 }
 function attText(uid) {
@@ -1204,6 +1218,121 @@ function vSBot() {
     <div class="card"><b class="ct">Ходим қандай ишлатади</b><p class="mut" style="margin:0">Ходим телефонида шу дастурни очади (Claude иловаси) ва «Ходим боти»да «Келдим / Кетдим» босади. Вақт ўзи ёзилади, кечикиш ва жарима ўзи ҳисобланади.</p></div></div>`;
   scrollChat();
   return h + `</div>`;
+}
+
+
+// ================= PIN билан кириш (умумий қурилма: сех телефони ёки планшети) =================
+// Ходимга Claude ҳисоби керак эмас: директор ходимни қўшади (исм, лавозим, PIN). Ходим исмини танлаб PIN киритади.
+// Эслатма: бу ҳимоя дастур ичида ишлайди; маълумот базасига қурилмадаги Claude ҳисоби орқали ёзилади.
+const isKiosk = () => { try { return localStorage.getItem("fss_kiosk") === "1"; } catch (e) { return false; } };
+async function pinHash(id, pin) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("fansweets:" + id + ":" + pin)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join(""); }
+const activeWorkers = () => S.workers.filter((w) => w.active !== false).sort((a, b) => a.name.localeCompare(b.name));
+// Кириш экрани керакми: умумий қурилма режимида ёки лавозими йўқ ҳисобда (PIN ходимлари бўлса)
+const needLogin = () => !S.worker && (isKiosk() || (!S.realOwner && !S.staff.some((x) => x.id === S.realUid && x.active !== false && roleById(x.roleId)) && activeWorkers().length > 0));
+function loginAs(id, silent) {
+  if (!S.realUid && S.realUid !== "") S.realUid = S.uid;
+  S.worker = id; S.uid = id; S.isOwner = false; S.viewAs = ""; S.loginPick = ""; S.lastAct = Date.now();
+  try { localStorage.setItem("fss_worker", id); } catch (e) {}
+  if (!silent) { flash(`Хуш келибсиз, ${who(id)}!`); S.keepFlash = true; location.hash = can("att") ? "sbot" : "home"; }
+}
+function logout() {
+  S.worker = ""; S.uid = S.realUid || ""; S.isOwner = !!S.realOwner; S.loginPick = "";
+  try { localStorage.removeItem("fss_worker"); } catch (e) {}
+  location.hash = "home";
+}
+async function doLogin(f) {
+  const pin = f.pin.value.trim();
+  if (S.loginPick === "__owner") {
+    if (!S.kiosk?.ownerPin) return flash("Эга PIN-коди ўрнатилмаган.", "err");
+    if ((await pinHash("owner", pin)) !== S.kiosk.ownerPin) { f.pin.value = ""; return flash("PIN нотўғри.", "err"); }
+    try { localStorage.removeItem("fss_kiosk"); } catch (e) {}
+    S.loginPick = ""; flash("Умумий қурилма режими ўчирилди."); render(); return;
+  }
+  const w = workerById(S.loginPick);
+  if (!w || w.active === false) return flash("Ходим топилмади.", "err");
+  if ((await pinHash(w.id, pin)) !== w.pin) { f.pin.value = ""; return flash("PIN нотўғри. Қайта киритинг.", "err"); }
+  loginAs(w.id); render();
+}
+function vLogin() {
+  const list = activeWorkers();
+  let h = `<div class="pinbox"><div style="text-align:center;margin:10px 0 18px"><img src="${LOGO()}" alt="" width="84" height="84" style="border-radius:50%;box-shadow:0 0 0 2px var(--gold2)"><h1 style="justify-content:center;margin-top:12px">Кириш</h1><p class="mut">Исмингизни танланг ва PIN-кодни киритинг.</p></div>`;
+  if (S.loginPick) {
+    const nm = S.loginPick === "__owner" ? "👑 Эга (директор)" : who(S.loginPick);
+    h += `<form class="card" data-f="login"><b class="ct" style="text-align:center">${esc(nm)}</b><label for="pin-in">PIN-код</label><input type="password" id="pin-in" name="pin" class="pinin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="••••">
+      <div class="row"><div class="fit"><button type="button" class="light" data-a="loginPick" data-id="">← Орқага</button></div><div><button style="width:100%;justify-content:center">Кириш</button></div></div></form>`;
+  } else h += list.length ? `<div class="pinlist">${list.map((w) => `<button type="button" data-a="loginPick" data-id="${esc(w.id)}"><b>${esc(w.name)}</b><span>${esc(w.position || roleById(w.roleId)?.name || "")}</span></button>`).join("")}</div>` : `<div class="empty">Ҳали ходим қўшилмаган. Директор «Ходимлар ва рухсатлар» бўлимида қўшади.</div>`;
+  if (isKiosk() && !S.loginPick && S.kiosk?.ownerPin) h += `<p style="text-align:center;margin-top:20px"><button type="button" class="light sm" data-a="loginPick" data-id="__owner">👑 Эга сифатида (умумий режимни ўчириш)</button></p>`;
+  if (!isKiosk() && !S.realOwner) h += `<p class="mut" style="text-align:center;margin-top:16px">Ўз Claude ҳисобингиз билан ишлайдиган бўлсангиз, директор сизга лавозим беради.</p>`;
+  return h + `</div>`;
+}
+function kioskOn() {
+  if (!S.kiosk?.ownerPin) return flash("Аввал «Эга PIN-коди»ни ўрнатинг — умумий режимдан чиқиш учун керак.", "err");
+  try { localStorage.setItem("fss_kiosk", "1"); } catch (e) { return flash("Бу қурилмада сақлаб бўлмади.", "err"); }
+  flash("Бу қурилма умумий қурилма бўлди: энди ҳар ким PIN билан киради."); render();
+}
+function workersSection() {
+  const roleOpts = (sel) => `<option value="">— лавозим —</option>${S.roles.map((r) => `<option value="${esc(r.id)}" ${r.id === sel ? "selected" : ""}>${esc(r.name)}</option>`).join("")}`;
+  let h = `<h2>👷 Ходимлар (PIN-код билан киради)</h2><p class="mut" style="margin-top:0">Ходимга Claude ҳисоби керак эмас. Сиз қўшасиз → ходим телефон ёки сехдаги планшетда исмини танлаб, PIN киритади → «Келдим / Кетдим» босади ва ўз лавозими бўлимларини кўради.</p>`;
+  const list = S.workers.slice().sort((a, b) => (a.active === false) - (b.active === false) || a.name.localeCompare(b.name));
+  if (list.length) h += `<div class="wrap"><table><thead><tr><th>Ходим</th><th>Лавозим</th><th>Янги PIN (ихтиёрий)</th><th>Ҳолат</th><th></th></tr></thead><tbody>${list.map((w) => `<tr class="${w.active === false ? "off" : ""}"><td><b>${esc(w.name)}</b><br><span class="mut">${esc([w.position, w.phone].filter(Boolean).join(" · "))}</span></td><td><select id="wr-role-${esc(w.id)}" aria-label="Лавозим">${roleOpts(w.roleId)}</select></td><td><input id="wr-pin-${esc(w.id)}" type="password" inputmode="numeric" maxlength="6" placeholder="••••" autocomplete="off" style="width:110px"></td><td>${w.active === false ? `<span class="badge b-low">Ёпиқ</span>` : `<span class="badge b-ok">Фаол</span>`}</td><td class="n"><button type="button" class="light sm" data-a="saveWorkerRow" data-id="${esc(w.id)}">Сақлаш</button> <button type="button" class="light sm" data-a="toggleWorker" data-id="${esc(w.id)}">${w.active === false ? "Очиш" : "Ёпиш"}</button> <a class="btn light sm" href="#worker-${esc(w.id)}">💰 Ойлик</a></td></tr>`).join("")}</tbody></table></div>`;
+  h += `<form class="card" data-f="addWorker" style="margin-top:12px"><b class="ct">➕ Янги ходим</b><div class="row" style="margin-top:0">
+    <div><label for="nw-name">Исм фамилия</label><input id="nw-name" name="name"></div><div><label for="nw-pos">Вазифаси</label><input id="nw-pos" name="position" placeholder="Қандолатчи, сотувчи..."></div>
+    <div><label for="nw-phone">Телефон</label><input id="nw-phone" name="phone" inputmode="tel" placeholder="+998"></div></div>
+    <div class="row"><div><label for="nw-role">Лавозим (рухсатлар)</label><select id="nw-role" name="role">${roleOpts("")}</select></div><div style="flex:0 1 180px"><label for="nw-pin">PIN-код (4–6 рақам)</label><input id="nw-pin" name="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></div><div class="fit"><button>Қўшиш</button></div></div>
+    <p class="mut" style="margin:8px 0 0">PIN-кодни ходимга ўзингиз айтинг. Унутса — шу ерда янгисини ёзиб «Сақлаш»ни босинг. Оклад ва иш вақтини «💰 Ойлик»да ёзасиз.</p></form>`;
+  h += `<div class="card"><b class="ct">📱 Умумий қурилма (сехдаги телефон ёки планшет)</b>
+    <p class="mut" style="margin:0 0 10px">Бир қурилмадан бир неча ходим кириши учун: шу қурилмада дастурни очиб, «Умумий қурилма қилиш»ни босинг. Шундан кейин дастур доим «Кириш» экрани билан очилади, ходим 3 дақиқа ҳеч нарса босмаса ўзи чиқади. Умумий режимдан чиқиш учун эга PIN-коди керак.</p>
+    <form data-f="ownerPin" class="row" style="margin-top:0"><div style="flex:0 1 220px"><label for="op-pin">Эга PIN-коди ${S.kiosk?.ownerPin ? "(ўрнатилган — янгилаш)" : "(ўрнатилмаган)"}</label><input id="op-pin" name="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></div><div class="fit"><button class="light">PIN-ни сақлаш</button></div>
+    <div class="fit"><button type="button" data-a="kioskOn" ${isKiosk() ? "disabled" : ""}>${isKiosk() ? "✅ Бу қурилма умумий" : "📱 Бу қурилмани умумий қилиш"}</button></div></form>
+    <p class="mut" style="margin:10px 0 0">Хавфсизлик учун: умумий қурилмада алоҳида Claude ҳисоби (Contributor рухсати билан) очиб ишлатинг — эга ҳисобингизни у ерда қолдирманг.</p></div>`;
+  return h;
+}
+Object.assign(A, {
+  addWorker(f) {
+    return write(async () => {
+      if (!S.realOwner) throw new UserError("Ходимни фақат эга қўшади.");
+      const name = f.name.value.trim(), pin = f.pin.value.trim(), roleId = f.role.value;
+      if (!name) throw new UserError("Ходим исмини ёзинг.");
+      if (S.workers.some((w) => normName(w.name) === normName(name))) throw new UserError("Бу исмли ходим бор. Фамилияси билан ёзинг.");
+      if (!roleId) throw new UserError("Лавозимни танланг — ходим нимани кўриши шунга боғлиқ.");
+      if (!/^\d{4,6}$/.test(pin)) throw new UserError("PIN 4–6 та рақам бўлсин.");
+      const id = newId("w");
+      await put("workers", id, { name, position: f.position.value.trim(), phone: f.phone.value.trim(), roleId, pin: await pinHash(id, pin), active: true });
+      await addLog("Ходим қўшилди", `${name} · ${roleById(roleId)?.name}`);
+      f.reset();
+    }, "Ходим қўшилди. Энди у исмини танлаб, PIN билан киради.");
+  },
+  saveWorkerRow(id) {
+    return write(async () => {
+      if (!S.realOwner) throw new UserError("Фақат эга.");
+      const w = workerById(id), roleId = document.getElementById("wr-role-" + id)?.value, pin = document.getElementById("wr-pin-" + id)?.value.trim();
+      if (!roleId) throw new UserError("Лавозимни танланг.");
+      if (pin && !/^\d{4,6}$/.test(pin)) throw new UserError("PIN 4–6 та рақам бўлсин.");
+      await S.db.doc("workers/" + id).update({ roleId, ...(pin ? { pin: await pinHash(id, pin) } : {}), editedBy: S.uid || "", editedAt: nowIso() });
+      await addLog("Ходим ўзгарди", `${w.name}: ${roleById(w.roleId)?.name || "—"} → ${roleById(roleId)?.name}${pin ? " · PIN янгиланди" : ""}`);
+    }, "Сақланди.");
+  },
+  toggleWorker(id) {
+    const w = workerById(id);
+    return write(async () => { if (!S.realOwner) throw new UserError("Фақат эга."); await S.db.doc("workers/" + id).update({ active: w.active === false, editedBy: S.uid || "", editedAt: nowIso() }); await addLog(w.active === false ? "Ходимга кириш очилди" : "Ходимга кириш ёпилди", w.name); },
+      w?.active === false ? "Кириш очилди." : "Кириш ёпилди.");
+  },
+  ownerPin(f) {
+    return write(async () => {
+      if (!S.realOwner) throw new UserError("Фақат эга.");
+      const pin = f.pin.value.trim(); if (!/^\d{4,6}$/.test(pin)) throw new UserError("PIN 4–6 та рақам бўлсин.");
+      await S.db.doc("kiosk/main").set({ ownerPin: await pinHash("owner", pin), ...stamp() });
+      f.reset();
+    }, "Эга PIN-коди сақланди.");
+  },
+});
+// Мижозга таклиф хабари (Telegram ёки SMS орқали ўзингиз юборасиз)
+function inviteText(c) {
+  if (!c) return "";
+  const R = rules();
+  return `Ассалому алайкум, ${c.name}! 🍰\nСиз Fansweets Premium мижозлари базасига қўшилдингиз.` +
+    (R.tgBot ? `\nБуюртма, накладной ва тўловлар ҳақида хабар олиш учун Telegram'да бизга обуна бўлинг: https://t.me/${R.tgBot}` : "") +
+    (R.phone ? `\n📞 ${R.phone}` : "") + (R.address ? `\n🏠 ${R.address}` : "") + `\nҲурмат билан, Fansweets Premium`;
 }
 
 // ================= Кўринишлар =================
@@ -1262,7 +1391,8 @@ function vHome() {
     const rows = Object.entries(per).filter(([, v]) => v.in || v.sale || v.ret || v.out);
     h += `<h2>Маҳсулот бўйича ${isToday ? "бугун" : "шу кун"}</h2>` + (rows.length ? `<div class="wrap"><table><thead><tr><th>Маҳсулот</th><th class="n">Кирди</th><th class="n">Сотилди</th><th class="n">Возврат</th><th class="n">Ҳисобдан чиқди</th><th class="n">Ҳозирги қолдиқ</th></tr></thead><tbody>${rows.map(([pid, v]) => { const p = productById(pid), t = (q) => q ? esc(qtyText(p, q)) : "—"; return `<tr><td><b>${esc(pname(pid))}</b></td><td class="n">${t(v.in)}</td><td class="n">${t(v.sale)}</td><td class="n">${t(v.ret)}</td><td class="n">${t(v.out)}</td><td class="n">${esc(qtyText(p, balance(pid)))}</td></tr>`; }).join("")}</tbody></table></div>` : `<div class="empty">Шу кунда склад ҳаракати йўқ.</div>`);
   }
-  if (canView("orders")) { const od = S.orders.filter((o) => ["new", "ready"].includes(o.status || "new") && (isToday ? o.due <= D : o.due === D)); h += `<h2>${isToday ? "Бугун бериладиган буюртмалар" : "Шу кунга буюртмалар"}</h2>${ordersTable(od.sort((a, b) => (a.due + (a.time || "")).localeCompare(b.due + (b.time || ""))), "Буюртма йўқ.")}`; }
+  if (false) { const od = S.orders.filter((o) => ["new", "ready"].includes(o.status || "new") && (isToday ? o.due <= D : o.due === D)); h += `<h2>${isToday ? "Бугун бериладиган буюртмалар" : "Шу кунга буюртмалар"}</h2>${ordersTable(od.sort((a, b) => (a.due + (a.time || "")).localeCompare(b.due + (b.time || ""))), "Буюртма йўқ.")}`; }
+  if (canView("att-all") && attPeople().length) h += `<h2>🕘 Давомат — ${isToday ? "бугун" : "шу кун"}</h2>` + attDayTable(D);
   if (canView("debts")) h += `<h2>${isToday ? "Бугун ва ўтиб кетган тўлов санаси (ваъдалар)" : "Шу кунга ваъда қилинган қарзлар"}</h2>${docsTable(due.slice(0, 30), isToday ? "Бугунга ваъда қилинган қарз йўқ 👍" : "Шу кунга ваъда йўқ.")}`;
   if (canView("sale")) h += `<h2>${isToday ? "Бугунги" : "Шу кунги"} сотувлар</h2>${salesTable(daySales.slice().reverse(), "Сотув йўқ.")}`;
   if (h.indexOf("<h2>") < 0 && !h.includes('<a href="#')) h += `<div class="empty">Сизга бош саҳифадаги маълумотлар учун рухсат берилмаган. Менюдан ишлашингиз мумкин бўлган бўлимни танланг.</div>`;
@@ -1497,7 +1627,7 @@ function vClient(id) {
   if (!c) return `<div class="empty">${S.loaded.has("customers") ? "Мижоз топилмади." : "Юкланмоқда…"}</div>`;
   const debts = canView("debts");
   const rows = ledgerOf(c), d = debtOf(c), { over, next } = overdueOf(c), sales = liveSales().filter((s) => s.customerId === c.id), docs = openDocs(c);
-  let h = ph(`${esc(c.name)} ${kindBadge(c.kind)}`, [c.phone, regionName(c.region) ? "📍" + regionName(c.region) : "", c.address].filter(Boolean).map(esc).join(" · ") || "Телефон ва манзил ёзилмаган", `${can("sale") ? `<button type="button" data-a="sellTo" data-id="${esc(c.id)}">➕ Сотув</button>` : ""}${debts ? `<button type="button" class="light" data-a="csvLedger" data-id="${esc(c.id)}">⬇️ Акт сверка (CSV)</button>` : ""}`);
+  let h = ph(`${esc(c.name)} ${kindBadge(c.kind)}`, [c.phone, regionName(c.region) ? "📍" + regionName(c.region) : "", c.address].filter(Boolean).map(esc).join(" · ") || "Телефон ва манзил ёзилмаган", `${can("sale") ? `<button type="button" data-a="sellTo" data-id="${esc(c.id)}">➕ Сотув</button>` : ""}<button type="button" class="light" data-a="copyInvite" data-id="${esc(c.id)}">📨 Таклиф хабари</button>${debts ? `<button type="button" class="light" data-a="csvLedger" data-id="${esc(c.id)}">⬇️ Акт сверка (CSV)</button>` : ""}`);
   if (debts) {
     h += `<div class="kpi"><div><span>Қарз</span><b class="${d > 0 ? "bad" : ""}">${d < 0 ? "аванс " + som(-d) : som(d)}</b><small>${docs.length} та очиқ ҳужжат</small></div><div><span>Муддати ўтган</span><b class="${over ? "bad" : ""}">${som(over)}</b></div>
       <div><span>Кейинги тўлов санаси</span><b class="${next && next < today() ? "bad" : ""}">${next ? dOnly(next) : "—"}</b></div><div><span>Жами олган</span><b>${som(sales.reduce((a, s) => a + totalOf(s), 0))}</b><small>${sales.length} та сотув</small></div>${c.limit ? `<div><span>Кредит лимити</span><b>${som(c.limit)}</b><small>бўш: ${som(Math.max(c.limit - d, 0))}</small></div>` : ""}</div>`;
@@ -1563,6 +1693,7 @@ function vRules() {
       <div class="row" style="margin-top:0"><div style="flex:0 1 240px"><label for="r6">Кечикиш жаримаси, сўм / дақиқа (0 — йўқ)</label><input id="r6" name="lateFine" inputmode="numeric" value="${R.lateFine || ""}" ${dis}></div>
       <div><label for="r7">Корхона манзили (мижозга юборилади)</label><input id="r7" name="address" value="${esc(R.address)}" placeholder="Шаҳар, кўча, уй, мўлжал" ${dis}></div></div>
       <div class="row"><div style="flex:0 1 200px"><label for="r8">Иш вақти (мижозга)</label><input id="r8" name="hours" value="${esc(R.hours)}" ${dis}></div><div style="flex:0 1 200px"><label for="r9">Телефон (мижозга)</label><input id="r9" name="cphone" value="${esc(R.phone)}" ${dis}></div>
+      <div style="flex:0 1 220px"><label for="r11">Telegram бот ёки канал</label><input id="r11" name="tgBot" value="${esc(rules().tgBot ? "@" + rules().tgBot : "")}" placeholder="@fansweets_bot" ${dis}></div>
       <div><label for="r10">Йўл кўрсатувчи видео ҳаволаси</label><input id="r10" name="video" value="${esc(R.video)}" placeholder="https://..." ${dis}></div></div>
       <div class="row"><label class="chk" for="r4"><input type="checkbox" id="r4" name="blockOverdue" ${R.blockOverdue ? "checked" : ""} ${dis}> Муддати ўтган қарзи бор мижозга насия бермаслик</label></div>
       ${dis ? "" : `<div class="row"><div class="fit"><button>Сақлаш</button></div></div>`}</form>`;
@@ -1578,14 +1709,15 @@ function vStaff() {
   let h = ph("Ходимлар ва рухсатлар", "Ҳар бир лавозимга қайси бўлимни кўриш ва ўзгартириш мумкинлигини белгиланг. Ходимга лавозим беринг — у фақат рухсат берилган бўлимларни кўради.");
   const req = S.staffreq.filter((r) => !S.staff.some((x) => x.id === r.id));
   const roleSel = (id, sel) => `<select id="as-${esc(id)}" aria-label="Лавозим"><option value="">— лавозим —</option>${S.roles.map((r) => `<option value="${esc(r.id)}" ${r.id === sel ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select>`;
-  h += `<h2>Ходимлар</h2>`;
+  h += `<h2>Claude ҳисоби билан кирадиган ходимлар</h2>`;
   if (req.length) h += `<div class="card" style="border-color:var(--amb)"><b class="ct">🔔 Рухсат кутаётганлар (${req.length})</b><p class="mut" style="margin-top:0">Бу одамлар дастурни очишди, лекин ҳали лавозим берилмаган. Улар ҳеч нарсани кўрмайди.</p>
     <div class="wrap"><table><tbody>${req.map((r) => `<tr><td><b>${esc(who(r.id))}</b><br><span class="mut">${dt(r.at)} да очди</span></td><td>${roleSel(r.id, "")}</td><td class="n"><button type="button" class="sm" data-a="assign" data-id="${esc(r.id)}">Лавозим бериш</button></td></tr>`).join("")}</tbody></table></div></div>`;
   h += S.staff.length ? `<div class="wrap"><table><thead><tr><th>Ходим</th><th>Лавозим</th><th>Ҳолат</th><th></th></tr></thead><tbody>${S.staff.map((x) => `<tr class="${x.active === false ? "off" : ""}"><td><b>${esc(who(x.id))}</b></td><td>${roleSel(x.id, x.roleId)}</td><td>${x.active === false ? `<span class="badge b-low">Кириш ёпиқ</span>` : `<span class="badge b-ok">Фаол</span>`}</td><td class="n"><button type="button" class="light sm" data-a="assign" data-id="${esc(x.id)}">Сақлаш</button> <button type="button" class="light sm" data-a="staffOff" data-id="${esc(x.id)}">${x.active === false ? "Очиш" : "Ёпиш"}</button></td></tr>`).join("")}</tbody></table></div>`
-    : `<div class="empty">Ҳали ходим йўқ. Артифактни ходимга «Contributor» рухсати билан улашинг (Share). У дастурни очгач, шу ерда «Рухсат кутаётганлар» рўйхатида чиқади.</div>`;
+    : `<p class="mut">Йўқ. Ходимнинг ўз Claude ҳисоби бўлса, артифактни унга «Contributor» рухсати билан улашинг — у очгач шу ерда «Рухсат кутаётганлар»да чиқади.</p>`;
+  h += workersSection();
   h += `<h2>Лавозимлар ва рухсатлар</h2><p class="mut" style="margin-top:0">«Кўради» — бўлимни очиб кўради, лекин ёза олмайди. «Ўзгартиради» — ёзиш ва ўзгартириш ҳам мумкин. «Йўқ» — бўлим менюда кўринмайди.</p>`;
   for (const r of S.roles) {
-    const n = S.staff.filter((x) => x.roleId === r.id && x.active !== false).length;
+    const n = [...S.staff, ...S.workers].filter((x) => x.roleId === r.id && x.active !== false).length;
     if (S.editRole !== r.id) {
       const on = FUNCS.filter(([k]) => r.perms?.[k]);
       h += `<div class="card"><div class="ph" style="margin:0"><div><b class="ct" style="margin:0">${esc(r.name)}</b><span class="mut">${n} та ходим</span></div><div class="act"><button type="button" class="light sm" data-a="viewAs" data-id="${esc(r.id)}">👁 Шу лавозим кўзи билан кўриш</button><button type="button" class="sm" data-a="editRole" data-id="${esc(r.id)}">Рухсатларни ўзгартириш</button></div></div>
@@ -1609,25 +1741,27 @@ const VIEWS = { cbot: vCBot, sbot: vSBot, payroll: vPayroll, orders: vOrders, at
 // Ҳар бир саҳифа қайси рухсатга боғлиқ
 const PAGE_PERM = { "sale-new": "sale", sales: "sale", pay: "debts", staff: null };
 const pagePerm = (r) => r.startsWith("sale-") && r !== "sale-new" ? "sale" : r.startsWith("client-") ? "clients" : (r in PAGE_PERM ? PAGE_PERM[r] : r);
-const pageOk = (r) => { if (r === "staff" || r === "payroll" || r.startsWith("worker-")) return fullAccess(); if (r === "sbot") return can("att") || fullAccess(); if (r === "attendance") return can("att") || canView("att-all"); if (r.startsWith("order-")) return canView("orders"); if (r.startsWith("client-")) return canView("clients") || canView("debts"); const k = pagePerm(r); return canView(k); };
+const pageOk = (r) => { if (r === "orders" || r.startsWith("order-")) return false; if (r === "staff" || r === "payroll" || r.startsWith("worker-")) return fullAccess(); if (r === "sbot") return can("att") || fullAccess(); if (r === "attendance") return can("att") || canView("att-all"); if (r.startsWith("order-")) return canView("orders"); if (r.startsWith("client-")) return canView("clients") || canView("debts"); const k = pagePerm(r); return canView(k); };
 const route = () => (location.hash || "#home").slice(1);
 
 // ================= Чизиш =================
 function renderNav() {
   const r = route(), cur = r.startsWith("sale-") && r !== "sale-new" ? "sales" : r.startsWith("client-") ? (canView("debts") ? "debts" : "clients") : r;
   const over = canView("debts") ? debtors().filter((x) => x.over > 0).length : 0, low = canView("stock") ? lowProducts().length : 0, ret = canView("ret-stock") ? products().filter((p) => balance(p.id, "ret") > 0).length : 0;
-  const ordDue = canView("orders") ? S.orders.filter((o) => ["new", "ready"].includes(o.status || "new") && o.due <= today()).length : 0;
+  const ordDue = false ? S.orders.filter((o) => ["new", "ready"].includes(o.status || "new") && o.due <= today()).length : 0;
   const badge = { orders: ordDue, debts: over, stock: low, "ret-stock": ret, staff: S.isOwner ? S.staffreq.filter((q) => !S.staff.some((x) => x.id === q.id)).length : 0 };
   const nav = NAV.map(([g, items]) => [g, items.filter(([k]) => pageOk(k))]).filter(([, items]) => items.length);
   if (fullAccess()) { const g = nav.find((x) => x[0] === "Ходимлар"); if (g) g[1].push(["staff", "Ходимлар ва рухсатлар", "🔐"]); else nav.push(["Ходимлар", [["staff", "Ходимлар ва рухсатлар", "🔐"]]]); }
-  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["orders", "Буюртма", "📝"], ["stock-in", "Кирим", "📥"], ["sbot", "Бот", "📱"], ["attendance", "Давомат", "🕘"], ["pay", "Тўлов", "💵"]];
+  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["stock-in", "Кирим", "📥"], ["sbot", "Бот", "📱"], ["attendance", "Давомат", "🕘"], ["pay", "Тўлов", "💵"]];
   const tabs = TABS.filter(([k]) => pageOk(k)).slice(0, 4);
   $("#tabs").innerHTML = tabs.map(([k, l, ic]) => `<a href="#${k}" class="${cur === k ? "on" : ""}"><span class="ti">${ic}</span>${l}${badge[k] ? `<span class="cnt">${badge[k]}</span>` : ""}</a>`).join("") +
     `<button type="button" id="tabmenu" aria-label="Ҳамма бўлимлар"><span class="ti">☰</span>Меню${badge.staff ? `<span class="cnt">${badge.staff}</span>` : ""}</button>`;
   $("#nav").innerHTML = nav.map(([g, items]) => (g ? `<div class="grp">${g}</div>` : "") + items.map(([k, l, ic]) => `<a href="#${k}" class="${cur === k ? "on" : ""}"><span class="ic">${ic}</span>${l}${badge[k] ? `<span class="cnt">${badge[k]}</span>` : ""}</a>`).join("")).join("");
   // Юқори панел: эга — «кимнинг кўзи билан кўриш», ходим — ўз лавозими
   const va = $("#viewas"), whoEl = $("#who");
-  if (S.isOwner) { va.hidden = false; whoEl.textContent = "Кўриниш:"; va.innerHTML = `<option value="">Эга (ҳамма рухсат)</option>` + S.roles.map((x) => `<option value="${esc(x.id)}" ${x.id === S.viewAs ? "selected" : ""}>${esc(x.name)} кўзи билан</option>`).join(""); }
+  $("#logout").hidden = !S.worker;
+  if (S.worker) { va.hidden = true; whoEl.textContent = `👤 ${who(S.worker)} · ${myRole()?.name || ""}`; }
+  else if (S.isOwner) { va.hidden = false; whoEl.textContent = "Кўриниш:"; va.innerHTML = `<option value="">Эга (ҳамма рухсат)</option>` + S.roles.map((x) => `<option value="${esc(x.id)}" ${x.id === S.viewAs ? "selected" : ""}>${esc(x.name)} кўзи билан</option>`).join(""); }
   else { va.hidden = true; whoEl.textContent = S.db ? roleLabel() : ""; }
 }
 function render() {
@@ -1642,6 +1776,7 @@ function render() {
   const ready = S.loaded.has("staff") && S.loaded.has("roles") && S.identity;
   if (!S.db && S.dbState === "none") html = `<div class="msg err">Маълумот базасига уланиб бўлмади. Claude.ai'га кирган ҳолда саҳифани очинг.</div>`;
   else if (!ready && !S.timedOut) html = `<div class="empty">Юкланмоқда… Рухсатлар текширилмоқда.</div>`;
+  else if (S.identity && S.loaded.has("workers") && needLogin()) html = vLogin();
   else if (!S.isOwner && !myRole()) html = ph("Fansweets", "") + (myStaff() === undefined && S.staff.some((x) => x.id === S.uid) ? `<div class="msg err">Сизнинг киришингиз ёпилган. Директорга мурожаат қилинг.</div>` : `<div class="msg info">Сизга ҳали лавозим берилмаган. Директор «Ходимлар ва рухсатлар» бўлимида сизга лавозим бергач, керакли бўлимлар очилади. Саҳифани ёпмасангиз ҳам бўлади — ўзи янгиланади.</div>`);
   else if (!pageOk(r)) { const first = NAV.flatMap((g) => g[1]).find(([k]) => pageOk(k)); html = first && r === "home" ? (VIEWS[first[0]])() : `<div class="msg info">Бу бўлим учун рухсатингиз йўқ.${first ? ` <a href="#${first[0]}">${esc(first[1])}</a> бўлимига ўтинг.` : ""}</div>`; }
   else if (r.startsWith("sale-") && r !== "sale-new") html = vSale(r.slice(5));
@@ -1736,6 +1871,9 @@ document.addEventListener("submit", async (e) => {
   else if (k === "botOrder") await A.botOrder(custById(id), f);
   else if (k === "botAddr") await A.botReply(id, "address", f.addr.value);
   else if (k === "saveWorker") await A.saveWorker(id, f);
+  else if (k === "addWorker") await A.addWorker(f);
+  else if (k === "ownerPin") await A.ownerPin(f);
+  else if (k === "login") await doLogin(f);
   else if (k === "payItem") await A.payItem(id, f);
   else if (k === "addRegion") await A.addRegion(f);
   else if (k === "addReason") await A.addReason(f);
@@ -1759,6 +1897,11 @@ document.addEventListener("click", (e) => {
     else if (a === "ordCancelAsk") { S.ordCancel = id; render(); }
     else if (a === "toSale") orderToSale(S.orders.find((o) => o.id === id));
     else if (a === "csvAtt") csvAtt();
+    else if (a === "loginPick") { S.loginPick = id; render(); setTimeout(() => $("#pin-in")?.focus(), 0); }
+    else if (a === "toggleWorker") A.toggleWorker(id);
+    else if (a === "saveWorkerRow") A.saveWorkerRow(id);
+    else if (a === "kioskOn") kioskOn();
+    else if (a === "copyInvite") copyText(inviteText(custById(id)));
     else if (a === "cbTab") { S.cbTab = id; S.cbCust = ""; S.cbOrder = false; render(); }
     else if (a === "cbCust") { S.cbCust = id; S.cbOrder = false; S.cbAddr = ""; render(); }
     else if (a === "cb") cbAction(id);
@@ -1830,6 +1973,10 @@ paintThemeBtn();
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", paintThemeBtn);
 new MutationObserver(paintThemeBtn).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 $("#theme").onclick = () => setTheme(isDark() ? "light" : "dark");
+$("#logout").onclick = () => { logout(); flash("Чиқдингиз."); };
+["click", "keydown", "touchstart"].forEach((ev) => document.addEventListener(ev, () => { S.lastAct = Date.now(); }, { passive: true }));
+// Умумий қурилмада ходим 3 дақиқа ҳеч нарса босмаса — ўзи чиқади
+setInterval(() => { if (S.worker && isKiosk() && Date.now() - (S.lastAct || Date.now()) > 180000) { logout(); render(); } }, 15000);
 $("#menu").onclick = () => { if (matchMedia("(max-width: 760px)").matches) document.body.classList.toggle("open"); else document.body.classList.toggle("closed"); };
 $("#shade").onclick = () => document.body.classList.remove("open");
 document.addEventListener("click", (e) => { if (e.target.closest("#tabmenu")) { document.body.classList.toggle("open"); window.scrollTo(0, 0); } });
@@ -1868,6 +2015,8 @@ async function boot() {
   S.db = db;
   if (user) { try { S.uid = (await user.id()) || ""; S.isOwner = !!(await user.isOwner()); } catch (e) {} if (user.can && user.can("data.write") === false) S.readOnly = true; }
   if (!S.isOwner) S.viewAs = "";
+  S.realUid = S.uid; S.realOwner = S.isOwner;
+  try { const w = localStorage.getItem("fss_worker"); if (w) loginAs(w, true); } catch (e) {}
   S.identity = true;
   const timer = setTimeout(() => { S.timedOut = true; render(); }, 10000);
   const done = (name, snap) => { if (!snap.metadata?.fromCache) S.loaded.add(name); if (S.loaded.size >= COLS.length + 1) clearTimeout(timer); };
@@ -1876,24 +2025,26 @@ async function boot() {
     S[name] = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (a.at || "").localeCompare(b.at || ""));
     done(name, snap); resolveNames(); soon();
     if (name === "staffreq" || name === "staff") askAccess();
-    if (name === "staff" || name === "attendance") subPayItems();
+    if (name === "staff" || name === "attendance" || name === "workers") subPayItems();
+    if (name === "workers" && S.worker && !(workerById(S.worker)?.active !== false && workerById(S.worker))) logout();
   }, fail(name));
   db.doc("settings/main").onSnapshot((snap) => { S.settings = snap.exists ? snap.data() : null; done("settings", snap); soon(); }, fail("settings"));
   // Ойлик: эга ҳаммасини, ходим фақат ўзиникини кўради (базанинг ўз қоидаси билан)
+  db.doc("kiosk/main").onSnapshot((snap) => { S.kiosk = snap.exists ? snap.data() : null; soon(); }, () => {});
   db.collection("staffpay").onSnapshot((snap) => { S.staffpay = snap.docs.map((d) => ({ id: d.id, ...d.data() })); subPayItems(); soon(); }, () => {});
   subPayItems();
 }
 const paySubs = {};
 function subPayItems() {
   if (!S.db) return;
-  const ids = S.isOwner ? new Set([...S.staff.map((x) => x.id), ...S.staffpay.map((x) => x.id), ...S.attendance.map((a) => a.uid).filter(Boolean)]) : new Set(S.uid ? [S.uid] : []);
+  const ids = (S.realOwner ?? S.isOwner) ? new Set([...S.workers.map((w) => w.id), ...S.staff.map((x) => x.id), ...S.staffpay.map((x) => x.id), ...S.attendance.map((a) => a.uid).filter(Boolean)]) : new Set(S.uid ? [S.uid] : []);
   for (const uid of ids) if (!paySubs[uid] && Object.keys(paySubs).length < 40)
     paySubs[uid] = S.db.collection(`staffpay/${uid}/items`).onSnapshot((snap) => { S.payItems[uid] = snap.docs.map((d) => ({ id: d.id, ...d.data() })); soon(); }, () => {});
 }
 // Лавозими йўқ ходим дастурни очса — директорга «рухсат кутаётганлар» рўйхатида кўринади
 let asked = false;
 async function askAccess() {
-  if (asked || S.isOwner || !S.uid || S.readOnly || !S.loaded.has("staff") || !S.loaded.has("staffreq")) return;
+  if (asked || S.isOwner || S.worker || (S.realOwner ?? false) || isKiosk() || !S.uid || S.readOnly || !S.loaded.has("staff") || !S.loaded.has("staffreq")) return;
   if (S.staff.some((x) => x.id === S.uid) || S.staffreq.some((x) => x.id === S.uid)) return;
   asked = true;
   try { await S.db.doc("staffreq/" + S.uid).set({ at: nowIso() }); } catch (e) {}
