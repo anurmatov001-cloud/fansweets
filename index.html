@@ -132,6 +132,28 @@ button:disabled { opacity: .5; cursor: default; }
 .pick button:hover, .pick button:focus-visible { background: var(--g2); }
 .pick small { display: block; color: var(--mut); font-size: 12.5px; margin-top: 2px; }
 .qu { display: inline-flex; gap: 6px; align-items: center; justify-content: flex-end; } .qu select { width: auto; padding-right: 26px; }
+/* Telegram кўриниши: телефон рамкаси ичидаги ёзишма — атайлаб Telegram ранглари */
+.botl { display: grid; grid-template-columns: 240px minmax(0, 380px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.botlist { display: flex; flex-direction: column; gap: 6px; max-height: 720px; overflow-y: auto; }
+.bli { all: unset; box-sizing: border-box; cursor: pointer; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font-size: 13.5px; line-height: 1.35; color: var(--ink); }
+.bli:hover, .bli.on { border-color: var(--g); } .bli.on { background: var(--g2); } .bli .mut { font-size: 12px; display: block; }
+.phone { width: 100%; max-width: 380px; border: 8px solid #1f1529; border-radius: 28px; overflow: hidden; background: #ffffff; box-shadow: 0 10px 30px rgba(43,17,69,.22); color: #0f172a; }
+.tg-head { background: linear-gradient(100deg, var(--hdr), var(--hdr2)); color: #f7e7c0; display: flex; gap: 10px; align-items: center; padding: 10px 14px; font-size: 14px; } .tg-head span { font-size: 12px; opacity: .85; }
+.tg-head img { width: 34px; height: 34px; border-radius: 50%; }
+.tg-body { background: #e9dff2 linear-gradient(160deg, #efe6f6, #e2d6ee); height: 520px; overflow-y: auto; padding: 10px 8px; display: flex; flex-direction: column; }
+.tg-day { align-self: center; background: rgba(43,17,69,.28); color: #fff; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 99px; margin: 8px 0; }
+.bub { max-width: 86%; padding: 7px 10px 18px; border-radius: 12px; margin: 3px 0; font-size: 13.5px; line-height: 1.4; white-space: pre-line; position: relative; box-shadow: 0 1px 1px rgba(0,0,0,.1); min-width: 96px; overflow-wrap: anywhere; color: #0f172a; }
+.bub.bot { background: #fff; align-self: flex-start; border-bottom-left-radius: 4px; } .bub.me { background: #f3e8ff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.bub .tm { position: absolute; right: 8px; bottom: 3px; font-size: 10.5px; color: #8a8199; }
+.bub .cp { all: unset; cursor: pointer; position: absolute; left: 8px; bottom: 2px; font-size: 11px; color: #8a8199; } .bub .cp:hover { color: #5b2a86; }
+.tg-btns { display: flex; gap: 4px; max-width: 86%; margin: 0 0 4px; } .tg-btns button { flex: 1; background: rgba(91,42,134,.85); color: #fff; font-size: 13px; padding: 8px 6px; border-radius: 8px; min-height: 38px; }
+.tg-kb { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; background: #f4f1f7; } .tg-kb button { padding: 10px 6px; font-size: 13.5px; justify-content: center; background: #5b2a86; color: #fff; }
+.tg-kb button.light { background: #fff; color: #1d1029; border: 1px solid #e7e0ee; } .tg-kb button.red { background: #dc2626; }
+.tg-form { padding: 10px; background: #f4f1f7; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; max-height: 380px; overflow-y: auto; color: #1d1029; }
+.tg-form input { background: #fff; color: #1d1029; border-color: #d9cfe3; } .tg-q { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 500; } .tg-q input { width: 86px; }
+.vidc, .locc { margin-top: 6px; border-radius: 10px; padding: 10px; white-space: normal; font-size: 12.5px; } .vidc { background: #2b1145; color: #f7e7c0; } .vidc a { color: #f3d58a; } .locc { background: #faf7fc; border: 1px solid #e7e0ee; }
+.botside { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+@media (max-width: 1100px) { .botl { grid-template-columns: minmax(0, 1fr); } .botlist { flex-direction: row; overflow-x: auto; max-height: none; } .bli { min-width: 180px; } .phone { max-width: none; } }
 .attcard { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
 .attcard > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; } .attcard button { min-width: 150px; justify-content: center; font-size: 15px; }
 .splitbox { padding: 12px 14px; background: var(--g2); border-radius: 10px; }
@@ -218,8 +240,8 @@ button:disabled { opacity: .5; cursor: default; }
 const NAV = [
   ["", [["home", "Бугун", "📊"]]],
   ["Тайёр маҳсулот склади", [["stock", "Қолдиқ", "📦"], ["stock-in", "Кирим (цехдан)", "📥"], ["writeoff", "Ҳисобдан чиқариш", "📤"], ["inventory", "Инвентаризация", "🧮"], ["ret-stock", "Возврат склади", "♻️"], ["moves", "Ҳаракатлар тарихи", "🕘"]]],
-  ["Сотув", [["orders", "Буюртмалар", "📝"], ["sale-new", "Янги сотув", "➕"], ["sales", "Сотувлар", "🧾"], ["clients", "Мижозлар", "👥"]]],
-  ["Ходимлар", [["attendance", "Давомат (келди-кетди)", "🕘"]]],
+  ["Сотув", [["orders", "Буюртмалар", "📝"], ["sale-new", "Янги сотув", "➕"], ["sales", "Сотувлар", "🧾"], ["clients", "Мижозлар", "👥"], ["cbot", "Мижоз боти (B2B / B2C)", "🤖"]]],
+  ["Ходимлар", [["sbot", "Ходим боти", "📱"], ["attendance", "Давомат (келди-кетди)", "🕘"], ["payroll", "Ойлик ҳисоби", "💰"]]],
   ["Қарздорлик", [["debts", "Қарздорлар", "💰"], ["pay", "Тўлов қабул қилиш", "💵"], ["returns", "Возвратлар", "↩️"]]],
   ["Созламалар", [["products", "Маҳсулотлар ва нархлар", "🧁"], ["regions", "Регионлар", "📍"], ["ret-reasons", "Возврат сабаблари", "🏷️"], ["rules", "Қоидалар", "⚙️"], ["journal", "Журнал", "📜"]]],
 ];
@@ -229,14 +251,14 @@ const OUT_REASONS = ["Брак", "Муддати ўтган", "Дегустац�
 const DEF_RET_REASONS = ["Муддати ўтган / эскирган", "Брак (сифатсиз)", "Сотилмади / ортиқча", "Шикастланган (йўлда)", "Бошқа"];
 const WH = { main: "Асосий склад", ret: "Возврат склади" };
 const MOVE = { in: ["📥 Кирим", "b-ok"], sale: ["🧾 Сотув", "b-b2b"], storno: ["↺ Сотув бекор", "b-amb"], ret: ["↩️ Возврат", "b-amb"], out: ["📤 Ҳисобдан чиқди", "b-low"], inv: ["🧮 Инвентаризация", ""], transfer: ["🔁 Складлар орасида", "b-b2c"] };
-const DEF_RULES = { b2bTerm: 7, b2cTerm: 3, discMenejer: 10, blockOverdue: 1, workStart: "08:00" };
+const DEF_RULES = { b2bTerm: 7, b2cTerm: 3, discMenejer: 10, blockOverdue: 1, workStart: "08:00", lateFine: 0, address: "", hours: "08:00–20:00", phone: "", video: "" };
 const ORD_ST = { new: ["🆕 Янги", "b-b2b"], ready: ["📦 Тайёр", "b-amb"], done: ["✅ Сотилди", "b-ok"], cancelled: ["✖ Бекор", "b-low"] };
 
 const S = {
   db: null, user: null, uid: "", names: {}, readOnly: false, loaded: new Set(), timedOut: false, busy: false,
   products: [], customers: [], moves: [], sales: [], payments: [], returns: [], logs: [], regions: [], promises: [], retreasons: [], settings: null,
   roles: [], staff: [], staffreq: [], isOwner: false, viewAs: "", saleKind: "b2c", saleRows: 1, retRows: 1, saleTab: "all", saleDay: "", moveTab: "all", debtTab: "b2b", clientTab: "b2b",
-  regionFilter: "", payCust: "", q: {}, orders: [], attendance: [], ordKind: "b2b", ordRows: 1, ordTab: "open", ordCancel: "", fromOrder: "", attDay: "", attMonth: "", homeDay: "", depth: 0, inRows: 1, outRows: 1, rsRows: 1, confirmCancel: "", downloads: null,
+  regionFilter: "", payCust: "", q: {}, orders: [], attendance: [], botreplies: [], staffpay: [], payItems: {}, botInfo: {}, cbTab: "b2b", cbCust: "", cbOrder: false, cbAddr: "", sbotUid: "", payMonth: "", ordKind: "b2b", ordRows: 1, ordTab: "open", ordCancel: "", fromOrder: "", attDay: "", attMonth: "", homeDay: "", depth: 0, inRows: 1, outRows: 1, rsRows: 1, confirmCancel: "", downloads: null,
 };
 try { S.viewAs = localStorage.getItem("fss_viewas") || ""; } catch (e) {}
 
@@ -256,7 +278,7 @@ const FUNCS = [
   ["debts", "Қарздорлар", "Қарздорлик", "v"], ["pay", "Тўлов ва тўлов санаси", "Қарздорлик", "ve"], ["returns", "Возвратлар", "Қарздорлик", "ve"], ["credit", "Кредит лимити ва муддати", "Қарздорлик", "e"],
   ["products", "Маҳсулотлар ва нархлар", "Созламалар", "ve"], ["regions", "Регионлар", "Созламалар", "ve"], ["ret-reasons", "Возврат сабаблари", "Созламалар", "ve"],
   ["rules", "Қоидалар", "Созламалар", "ve"], ["journal", "Журнал", "Созламалар", "v"],
-  ["orders", "Буюртмалар (B2B / B2C)", "Сотув", "ve"],
+  ["orders", "Буюртмалар (B2B / B2C)", "Сотув", "ve"], ["cbot", "Мижоз боти: ёзишмалар, ботдан буюртма", "Сотув", "ve"],
   ["att", "Давомат: ўзи «Келдим / Кетдим» босади", "Ходимлар", "e"], ["att-all", "Давомат ҳисоботи (ҳамма ходимлар, қўлда тузатиш)", "Ходимлар", "ve"],
 ];
 const FUNC = Object.fromEntries(FUNCS.map((f) => [f[0], f]));
@@ -624,7 +646,7 @@ const A = {
       if (S.customers.some((c) => c.kind === kind && normName(c.name) === normName(name))) throw new UserError("Бу ном базада бор.");
       const digits = phone.replace(/\D/g, "");
       if (digits && S.customers.some((c) => (c.phone || "").replace(/\D/g, "").endsWith(digits.slice(-9)))) throw new UserError("Бу телефон рақам базада бор.");
-      await put("customers", newId("c"), { kind, name, phone, region: f.region.value, address: f.address.value.trim(), note: f.note.value.trim() });
+      await put("customers", newId("c"), { kind, name, phone, tg: tgUser(f.tg.value), region: f.region.value, address: f.address.value.trim(), note: f.note.value.trim() });
       f.reset();
     }, "Мижоз базага қўшилди.");
   },
@@ -632,7 +654,7 @@ const A = {
     return write(async () => {
       need("clients");
       const name = f.name.value.trim(); if (!name) throw new UserError("Номи бўш бўлмасин.");
-      const d = { name, phone: f.phone.value.trim(), region: f.region.value, address: f.address.value.trim(), note: f.note.value.trim(), editedBy: S.uid || "", editedAt: nowIso() };
+      const d = { name, phone: f.phone.value.trim(), tg: tgUser(f.tg.value), region: f.region.value, address: f.address.value.trim(), note: f.note.value.trim(), editedBy: S.uid || "", editedAt: nowIso() };
       if ((c.region || "") !== d.region) await addLog("Регион ўзгарди", `${c.name}: ${regionName(c.region) || "—"} → ${regionName(d.region) || "—"}`);
       if (can("credit")) {
         const lim = f.limit.value.trim() === "" ? null : toInt(f.limit.value), term = f.term.value.trim() === "" ? null : toInt(f.term.value);
@@ -691,6 +713,10 @@ const A = {
       n.blockOverdue = f.blockOverdue.checked ? 1 : 0;
       n.workStart = f.workStart.value || "08:00";
       if (!/^\d\d:\d\d$/.test(n.workStart)) throw new UserError("Иш бошланиш вақтини ёзинг (масалан 08:00).");
+      n.lateFine = f.lateFine.value.trim() ? toInt(f.lateFine.value) : 0;
+      if (!(n.lateFine >= 0)) throw new UserError("Кечикиш жаримаси бутун сон бўлсин (сўм).");
+      n.address = f.address.value.trim(); n.hours = f.hours.value.trim(); n.phone = f.cphone.value.trim(); n.video = f.video.value.trim();
+      if (n.video && !/^https:\/\//.test(n.video)) throw new UserError("Видео ҳаволаси https:// билан бошлансин.");
       const o = rules();
       await S.db.doc("settings/main").set({ ...n, ...stamp() });
       await addLog("Қоидалар ўзгарди", Object.keys(n).map((k) => `${k}: ${o[k]} → ${n[k]}`).join(", "));
@@ -698,7 +724,7 @@ const A = {
   },
 };
 
-const COLS = ["products", "customers", "moves", "sales", "payments", "returns", "logs", "regions", "promises", "retreasons", "roles", "staff", "staffreq", "orders", "attendance"];
+const COLS = ["products", "customers", "moves", "sales", "payments", "returns", "logs", "regions", "promises", "retreasons", "roles", "staff", "staffreq", "orders", "attendance", "botreplies"];
 // ================= Ходимлар ва лавозимлар (фақат эга ўзгартиради) =================
 Object.assign(A, {
   addRole(f) {
@@ -750,7 +776,7 @@ function attDay(uid, D) {
   // Бир кунда бир неча марта келиб-кетса ҳам ҳар бир «келди → кетди» оралиғи қўшилади
   let start = null; for (const e of ev) { if (e.kind === "in" && !start) start = e.at; else if (e.kind === "out" && start) { mins += Math.round((new Date(e.at) - new Date(start)) / 6e4); start = null; } }
   if (start && D === today()) mins += Math.round((Date.now() - new Date(start)) / 6e4);
-  return { ev, first, lastOut, onNow, mins, late: !!first && hhmm(first) > rules().workStart };
+  return { ev, first, lastOut, onNow, mins, late: !!first && lateMin(uid, first) > 0, lateM: first ? lateMin(uid, first) : 0 };
 }
 function attPeople() {
   const ids = new Set(S.staff.filter((x) => x.active !== false).map((x) => x.id));
@@ -936,6 +962,248 @@ function ordCalc() {
   const c = S.customers.find((x) => x.kind === S.ordKind && normName(x.name) === normName(f.customer.value));
   const nc = $("#o-newcust"); if (nc) nc.hidden = !!c || !f.customer.value.trim();
   const info = $("#o-info"); if (info) info.innerHTML = c ? `Базада бор · ${esc(c.phone || "тел. йўқ")}${regBadge(c)}${canView("debts") ? ` · қарз: <b class="${debtOf(c) > 0 ? "neg" : ""}">${som(debtOf(c))}</b>` : ""}` : f.customer.value.trim() ? "Янги мижоз — базага ўзи қўшилади." : "";
+}
+
+
+// ================= Telegram ёрдамчилари =================
+const tgUser = (v) => String(v || "").trim().replace(/^https?:\/\/t\.me\//i, "").replace(/^@/, "").replace(/[^A-Za-z0-9_]/g, "");
+const plain = (html) => String(html).replace(/<br\s*\/?>/g, "\n").replace(/<div[^>]*>/g, "\n").replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\n{3,}/g, "\n\n").trim();
+async function copyText(t) {
+  if (!t) return;
+  try { await navigator.clipboard.writeText(t); flash("Матн нусхаланди — Telegram'га қўйиб юборинг."); }
+  catch (e) { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); flash("Матн нусхаланди."); } catch (x) { flash("Нусхалаб бўлмади — матнни қўлда белгиланг.", "err"); } ta.remove(); }
+}
+const LOGO = () => document.querySelector(".brand img")?.src || "";
+function chatHtml(msgs, title, sub, kb) {
+  let last = "", body = "";
+  for (const m of msgs) {
+    const d = localDay(m.at);
+    if (d !== last) { body += `<div class="tg-day">${dOnly(d + "T12:00")}</div>`; last = d; }
+    body += `<div class="bub ${m.from}" data-plain="${esc(plain(m.text))}">${m.text}${m.from === "bot" ? `<button type="button" class="cp" data-a="copyMsg" title="Нусхалаш">📋</button>` : ""}<span class="tm">${hhmm(m.at)}${m.from === "me" ? " ✓✓" : ""}</span></div>` +
+      (m.btns ? `<div class="tg-btns">${m.btns.map(([l, a]) => `<button type="button" data-a="cb" data-id="${esc(a)}">${l}</button>`).join("")}</div>` : "");
+  }
+  if (!msgs.length) body = `<div class="tg-day">Хабар йўқ</div>`;
+  return `<div class="phone"><div class="tg-head"><img src="${LOGO()}" alt=""><div><b>${title}</b><br><span>${sub}</span></div></div><div class="tg-body" id="tgbody">${body}</div>${kb || ""}</div>`;
+}
+const sayBot = (key, text) => { (S.botInfo[key] ||= []).push({ at: nowIso(), from: "bot", text }); render(); };
+const sayMe = (key, text) => { (S.botInfo[key] ||= []).push({ at: nowIso(), from: "me", text }); };
+const scrollChat = () => setTimeout(() => { const b = $("#tgbody"); if (b) b.scrollTop = b.scrollHeight; }, 0);
+const botTag = () => `<div class="msg info">🤖 Бу — ботнинг кўриниши: ҳар бир хабар дастурдаги ҳақиқий маълумотдан тузилади, тугмалар ҳақиқатан ишлайди. Мижозга юбориш учун хабар ёнидаги 📋 ни босиб, Telegram'да қўйинг. Ҳақиқий Telegram бот учун алоҳида сервер керак — кейинги босқич.</div>`;
+
+// ================= Мижоз боти =================
+const linesTxt = (lines) => (lines || []).map((l) => `• ${esc(lineText(l))} = ${som((l.uq ?? l.qty) * l.price)}`).join("\n");
+const repliesOf = (oid) => S.botreplies.filter((r) => r.orderId === oid).sort((a, b) => (a.at || "").localeCompare(b.at || ""));
+function pickupMsg() {
+  const R = rules();
+  return `🏠 <b>Бизнинг манзил:</b>\n${esc(R.address || "Манзил «Қоидалар»да ҳали киритилмаган")}\n🕘 Иш вақти: ${esc(R.hours || "")}${R.phone ? `\n📞 ${esc(R.phone)}` : ""}` +
+    (R.video ? `<div class="vidc">▶️ <b>Йўл кўрсатувчи видео</b><br><a href="${esc(R.video)}" target="_blank" rel="noopener">Видеони очиш ↗</a></div>` : "");
+}
+function custMsgs(c) {
+  const M = [], add = (at, from, text, btns) => at && M.push({ at, from, text, btns });
+  add(c.at, "bot", `👋 Ассалому алайкум, <b>${esc(c.name)}</b>!\nFansweets Premium ботига хуш келибсиз. Буюртма, ${c.kind === "b2b" ? "накладной, қарз ва тўлов санаси" : "тайёр бўлгани ва тўлов"} ҳақида шу ерда хабар берамиз.`);
+  for (const o of S.orders.filter((x) => x.customerId === c.id)) {
+    const no = docNo(o), st = o.status || "new";
+    if (o.via === "Telegram бот") add(o.at, "me", `🛒 Буюртма:\n${(o.lines || []).map((l) => esc(lineText(l))).join("\n")}\n📅 ${dOnly(o.due + "T12:00")}`);
+    add(o.at, "bot", `✅ <b>Буюртмангиз қабул қилинди</b> №${no}\n${linesTxt(o.lines)}\n<b>Жами: ${som(o.total || totalOf(o))}</b>\n📅 Бериш: ${dOnly(o.due + "T12:00")}${o.time ? " " + esc(o.time) : ""}`);
+    if (st === "ready" || (st === "done" && o.statusAt)) {
+      const R = repliesOf(o.id), ch = R.find((r) => r.choice === "pickup" || r.choice === "delivery"), ad = R.find((r) => r.choice === "address");
+      add(o.statusAt, "bot", `🎉 <b>Буюртмангиз тайёр!</b> №${no}${c.kind === "b2c" ? "\nОлиб кетасизми ёки доставка қилайликми?" : "\nБелгиланган вақтда етказамиз."}`, c.kind === "b2c" && !ch && st === "ready" ? [["🏃 Олиб кетаман", `pickup:${o.id}`], ["🚚 Доставка", `delivery:${o.id}`]] : null);
+      if (ch?.choice === "pickup") { add(ch.at, "me", "🏃 Олиб кетаман"); add(ch.at, "bot", pickupMsg()); }
+      if (ch?.choice === "delivery") {
+        add(ch.at, "me", "🚚 Доставка");
+        add(ch.at, "bot", `📍 Илтимос, <b>манзилингизни ёзинг</b> — курьер шу ерга олиб боради.`, !ad && st === "ready" ? [["📍 Манзилни ёзиш", `addr:${o.id}`]] : null);
+        if (ad) { add(ad.at, "me", `📍 ${esc(ad.text || "")}`); add(ad.at, "bot", `✅ Раҳмат! Манзил қабул қилинди. Курьер йўлга чиққанда хабар берамиз.`); }
+      }
+    }
+    if (st === "cancelled") add(o.statusAt, "bot", `❌ Буюртма №${no} бекор қилинди.${o.cancelReason ? "\n" + esc(o.cancelReason) : ""}`);
+  }
+  const L = ledgerOf(c), balAt = (at) => (L.filter((x) => !x.info && x.at <= at).pop()?.balance ?? 0);
+  for (const r of L) {
+    if (r.info) continue;
+    if (r.go && r.go.startsWith("sale-") && !r.off) {
+      const sl = S.sales.find((x) => "sale-" + x.id === r.go); if (!sl) continue;
+      const x = saleInfo(sl) || {}, pr = promisesOf(sl.id)[0], t1 = new Date(new Date(r.at).getTime() + 60e3).toISOString();  // сотув пайтидаги тўлов ҳам киради
+      add(r.at, "bot", c.kind === "b2b"
+        ? `📄 <b>НАКЛАДНОЙ №${docNo(sl)}</b>\nСана: ${dt(sl.at)}\nДўкон: ${esc(c.name)}\n${linesTxt(sl.lines)}${sl.discount ? `\nЧегирма: ${sl.discount}%` : ""}\n<b>Жами: ${som(totalOf(sl))}</b>\n💵 Шу ҳужжат бўйича тўланди: ${som(S.payments.filter((p) => p.saleId === sl.id && p.at <= t1).reduce((t, p) => t + p.amount, 0))}\n💰 <b>Умумий қарзингиз: ${som(Math.max(balAt(t1), 0))}</b>${pr ? `\n⏳ Тўлов санаси: ${dOnly(pr.date + "T12:00")}` : ""}`
+        : `🧾 <b>Харидингиз учун раҳмат!</b> №${docNo(sl)}\n${linesTxt(sl.lines)}\n<b>Жами: ${som(totalOf(sl))}</b>${x.rest > 0 ? `\n💰 Қолган тўлов: <b>${som(x.rest)}</b>${pr ? ` — ${dOnly(pr.date + "T12:00")} гача` : ""}` : "\n✅ Тўлиқ тўланди"}\nЁқимли иштаҳа! 🍰`);
+    } else if (r.type.includes("Тўлов")) add(r.at, "bot", `💵 <b>Тўловингиз қабул қилинди:</b> ${som(-r.amount)}\n${esc(r.text)}\n💰 Қолган қарз: <b>${som(Math.max(r.balance, 0))}</b>`);
+    else if (r.type.includes("Возврат")) add(r.at, "bot", `↩️ <b>Возврат қабул қилинди</b>\n${esc(r.text)}\n💰 Қолган қарз: <b>${som(Math.max(r.balance, 0))}</b>`);
+  }
+  // Ваъдалар ва ўша куни эрталабки эслатма (ҳужжат бўйича қарз ҳали қолган бўлса)
+  for (const x of allocOf(c.id).list) {
+    const prs = promisesOf(x.s.id);
+    for (const v of prs.slice(1)) add(v.at, "bot", `🤝 <b>Келишилди:</b> ҳужжат №${docNo(x.s)} бўйича қолган ${som(v.amount || 0)} ни <b>${dOnly(v.date + "T12:00")}</b> да тўлайсиз.`);
+    const lastP = prs[prs.length - 1];
+    if (lastP && x.rest > 0 && lastP.date <= today()) add(new Date(lastP.date + "T09:00").toISOString(), "bot", `⏰ <b>Эслатма!</b>\nБугун ҳужжат №${docNo(x.s)} бўйича ${som(x.rest)} тўлашни ваъда қилгансиз.\n💰 Жами қарзингиз: <b>${som(debtOf(c))}</b>\nТўлов қилгач, менежерга хабар беринг 🙏`);
+  }
+  return M.concat(S.botInfo[c.id] || []).sort((a, b) => a.at.localeCompare(b.at) || (a.from === "me" ? -1 : 1));
+}
+const cbCustomer = () => { const list = S.customers.filter((c) => c.kind === S.cbTab && hit("cbot", c.name, c.phone)).sort((a, b) => a.name.localeCompare(b.name)); return { list, c: custById(S.cbCust) || list[0] }; };
+const lastBotText = () => { const { c } = cbCustomer(); const m = c ? custMsgs(c).filter((x) => x.from === "bot").pop() : null; return m ? plain(m.text) : ""; };
+function vCBot() {
+  const { list, c } = cbCustomer();
+  let h = ph("Мижоз боти", "Мижоз ёки дўконни танланг — унинг Telegram'идаги ёзишмани кўрасиз. Тугмаларни мижоз ўрнида босиб кўринг.") + botTag();
+  h += `<div class="toolbar"><div class="seg">${[["b2b", "B2B — дўконлар"], ["b2c", "B2C — мижозлар"]].map(([k, l]) => `<button type="button" class="${S.cbTab === k ? "on" : ""}" data-a="cbTab" data-id="${k}">${l}</button>`).join("")}</div>${searchBox("cbot", "Исм ёки телефон")}</div>`;
+  h += `<div class="botl"><div class="botlist">` + (list.length ? list.map((x) => { const ms = custMsgs(x), lm = ms[ms.length - 1]; return `<button type="button" class="bli ${x.id === c?.id ? "on" : ""}" data-a="cbCust" data-id="${esc(x.id)}"><b>${esc(x.name)}</b>${debtOf(x) > 0 ? ` <span class="badge b-low">${som(debtOf(x))}</span>` : ""}<span class="mut">${lm ? esc(plain(lm.text).replace(/\s+/g, " ").slice(0, 46)) + "…" : "хабар йўқ"}</span></button>`; }).join("") : `<div class="empty">Мижоз йўқ</div>`) + `</div>`;
+  if (!c) return h + `</div>`;
+  const canOrd = can("orders"), P = products();
+  let kb;
+  if (S.cbAddr) kb = `<form class="tg-form" data-f="botAddr" data-id="${esc(S.cbAddr)}"><b>📍 Етказиш манзили</b><input id="cb-addr" name="addr" placeholder="Кўча, уй, мўлжал"><div class="tg-kb" style="padding:0"><button type="button" class="light" data-a="cb" data-id="close">Бекор</button><button>Юбориш</button></div></form>`;
+  else if (S.cbOrder) kb = `<form class="tg-form" data-f="botOrder" data-id="${esc(c.id)}"><b>🛒 Янги буюртма</b>${P.map((p) => `<label class="tg-q" for="cbq_${esc(p.id)}"><span>${esc(p.name)} <span class="mut">${som(priceOf(p, c.kind))}</span></span><input id="cbq_${esc(p.id)}" name="q_${esc(p.id)}" inputmode="numeric" placeholder="0"></label>`).join("")}<label for="cb-due">Қачонга</label><input type="date" id="cb-due" name="due" min="${today()}" value="${addDays(nowIso(), 1)}"><div class="tg-kb" style="padding:0"><button type="button" class="light" data-a="cb" data-id="close">Бекор</button><button>Юбориш</button></div></form>`;
+  else kb = `<div class="tg-kb">${canOrd ? `<button type="button" data-a="cb" data-id="order">🛒 Буюртма бериш</button>` : ""}<button type="button" data-a="cb" data-id="orders">📦 Буюртмаларим</button><button type="button" class="light" data-a="cb" data-id="debt">💰 Қарзим</button><button type="button" class="light" data-a="cb" data-id="addr">📍 Манзилингиз</button></div>`;
+  h += `<div>${chatHtml(custMsgs(c), "Fansweets Premium", `${esc(c.name)} · ${c.kind === "b2b" ? "дўкон" : "мижоз"}`, kb)}</div>`;
+  const ov = overdueOf(c);
+  h += `<div class="botside"><div class="card"><b class="ct">${esc(c.name)}</b>${c.phone ? `<div>📞 <b style="user-select:all">${esc(c.phone)}</b></div>` : ""}${c.tg ? `<div style="margin-top:6px"><a class="btn light sm" href="https://t.me/${esc(c.tg)}" target="_blank" rel="noopener">✈️ Telegram'да очиш (@${esc(c.tg)})</a></div>` : `<p class="mut" style="margin:6px 0 0">Telegram username ёзилмаган — мижоз картасида қўшинг.</p>`}
+    <div style="margin-top:10px"><button type="button" class="light sm" data-a="copyLast">📋 Охирги хабарни нусхалаш</button></div>
+    ${canView("debts") ? `<p style="margin:10px 0 0">Қарз: <b class="${debtOf(c) > 0 ? "neg" : ""}">${som(debtOf(c))}</b>${ov.over ? `<br><span class="neg">Муддати ўтган: ${som(ov.over)}</span>` : ""}${ov.next ? `<br>Кейинги тўлов санаси: <b>${dOnly(ov.next + "T12:00")}</b>` : ""}</p>` : ""}
+    <p style="margin:8px 0 0"><a href="#client-${esc(c.id)}">Мижоз картаси →</a></p></div></div>`;
+  scrollChat();
+  return h + `</div>`;
+}
+function cbAction(id) {
+  const { c } = cbCustomer(); if (!c) return;
+  const [act, oid] = id.split(":");
+  if (act === "order") { S.cbOrder = true; S.cbAddr = ""; render(); }
+  else if (act === "close") { S.cbOrder = false; S.cbAddr = ""; render(); }
+  else if (act === "pickup" || act === "delivery") A.botReply(oid, act);
+  else if (act === "addr") { if (oid) { S.cbAddr = oid; render(); } else { sayMe(c.id, "📍 Манзилингиз"); sayBot(c.id, pickupMsg()); } }
+  else if (act === "debt") { sayMe(c.id, "💰 Қарзим"); const ov = overdueOf(c), docs = openDocs(c); sayBot(c.id, `💰 Жорий қарзингиз: <b>${som(Math.max(debtOf(c), 0))}</b>` + (ov.over ? `\n⏰ Муддати ўтган: ${som(ov.over)}` : "") + (docs.length ? "\n\n" + docs.map((x) => `№${docNo(x.s)} — қолди ${som(x.rest)}, сана ${dOnly(x.due + "T12:00")}${x.late ? " ⚠️" : ""}`).join("\n") : "")); }
+  else if (act === "orders") { sayMe(c.id, "📦 Буюртмаларим"); const os = S.orders.filter((o) => o.customerId === c.id && ["new", "ready"].includes(o.status || "new")); sayBot(c.id, os.length ? os.map((o) => `№${docNo(o)} — <b>${ORD_ST[o.status || "new"][0]}</b>\n📅 ${dOnly(o.due + "T12:00")} · ${som(o.total || totalOf(o))}`).join("\n\n") : "Ҳозир очиқ буюртмангиз йўқ. Янги буюртма учун «🛒 Буюртма бериш»ни босинг 🙂"); }
+  scrollChat();
+}
+Object.assign(A, {
+  botOrder(c, f) {
+    return write(async () => {
+      need("orders");
+      const lines = [];
+      for (const p of products()) { const raw = f["q_" + p.id]?.value.trim(); if (!raw) continue; const q = toInt(raw); if (!(q > 0)) throw new UserError(`${p.name}: миқдор бутун сон бўлсин.`); const P = partsOf(p); lines.push({ pid: p.id, qty: q * P, pp: P, uq: q, unit: "whole", price: priceOf(p, c.kind) }); }
+      if (!lines.length) throw new UserError("Камида битта маҳсулот сонини ёзинг.");
+      const due = f.due.value; if (!due || due < today()) throw new UserError("Қачонга керагини танланг (бугун ёки кейин).");
+      const id = newId("o"), no = await nextNo();
+      await put("orders", id, { no, kind: c.kind, customerId: c.id, customer: c.name, lines, total: totalOf({ lines }), due, time: "", address: "", via: "Telegram бот", note: "Ботдан келди", status: "new" });
+      await addLog("Ботдан буюртма", `№${no} · ${c.name}`);
+      S.cbOrder = false;
+    }, "Ботдан буюртма тушди — «Буюртмалар»да «Янги» бўлиб турибди.");
+  },
+  botReply(oid, choice, text) {
+    return write(async () => {
+      const o = S.orders.find((x) => x.id === oid); if (!o) throw new UserError("Буюртма топилмади.");
+      if (choice === "address" && !String(text || "").trim()) throw new UserError("Манзилни ёзинг.");
+      if (choice !== "address" && repliesOf(oid).some((r) => r.choice === "pickup" || r.choice === "delivery")) throw new UserError("Мижоз аллақачон жавоб берган.");
+      await put("botreplies", newId("r"), { orderId: oid, customerId: o.customerId, choice, ...(choice === "address" ? { text: text.trim() } : {}) });
+      if (choice === "address") { await S.db.doc("orders/" + oid).update({ address: text.trim() }); S.cbAddr = ""; }
+    }, choice === "pickup" ? "Мижоз: олиб кетаман." : choice === "delivery" ? "Мижоз: доставка. Манзил сўралди." : "Манзил буюртмага ёзилди.");
+  },
+});
+
+// ================= Ойлик ҳисоби =================
+const STAFF_PAY = { bonus: "🎁 Бонус", fine: "⚠️ Жарима", advance: "💵 Аванс", salary: "💰 Ойлик тўланди" };
+const MONTHS = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+const monthName = (m) => { const [y, mm] = m.split("-").map(Number); return `${MONTHS[mm - 1]} ${y}`; };
+const payCfg = (uid) => S.staffpay.find((x) => x.id === uid) || {};
+const payItems = (uid, m) => (S.payItems[uid] || []).filter((x) => !m || x.month === m).sort((a, b) => (a.at || "").localeCompare(b.at || ""));
+const startOf = (uid) => payCfg(uid).start || rules().workStart || "08:00";
+function lateMin(uid, first) { const [h, mm] = startOf(uid).split(":").map(Number), d = new Date(first); return Math.max(0, d.getHours() * 60 + d.getMinutes() - (h * 60 + mm)); }
+function payroll(uid, m) {
+  const days = [...new Set(S.attendance.filter((a) => a.uid === uid && localDay(a.at).startsWith(m)).map((a) => localDay(a.at)))].sort().map((D) => ({ D, ...attDay(uid, D) }));
+  const it = payItems(uid, m), sum = (k) => it.filter((x) => x.kind === k).reduce((t, x) => t + x.amount, 0);
+  const late = days.reduce((t, d) => t + d.lateM, 0), lateFine = late * (rules().lateFine || 0) * 100;
+  const salary = payCfg(uid).salary || 0, bonus = sum("bonus"), fine = sum("fine") + lateFine, paid = sum("advance") + sum("salary");
+  return { days, items: it, worked: days.filter((d) => d.first).length, late, lateDays: days.filter((d) => d.lateM > 0).length, mins: days.reduce((t, d) => t + d.mins, 0), salary, bonus, fine, lateFine, paid, toPay: salary + bonus - fine - paid };
+}
+const payMonth = () => S.payMonth || today().slice(0, 7);
+function vPayroll() {
+  const m = payMonth(), people = attPeople().concat(S.staffpay.map((x) => x.id).filter((id) => !attPeople().includes(id)));
+  let h = ph("Ойлик ҳисоби", `${monthName(m)}. Ойлик = оклад + бонус − жарима − кечикиш жаримаси − берилган аванс. Давомат «Келдим / Кетдим»дан келади.`, `<input type="month" id="payMonth" value="${m}" style="width:auto" aria-label="Ой">`);
+  if (!people.length) return h + `<div class="empty">Ҳали ходим йўқ. «Ходимлар ва рухсатлар»да ходимга лавозим беринг.</div>`;
+  const P = people.map((u) => ({ u, p: payroll(u, m) })), T = (k) => P.reduce((t, x) => t + x.p[k], 0);
+  h += `<div class="kpi"><div><span>Ходимлар</span><b>${people.length}</b></div><div><span>Оклад жами</span><b>${som(T("salary"))}</b></div><div><span>Бонус / жарима</span><b><span class="pos">+${som(T("bonus"))}</span></b><small class="neg">−${som(T("fine"))}</small></div><div><span>Берилган</span><b>${som(T("paid"))}</b></div><div><span>Тўланиши керак</span><b>${som(T("toPay"))}</b></div></div>`;
+  h += `<div class="wrap"><table><thead><tr><th>Ходим</th><th class="n">Оклад</th><th class="n">Келган кун</th><th class="n">Ишлаган</th><th class="n">Кечикиш</th><th class="n">Бонус / жарима</th><th class="n">Берилган</th><th class="n">Тўланади</th></tr></thead><tbody>` +
+    P.map(({ u, p }) => `<tr class="click" data-go="worker-${esc(u)}"><td><b>${esc(who(u))}</b><br><span class="mut">${esc(payCfg(u).position || roleById(S.staff.find((x) => x.id === u)?.roleId)?.name || "")}</span></td><td class="n">${p.salary ? som(p.salary) : `<span class="mut">ёзилмаган</span>`}</td><td class="n">${p.worked}</td><td class="n">${hoursText(p.mins)}</td><td class="n ${p.late ? "neg" : ""}">${p.late ? `${p.late} дақ. (${p.lateDays} марта)` : "—"}</td><td class="n">${p.bonus ? `<span class="pos">+${som(p.bonus)}</span> ` : ""}${p.fine ? `<span class="neg">−${som(p.fine)}</span>` : ""}${p.bonus || p.fine ? "" : "—"}</td><td class="n">${p.paid ? som(p.paid) : "—"}</td><td class="n"><b>${som(p.toPay)}</b></td></tr>`).join("") + `</tbody></table></div>`;
+  if (rules().lateFine) h += `<p class="mut">Кечикиш жаримаси автоматик: ҳар дақиқасига ${fmt(rules().lateFine)} сўм («Қоидалар»да ўзгаради).</p>`;
+  return h;
+}
+function vWorker(uid) {
+  const m = payMonth(), cfg = payCfg(uid), p = payroll(uid, m);
+  let h = ph(esc(who(uid)), `${esc(cfg.position || "")}${cfg.position ? " · " : ""}иш вақти ${esc(startOf(uid))}–${esc(cfg.end || "18:00")}${cfg.phone ? " · " + esc(cfg.phone) : ""}`, `<input type="month" id="payMonth" value="${m}" style="width:auto" aria-label="Ой">`);
+  h += `<div class="kpi"><div><span>Оклад</span><b>${som(p.salary)}</b></div><div><span>Келган кун</span><b>${p.worked} кун</b><small>${hoursText(p.mins)}</small></div><div><span>Кечикиш</span><b class="${p.late ? "bad" : ""}">${p.late} дақ.</b><small>${p.lateDays} марта</small></div><div><span>Бонус / жарима</span><b class="pos">+${som(p.bonus)}</b><small class="neg">−${som(p.fine)}</small></div><div><span>Тўланади</span><b>${som(p.toPay)}</b><small>берилган ${som(p.paid)}</small></div></div>`;
+  h += `<form class="card" data-f="saveWorker" data-id="${esc(uid)}"><b class="ct">⚙️ Иш шартлари</b><div class="row" style="margin-top:0">
+    <div><label for="w-pos">Лавозими</label><input id="w-pos" name="position" value="${esc(cfg.position || "")}" placeholder="Қандолатчи"></div><div><label for="w-phone">Телефон</label><input id="w-phone" name="phone" value="${esc(cfg.phone || "")}"></div>
+    <div style="flex:0 1 190px"><label for="w-sal">Оклад, сўм / ой</label><input id="w-sal" name="salary" inputmode="numeric" value="${cfg.salary ? cfg.salary / 100 : ""}"></div>
+    <div style="flex:0 1 140px"><label for="w-start">Иш бошланиши</label><input type="time" id="w-start" name="start" value="${esc(startOf(uid))}"></div><div style="flex:0 1 140px"><label for="w-end">Иш тугаши</label><input type="time" id="w-end" name="end" value="${esc(cfg.end || "18:00")}"></div>
+    <div class="fit"><button>Сақлаш</button></div></div><p class="mut" style="margin:8px 0 0">Окладни фақат сиз ва ходимнинг ўзи кўради.</p></form>`;
+  h += `<div class="two"><div><h2>🕘 Давомат — ${monthName(m)}</h2>` + (p.days.length ? `<div class="wrap"><table><thead><tr><th>Кун</th><th>Келди</th><th>Кетди</th><th class="n">Ишлади</th><th class="n">Кечикиш</th></tr></thead><tbody>${p.days.slice().reverse().map((d) => `<tr><td><b>${dOnly(d.D + "T12:00")}</b></td><td>${d.first ? hhmm(d.first) : "—"}</td><td>${d.onNow ? `<span class="badge b-ok">ишда</span>` : d.lastOut ? hhmm(d.lastOut) : "—"}</td><td class="n">${hoursText(d.mins)}</td><td class="n ${d.lateM ? "neg" : ""}">${d.lateM ? d.lateM + " дақ." : "—"}</td></tr>`).join("")}</tbody></table></div>` : `<div class="empty">Бу ойда давомат йўқ.</div>`) + `</div>`;
+  h += `<div><h2>💵 Бонус, жарима, тўловлар</h2>` + (p.items.length || p.lateFine ? `<div class="wrap"><table><thead><tr><th>Сана</th><th>Тури</th><th class="n">Сумма</th></tr></thead><tbody>${p.lateFine ? `<tr><td class="mut">автомат</td><td>⚠️ Кечикиш жаримаси<br><span class="mut">${p.late} дақ. × ${fmt(rules().lateFine)} сўм</span></td><td class="n neg">−${som(p.lateFine)}</td></tr>` : ""}${p.items.map((x) => `<tr><td class="mut">${dt(x.at)}</td><td>${STAFF_PAY[x.kind] || x.kind}${x.note ? `<br><span class="mut">${esc(x.note)}</span>` : ""}</td><td class="n ${x.kind === "bonus" ? "pos" : x.kind === "fine" ? "neg" : ""}">${x.kind === "bonus" ? "+" : "−"}${som(x.amount)}</td></tr>`).join("")}</tbody></table></div>` : `<div class="empty">Ёзув йўқ.</div>`) +
+    `<form class="card" data-f="payItem" data-id="${esc(uid)}" style="margin-top:12px"><div class="row" style="margin-top:0"><div><label for="pi-kind">Тури</label><select id="pi-kind" name="kind">${Object.entries(STAFF_PAY).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select></div><div><label for="pi-amount">Сумма, сўм</label><input id="pi-amount" name="amount" inputmode="numeric"></div></div>
+    <div class="row"><div><label for="pi-note">Изоҳ</label><input id="pi-note" name="note" placeholder="Нима учун"></div><div class="fit"><button>Ёзиш</button></div></div><p class="mut" style="margin:6px 0 0">${monthName(m)} ҳисобига ёзилади. Ходим ботида кўради. Ўчирилмайди — хато бўлса тескари ёзув қилинг.</p></form></div></div>`;
+  return h;
+}
+Object.assign(A, {
+  saveWorker(uid, f) {
+    return write(async () => {
+      if (!S.isOwner) throw new UserError("Ойлик шартларини фақат эга ўзгартиради.");
+      const sal = f.salary.value.trim() ? toInt(f.salary.value) : 0;
+      if (!(sal >= 0)) throw new UserError("Окладни бутун сонда ёзинг (сўм).");
+      const old = payCfg(uid), d = { position: f.position.value.trim(), phone: f.phone.value.trim(), salary: sal * 100, start: f.start.value || rules().workStart, end: f.end.value || "18:00", editedBy: S.uid || "", editedAt: nowIso() };
+      const { id: _x, ...rest } = old; await S.db.doc("staffpay/" + uid).set({ ...rest, ...d });
+      if ((old.salary || 0) !== d.salary) await addLog("Оклад ўзгарди", `${who(uid)}: ${som(old.salary || 0)} → ${som(d.salary)}`);
+    }, "Иш шартлари сақланди.");
+  },
+  payItem(uid, f) {
+    return write(async () => {
+      if (!S.isOwner) throw new UserError("Фақат эга ёзади.");
+      const amount = toInt(f.amount.value), kind = f.kind.value, note = f.note.value.trim();
+      if (!(amount > 0)) throw new UserError("Суммани бутун сонда ёзинг.");
+      if (kind === "fine" && !note) throw new UserError("Жарима сабабини ёзинг.");
+      await S.db.collection(`staffpay/${uid}/items`).doc(newId("y")).set({ kind, amount: amount * 100, month: payMonth(), note, ...stamp() });
+      await addLog(STAFF_PAY[kind], `${who(uid)}: ${som(amount * 100)} · ${monthName(payMonth())}${note ? " · " + note : ""}`);
+      f.reset();
+    }, "Ёзилди. Ходим ботида кўради.");
+  },
+});
+
+// ================= Ходим боти =================
+function staffMsgs(uid) {
+  const M = [], add = (at, from, text) => at && M.push({ at, from, text }), since = addDays(nowIso(), -13), R = rules();
+  const st = S.staff.find((x) => x.id === uid);
+  add(st?.at || st?.editedAt || S.attendance.find((a) => a.uid === uid)?.at, "bot", `👋 Ассалому алайкум, <b>${esc(who(uid))}</b>!\nИшга келганда «✅ Келдим», кетаётганда «🏁 Кетдим» тугмасини босинг. «💰 Ойлигим» — шу ойги ҳисоб.`);
+  for (const a of S.attendance.filter((x) => x.uid === uid && localDay(x.at) >= since).sort((x, y) => x.at.localeCompare(y.at))) {
+    if (a.manual) { add(a.at, "bot", `✍️ Директор ${a.kind === "in" ? "келиш" : "кетиш"} вақтингизни қўлда ёзди: ${hhmm(a.at)}${a.note ? "\n" + esc(a.note) : ""}`); continue; }
+    add(a.at, "me", a.kind === "in" ? "✅ Келдим" : "🏁 Кетдим");
+    if (a.kind === "in") { const late = lateMin(uid, a.at); add(a.at, "bot", `✅ <b>Келиш қайд этилди: ${hhmm(a.at)}</b>` + (late ? `\n⏰ ${late} дақ. кечикдингиз${R.lateFine ? ` — жарима ${fmt(late * R.lateFine)} сўм` : ""}.` : `\n👍 Вақтида келдингиз!`)); }
+    else add(a.at, "bot", `🏁 <b>Кетиш қайд этилди: ${hhmm(a.at)}</b>\nБугун ишладингиз: ${hoursText(attDay(uid, localDay(a.at)).mins)}. Раҳмат! 🙏`);
+  }
+  for (const x of payItems(uid).filter((x) => localDay(x.at) >= since)) add(x.at, "bot", `${STAFF_PAY[x.kind]}: <b>${som(x.amount)}</b>${x.note ? "\n" + esc(x.note) : ""}\n(${monthName(x.month)} ҳисобига)`);
+  return M.concat(S.botInfo["s:" + uid] || []).sort((a, b) => a.at.localeCompare(b.at));
+}
+function salaryText(uid) {
+  const m = today().slice(0, 7), p = payroll(uid, m);
+  return `💰 <b>${monthName(m)} — ойлигингиз</b>\nОклад: ${som(p.salary)}\n🎁 Бонус: +${som(p.bonus)}\n⚠️ Жарима: −${som(p.fine)}${p.lateFine ? ` (кечикиш ${som(p.lateFine)})` : ""}\n💵 Олдин берилган: −${som(p.paid)}\n<b>Қолди: ${som(p.toPay)}</b>`;
+}
+function attText(uid) {
+  const m = today().slice(0, 7), p = payroll(uid, m);
+  return `📊 <b>${monthName(m)} — давомат</b>\nКелган кунлар: ${p.worked}\nИшлаган вақт: ${hoursText(p.mins)}\nКечикиш: ${p.late} дақ. (${p.lateDays} марта)\n\n` + p.days.slice(-7).map((d) => `${d.D.slice(8)}.${d.D.slice(5, 7)}: ${d.first ? hhmm(d.first) : "—"}–${d.lastOut ? hhmm(d.lastOut) : "…"}${d.lateM ? ` ⏰${d.lateM}` : ""}`).join("\n");
+}
+function sbotAsk(id) {
+  const uid = fullAccess() ? (S.sbotUid || attPeople()[0]) : S.uid; if (!uid) return;
+  if (id === "pay") { sayMe("s:" + uid, "💰 Ойлигим"); sayBot("s:" + uid, salaryText(uid)); }
+  if (id === "att") { sayMe("s:" + uid, "📊 Давомат"); sayBot("s:" + uid, attText(uid)); }
+  scrollChat();
+}
+function vSBot() {
+  const people = attPeople(), own = !fullAccess();
+  let h = ph("Ходим боти", own ? "Ишга келганда «Келдим», кетаётганда «Кетдим» босинг. Ойлигингиз ва давоматингиз шу ерда." : "Ходимни танланг — унинг ботидаги кўриниш. Ходимнинг ўзи телефонида шу саҳифани очиб тугмаларни босади.");
+  const uid = own ? S.uid : (S.sbotUid && people.includes(S.sbotUid) ? S.sbotUid : people[0] || S.uid);
+  if (!uid) return h + `<div class="empty">Ҳали ходим йўқ.</div>`;
+  const mine = uid === S.uid && can("att"), d = attDay(uid, today());
+  const kb = `<div class="tg-kb">${mine ? (d.onNow ? `<button type="button" class="red" data-a="att" data-id="out">🏁 Кетдим</button>` : `<button type="button" data-a="att" data-id="in">✅ Келдим</button>`) : `<button type="button" disabled title="Ходимнинг ўзи босади">${d.onNow ? "🏁 Кетдим" : "✅ Келдим"}</button>`}<button type="button" class="light" data-a="sbotAsk" data-id="att">📊 Давомат</button><button type="button" class="light" data-a="sbotAsk" data-id="pay" style="grid-column:1/-1">💰 Ойлигим</button></div>`;
+  h += `<div class="botl">` + (own ? `<div class="botside"><div class="card"><b class="ct">Бугун</b>${d.first ? `Келдингиз: <b>${hhmm(d.first)}</b>${d.lateM ? ` <span class="badge b-low">${d.lateM} дақ. кечикдингиз</span>` : ""}<br>${d.onNow ? "Ҳозир ишдасиз" : d.lastOut ? `Кетдингиз: <b>${hhmm(d.lastOut)}</b>` : ""}<br>Ишладингиз: ${hoursText(d.mins)}` : "Ҳали «Келдим» босилмаган"}<p class="mut" style="margin:8px 0 0">Иш бошланиши: ${esc(startOf(uid))}</p></div></div>`
+    : `<div class="botlist">${people.map((u) => { const x = attDay(u, today()); return `<button type="button" class="bli ${u === uid ? "on" : ""}" data-a="sbotUid" data-id="${esc(u)}"><b>${esc(who(u))}</b><span class="mut">${x.first ? `келди ${hhmm(x.first)}${x.lateM ? ` · ⏰${x.lateM}` : ""}${x.onNow ? " · ишда" : ""}` : "бугун келмаган"}</span></button>`; }).join("")}</div>`);
+  h += `<div>${chatHtml(staffMsgs(uid), "Fansweets ходим боти", esc(who(uid)), kb)}</div>`;
+  if (!own) h += `<div class="botside"><div class="card"><b class="ct">${esc(who(uid))}</b><span class="mut">Иш вақти ${esc(startOf(uid))}–${esc(payCfg(uid).end || "18:00")}</span><p style="margin:8px 0 0"><a href="#worker-${esc(uid)}">Ойлик ва давомат →</a></p></div>
+    <div class="card"><b class="ct">Ходим қандай ишлатади</b><p class="mut" style="margin:0">Ходим телефонида шу дастурни очади (Claude иловаси) ва «Ходим боти»да «Келдим / Кетдим» босади. Вақт ўзи ёзилади, кечикиш ва жарима ўзи ҳисобланади.</p></div></div>`;
+  scrollChat();
+  return h + `</div>`;
 }
 
 // ================= Кўринишлар =================
@@ -1221,7 +1489,7 @@ function vClients() {
   if (can("clients")) h += `<form class="card" data-f="addCustomer" style="margin-top:16px"><b class="ct">➕ ${k === "b2b" ? "Янги дўкон" : "Янги мижоз"}</b><div class="row">
     <div><label for="nc-name">${k === "b2b" ? "Дўкон номи" : "Исм"}</label><input id="nc-name" name="name"></div><div><label for="nc-phone">Телефон</label><input id="nc-phone" name="phone" inputmode="tel"></div>
     <div><label for="nc-region">Регион</label><select id="nc-region" name="region">${regionOptions(S.regionFilter)}</select></div>
-    <div><label for="nc-addr">Манзил</label><input id="nc-addr" name="address"></div><div><label for="nc-note">Изоҳ</label><input id="nc-note" name="note"></div><div class="fit"><button>Қўшиш</button></div></div></form>`;
+    <div><label for="nc-addr">Манзил</label><input id="nc-addr" name="address"></div><div><label for="nc-tg">Telegram</label><input id="nc-tg" name="tg" placeholder="@username"></div><div><label for="nc-note">Изоҳ</label><input id="nc-note" name="note"></div><div class="fit"><button>Қўшиш</button></div></div></form>`;
   return h;
 }
 function vClient(id) {
@@ -1241,7 +1509,7 @@ function vClient(id) {
   if (can("clients")) h += `<form class="card" data-f="editCustomer" data-id="${esc(c.id)}" style="margin-top:16px"><b class="ct">✏️ Маълумотлар</b><div class="row">
     <div><label for="ec-name">Номи</label><input id="ec-name" name="name" value="${esc(c.name)}"></div><div><label for="ec-phone">Телефон</label><input id="ec-phone" name="phone" value="${esc(c.phone || "")}"></div>
     <div><label for="ec-region">Регион</label><select id="ec-region" name="region">${regionOptions(c.region || "")}</select></div>
-    <div><label for="ec-addr">Манзил</label><input id="ec-addr" name="address" value="${esc(c.address || "")}"></div><div><label for="ec-note">Изоҳ</label><input id="ec-note" name="note" value="${esc(c.note || "")}"></div></div>
+    <div><label for="ec-addr">Манзил</label><input id="ec-addr" name="address" value="${esc(c.address || "")}"></div><div><label for="ec-tg">Telegram</label><input id="ec-tg" name="tg" placeholder="@username" value="${esc(c.tg ? "@" + c.tg : "")}"></div><div><label for="ec-note">Изоҳ</label><input id="ec-note" name="note" value="${esc(c.note || "")}"></div></div>
     ${can("credit") ? `<div class="row"><div><label for="ec-limit">Кредит лимити (сўм, бўш — лимитсиз)</label><input id="ec-limit" name="limit" inputmode="numeric" value="${c.limit ? c.limit / 100 : ""}"></div><div><label for="ec-term">Ваъдасиз умумий муддат, кун (бўш — умумий)</label><input id="ec-term" name="term" inputmode="numeric" value="${c.term ?? ""}"></div></div>` : ""}
     <div class="row"><div class="fit"><button>Сақлаш</button></div></div></form>`;
   return h;
@@ -1291,6 +1559,11 @@ function vRules() {
       <div><label for="r2">Мижоз (B2C): ваъда ёзилмаса, тўлов муддати, кун</label><input id="r2" name="b2cTerm" inputmode="numeric" value="${R.b2cTerm}" ${dis}></div>
       <div><label for="r3">Макс. чегирма, % (кимда «${esc(FUNC.boss[1])}» рухсати йўқ бўлса)</label><input id="r3" name="discMenejer" inputmode="numeric" value="${R.discMenejer}" ${dis}></div></div>
       <div class="row" style="margin-top:12px"><div style="flex:0 1 220px"><label for="r5">Иш бошланиш вақти (кечикиш учун)</label><input type="time" id="r5" name="workStart" value="${esc(R.workStart)}" ${dis}></div></div>
+      <h2>🤖 Бот ва ходимлар</h2>
+      <div class="row" style="margin-top:0"><div style="flex:0 1 240px"><label for="r6">Кечикиш жаримаси, сўм / дақиқа (0 — йўқ)</label><input id="r6" name="lateFine" inputmode="numeric" value="${R.lateFine || ""}" ${dis}></div>
+      <div><label for="r7">Корхона манзили (мижозга юборилади)</label><input id="r7" name="address" value="${esc(R.address)}" placeholder="Шаҳар, кўча, уй, мўлжал" ${dis}></div></div>
+      <div class="row"><div style="flex:0 1 200px"><label for="r8">Иш вақти (мижозга)</label><input id="r8" name="hours" value="${esc(R.hours)}" ${dis}></div><div style="flex:0 1 200px"><label for="r9">Телефон (мижозга)</label><input id="r9" name="cphone" value="${esc(R.phone)}" ${dis}></div>
+      <div><label for="r10">Йўл кўрсатувчи видео ҳаволаси</label><input id="r10" name="video" value="${esc(R.video)}" placeholder="https://..." ${dis}></div></div>
       <div class="row"><label class="chk" for="r4"><input type="checkbox" id="r4" name="blockOverdue" ${R.blockOverdue ? "checked" : ""} ${dis}> Муддати ўтган қарзи бор мижозга насия бермаслик</label></div>
       ${dis ? "" : `<div class="row"><div class="fit"><button>Сақлаш</button></div></div>`}</form>`;
 }
@@ -1332,11 +1605,11 @@ function vStaff() {
   return h;
 }
 
-const VIEWS = { orders: vOrders, attendance: vAttendance, home: vHome, stock: vStock, "stock-in": vStockIn, writeoff: vWriteoff, inventory: vInventory, "ret-stock": vRetStock, moves: vMoves, "sale-new": vSaleNew, sales: vSales, clients: vClients, debts: vDebts, pay: vPay, returns: vReturns, products: vProducts, regions: vRegions, "ret-reasons": vRetReasons, rules: vRules, journal: vJournal, staff: vStaff };
+const VIEWS = { cbot: vCBot, sbot: vSBot, payroll: vPayroll, orders: vOrders, attendance: vAttendance, home: vHome, stock: vStock, "stock-in": vStockIn, writeoff: vWriteoff, inventory: vInventory, "ret-stock": vRetStock, moves: vMoves, "sale-new": vSaleNew, sales: vSales, clients: vClients, debts: vDebts, pay: vPay, returns: vReturns, products: vProducts, regions: vRegions, "ret-reasons": vRetReasons, rules: vRules, journal: vJournal, staff: vStaff };
 // Ҳар бир саҳифа қайси рухсатга боғлиқ
 const PAGE_PERM = { "sale-new": "sale", sales: "sale", pay: "debts", staff: null };
 const pagePerm = (r) => r.startsWith("sale-") && r !== "sale-new" ? "sale" : r.startsWith("client-") ? "clients" : (r in PAGE_PERM ? PAGE_PERM[r] : r);
-const pageOk = (r) => { if (r === "staff") return fullAccess(); if (r === "attendance") return can("att") || canView("att-all"); if (r.startsWith("order-")) return canView("orders"); if (r.startsWith("client-")) return canView("clients") || canView("debts"); const k = pagePerm(r); return canView(k); };
+const pageOk = (r) => { if (r === "staff" || r === "payroll" || r.startsWith("worker-")) return fullAccess(); if (r === "sbot") return can("att") || fullAccess(); if (r === "attendance") return can("att") || canView("att-all"); if (r.startsWith("order-")) return canView("orders"); if (r.startsWith("client-")) return canView("clients") || canView("debts"); const k = pagePerm(r); return canView(k); };
 const route = () => (location.hash || "#home").slice(1);
 
 // ================= Чизиш =================
@@ -1347,7 +1620,7 @@ function renderNav() {
   const badge = { orders: ordDue, debts: over, stock: low, "ret-stock": ret, staff: S.isOwner ? S.staffreq.filter((q) => !S.staff.some((x) => x.id === q.id)).length : 0 };
   const nav = NAV.map(([g, items]) => [g, items.filter(([k]) => pageOk(k))]).filter(([, items]) => items.length);
   if (fullAccess()) { const g = nav.find((x) => x[0] === "Ходимлар"); if (g) g[1].push(["staff", "Ходимлар ва рухсатлар", "🔐"]); else nav.push(["Ходимлар", [["staff", "Ходимлар ва рухсатлар", "🔐"]]]); }
-  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["orders", "Буюртма", "📝"], ["stock-in", "Кирим", "📥"], ["attendance", "Давомат", "🕘"], ["pay", "Тўлов", "💵"]];
+  const TABS = [["home", "Бугун", "📊"], ["sale-new", "Сотув", "➕"], ["debts", "Қарз", "💰"], ["stock", "Склад", "📦"], ["sales", "Сотувлар", "🧾"], ["orders", "Буюртма", "📝"], ["stock-in", "Кирим", "📥"], ["sbot", "Бот", "📱"], ["attendance", "Давомат", "🕘"], ["pay", "Тўлов", "💵"]];
   const tabs = TABS.filter(([k]) => pageOk(k)).slice(0, 4);
   $("#tabs").innerHTML = tabs.map(([k, l, ic]) => `<a href="#${k}" class="${cur === k ? "on" : ""}"><span class="ti">${ic}</span>${l}${badge[k] ? `<span class="cnt">${badge[k]}</span>` : ""}</a>`).join("") +
     `<button type="button" id="tabmenu" aria-label="Ҳамма бўлимлар"><span class="ti">☰</span>Меню${badge.staff ? `<span class="cnt">${badge.staff}</span>` : ""}</button>`;
@@ -1374,6 +1647,7 @@ function render() {
   else if (r.startsWith("sale-") && r !== "sale-new") html = vSale(r.slice(5));
   else if (r.startsWith("client-")) html = vClient(r.slice(7));
   else if (r.startsWith("order-")) html = vOrder(r.slice(6));
+  else if (r.startsWith("worker-")) html = vWorker(r.slice(7));
   else html = (VIEWS[r] || vHome)();
   if (S.viewAs && S.isOwner) html = `<div class="msg info">Сиз «${esc(myRole()?.name || "")}» лавозими кўзи билан кўряпсиз. <button type="button" class="light sm" data-a="viewAs" data-id="">Эга кўринишига қайтиш</button></div>` + html;
   if (S.timedOut && S.loaded.size < COLS.length + 1) html = `<div class="msg info">Маълумот ҳали тўлиқ юкланмади — интернетни текширинг. Кўрсатилгани эскирган бўлиши мумкин.</div>` + html;
@@ -1459,6 +1733,10 @@ document.addEventListener("submit", async (e) => {
   else if (k === "order") await A.order(f);
   else if (k === "ordCancel") await A.orderStatus(S.orders.find((o) => o.id === id), "cancelled", f.reason.value);
   else if (k === "attManual") await A.attManual(f);
+  else if (k === "botOrder") await A.botOrder(custById(id), f);
+  else if (k === "botAddr") await A.botReply(id, "address", f.addr.value);
+  else if (k === "saveWorker") await A.saveWorker(id, f);
+  else if (k === "payItem") await A.payItem(id, f);
   else if (k === "addRegion") await A.addRegion(f);
   else if (k === "addReason") await A.addReason(f);
   else if (k === "addRole") await A.addRole(f);
@@ -1475,12 +1753,19 @@ document.addEventListener("click", (e) => {
     else if (a === "pickCust") { const c = custById(id), i = document.getElementById(b.dataset.for); if (c && i) { i.value = c.name; hidePick(); saleCalc(); ordCalc(); } }
     else if (a === "att") A.att(id);
     else if (a === "attTab") { S.attMonth = id === "month" ? (S.attMonth || today().slice(0, 7)) : ""; render(); }
-    else if (a === "ordKind") { S.ordKind = id; S.ordRows = 1; render(); clearFormKeep(document.querySelector('[data-f="order"]')); ordCalc(); }
+    else if (a === "ordKind") { S.ordKind = id; S.ordRows = 1; render(); clearFormKeep(document.querySelector('[data-f="order"]')); const od = $("#o-due"); if (od) od.value = addDays(nowIso(), 1); ordCalc(); }
     else if (a === "ordTab") { S.ordTab = id; render(); }
     else if (a === "ordStatus") { const [oid, st] = id.split("|"); A.orderStatus(S.orders.find((o) => o.id === oid), st); }
     else if (a === "ordCancelAsk") { S.ordCancel = id; render(); }
     else if (a === "toSale") orderToSale(S.orders.find((o) => o.id === id));
     else if (a === "csvAtt") csvAtt();
+    else if (a === "cbTab") { S.cbTab = id; S.cbCust = ""; S.cbOrder = false; render(); }
+    else if (a === "cbCust") { S.cbCust = id; S.cbOrder = false; S.cbAddr = ""; render(); }
+    else if (a === "cb") cbAction(id);
+    else if (a === "sbotUid") { S.sbotUid = id; render(); }
+    else if (a === "sbotAsk") sbotAsk(id);
+    else if (a === "copyMsg") copyText(b.closest(".bub")?.dataset.plain || "");
+    else if (a === "copyLast") copyText(lastBotText());
     else if (a === "dayShift") { const d = addDays((S.homeDay || today()) + "T12:00", +id); S.homeDay = d > today() ? today() : d; render(); }
     else if (a === "dayGo") { S.homeDay = ""; render(); }
     else if (a === "saleKind") { S.saleKind = id; S.saleRows = 1; render(); clearFormKeep(document.querySelector('[data-f="sale"]')); saleCalc(); }
@@ -1524,6 +1809,7 @@ document.addEventListener("change", (e) => {
   if (sel) { const row = sel.closest("[data-line]"); syncUnits(row.parentElement); autoPrice(row); saleCalc(); }
   if (e.target.matches?.("[data-splitchk]")) syncSplit();
   if (e.target.id === "attDay") { S.attDay = e.target.value && e.target.value < today() ? e.target.value : ""; render(); }
+  if (e.target.id === "payMonth") { S.payMonth = e.target.value || today().slice(0, 7); render(); }
   if (e.target.id === "attMonth") { S.attMonth = e.target.value || today().slice(0, 7); render(); }
   if (e.target.id === "homeDay") { S.homeDay = e.target.value && e.target.value < today() ? e.target.value : ""; render(); }
   if (e.target.id === "r-cust") document.querySelectorAll('[data-line="ret"]').forEach(autoPrice);
@@ -1590,8 +1876,19 @@ async function boot() {
     S[name] = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (a.at || "").localeCompare(b.at || ""));
     done(name, snap); resolveNames(); soon();
     if (name === "staffreq" || name === "staff") askAccess();
+    if (name === "staff" || name === "attendance") subPayItems();
   }, fail(name));
   db.doc("settings/main").onSnapshot((snap) => { S.settings = snap.exists ? snap.data() : null; done("settings", snap); soon(); }, fail("settings"));
+  // Ойлик: эга ҳаммасини, ходим фақат ўзиникини кўради (базанинг ўз қоидаси билан)
+  db.collection("staffpay").onSnapshot((snap) => { S.staffpay = snap.docs.map((d) => ({ id: d.id, ...d.data() })); subPayItems(); soon(); }, () => {});
+  subPayItems();
+}
+const paySubs = {};
+function subPayItems() {
+  if (!S.db) return;
+  const ids = S.isOwner ? new Set([...S.staff.map((x) => x.id), ...S.staffpay.map((x) => x.id), ...S.attendance.map((a) => a.uid).filter(Boolean)]) : new Set(S.uid ? [S.uid] : []);
+  for (const uid of ids) if (!paySubs[uid] && Object.keys(paySubs).length < 40)
+    paySubs[uid] = S.db.collection(`staffpay/${uid}/items`).onSnapshot((snap) => { S.payItems[uid] = snap.docs.map((d) => ({ id: d.id, ...d.data() })); soon(); }, () => {});
 }
 // Лавозими йўқ ходим дастурни очса — директорга «рухсат кутаётганлар» рўйхатида кўринади
 let asked = false;
